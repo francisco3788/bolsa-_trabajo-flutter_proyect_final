@@ -10,6 +10,9 @@ import 'package:bolsa_de_trabajo/features/auth/domain/usecases/send_recovery_cod
 import 'package:bolsa_de_trabajo/features/auth/domain/usecases/sign_up_user.dart';
 import 'package:bolsa_de_trabajo/features/auth/domain/usecases/update_password.dart';
 import 'package:bolsa_de_trabajo/features/auth/domain/usecases/verify_recovery_code.dart';
+import 'package:bolsa_de_trabajo/features/jobs/data/datasources/jobs_remote_datasource.dart';
+import 'package:bolsa_de_trabajo/features/jobs/data/repositories/jobs_repository_impl.dart';
+import 'package:bolsa_de_trabajo/features/jobs/domain/repositories/jobs_repository.dart';
 import 'package:bolsa_de_trabajo/features/profile/data/datasources/profile_remote_datasource.dart';
 import 'package:bolsa_de_trabajo/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:bolsa_de_trabajo/features/profile/domain/repositories/profile_repository.dart';
@@ -73,6 +76,17 @@ class Injector {
     );
     Get.lazyPut<SaveCompanyProfile>(
       () => SaveCompanyProfile(Get.find()),
+      fenix: true,
+    );
+
+    // Jobs dependencies
+    Get.lazyPut<JobsRemoteDataSource>(
+      () => JobsRemoteDataSourceImpl(supabaseClient: supabase),
+      fenix: true,
+    );
+
+    Get.lazyPut<JobsRepository>(
+      () => JobsRepositoryImpl(remoteDataSource: Get.find()),
       fenix: true,
     );
 

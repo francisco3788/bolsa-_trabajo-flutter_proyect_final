@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/jobs_home_controller.dart';
@@ -14,14 +14,14 @@ class JobsHomePage extends GetView<JobsHomeController> {
         actions: [
           Obx(
             () => IconButton(
-              icon: controller.loading.value
+              icon: controller.isLoading.value
                   ? const SizedBox(
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : const Icon(Icons.logout),
-              onPressed: controller.loading.value ? null : controller.doLogout,
+              onPressed: controller.isLoading.value ? null : controller.doLogout,
               tooltip: 'Cerrar sesión',
             ),
           ),

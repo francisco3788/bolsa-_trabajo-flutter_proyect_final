@@ -43,9 +43,9 @@ class RoleGuard extends GetMiddleware {
         allowedRoles!.isNotEmpty &&
         !allowedRoles!.contains(currentRole)) {
       if (currentRole == 'company') {
-        return const RouteSettings(name: AppRoutes.companyHome);
+        return const RouteSettings(name: AppRoutes.dashboardEmpresa);
       }
-      return const RouteSettings(name: AppRoutes.jobsHome);
+      return const RouteSettings(name: AppRoutes.dashboardCandidato);
     }
 
     return null;

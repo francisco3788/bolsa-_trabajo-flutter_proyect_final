@@ -19,6 +19,7 @@ Future<void> main() async {
     authOptions: const FlutterAuthClientOptions(
       authFlowType: AuthFlowType.implicit,
     ),
+    debug: false, // Reduce debug logs
   );
 
   Injector.init();
