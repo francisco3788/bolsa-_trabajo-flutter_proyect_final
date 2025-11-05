@@ -35,13 +35,13 @@ class AuthRemoteDataSourceSupabase implements AuthRemoteDataSource {
       );
       final user = res.user;
       if (user == null) {
-        throw const AuthFailure('No se pudo iniciar sesión.');
+        throw const AuthFailure('We were unable to log in.');
       }
       return UserModel.fromSupabase(user);
     } on AuthApiException catch (e) {
       throw AuthFailure(e.message);
     } catch (_) {
-      throw const ServerFailure('Error desconocido al autenticarse.');
+      throw const ServerFailure('Unknown error during authentication.');
     }
   }
 
@@ -67,11 +67,11 @@ class AuthRemoteDataSourceSupabase implements AuthRemoteDataSource {
         return UserModel.fromSupabase(res.user!);
       }
 
-      throw const AuthFailure('No se pudo completar el registro.');
+      throw const AuthFailure('Registration could not be completed.');
     } on AuthException catch (e) {
       throw AuthFailure(e.message);
     } catch (_) {
-      throw const ServerFailure('Error desconocido al registrar usuario.');
+      throw const ServerFailure('Unknown error registering user.');
     }
   }
 
@@ -86,7 +86,7 @@ class AuthRemoteDataSourceSupabase implements AuthRemoteDataSource {
       throw AuthFailure(e.message);
     } catch (_) {
       throw const ServerFailure(
-        'No se pudo reenviar la verificación de correo.',
+        'The email verification could not be resent.',
       );
     }
   }
@@ -98,7 +98,7 @@ class AuthRemoteDataSourceSupabase implements AuthRemoteDataSource {
     } on AuthException catch (e) {
       throw AuthFailure(e.message);
     } catch (_) {
-      throw const ServerFailure('No se pudo enviar el código de recuperación.');
+      throw const ServerFailure('The recovery code could not be sent.');
     }
   }
 
@@ -111,12 +111,12 @@ class AuthRemoteDataSourceSupabase implements AuthRemoteDataSource {
         token: token,
       );
       if (response.session == null) {
-        throw const AuthFailure('Código inválido o expirado.');
+        throw const AuthFailure('Invalid or expired code.');
       }
     } on AuthException catch (e) {
       throw AuthFailure(e.message);
     } catch (_) {
-      throw const ServerFailure('No se pudo validar el código.');
+      throw const ServerFailure('The code could not be validated.');
     }
   }
 
@@ -127,7 +127,7 @@ class AuthRemoteDataSourceSupabase implements AuthRemoteDataSource {
     } on AuthException catch (e) {
       throw AuthFailure(e.message);
     } catch (_) {
-      throw const ServerFailure('No se pudo actualizar la contraseña.');
+      throw const ServerFailure('The password could not be updated.');
     }
   }
 }

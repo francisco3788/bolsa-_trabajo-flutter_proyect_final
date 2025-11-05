@@ -8,9 +8,9 @@ abstract class AppRoutes {
   static const forgot = '/forgot';
   
   // Job-related routes
-  static const dashboardCandidato = '/dashboard/candidato';
-  static const dashboardEmpresa = '/dashboard/empresa';
-  static const publicarOferta = '/job/new';
-  static const postulacionesJob = '/job/:jobId/applications';
+  static const dashboardCandidate = '/dashboard/candidato';
+  static const dashboardCompany = '/dashboard/empresa';
+  static const jobNew = '/job/new';
+  static const jobApplications = '/job/:jobId/applications';
   static const profile = '/profile';
 }

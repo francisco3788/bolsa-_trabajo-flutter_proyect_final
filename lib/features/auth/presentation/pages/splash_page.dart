@@ -15,7 +15,7 @@ class SplashPage extends GetView<SplashController> {
           children: const [
             SizedBox(height: 48, width: 48, child: CircularProgressIndicator()),
             SizedBox(height: 16),
-            Text('Preparando tu experiencia...'),
+            Text('Preparing your experience...'),
           ],
         ),
       ),

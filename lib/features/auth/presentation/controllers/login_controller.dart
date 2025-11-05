@@ -42,12 +42,12 @@ class LoginController extends GetxController {
   String? validateEmail(String? value) {
     final trimmed = value?.trim() ?? '';
     if (trimmed.isEmpty) {
-      return 'Ingresa tu correo electrónico.';
+      return 'Enter your email.';
     }
 
     final emailRegex = RegExp(r'^[\w\.-]+@([\w-]+\.)+[a-zA-Z]{2,}$');
     if (!emailRegex.hasMatch(trimmed)) {
-      return 'El formato del correo no es válido.';
+      return 'Email format is not valid.';
     }
 
     return null;
@@ -56,11 +56,11 @@ class LoginController extends GetxController {
   String? validatePassword(String? value) {
     final trimmed = value?.trim() ?? '';
     if (trimmed.isEmpty) {
-      return 'Ingresa tu contraseña.';
+      return 'Enter your password.';
     }
 
     if (trimmed.length < 6) {
-      return 'La contraseña debe tener al menos 6 caracteres.';
+      return 'Password must be at least 6 characters.';
     }
 
     return null;
@@ -108,7 +108,7 @@ class LoginController extends GetxController {
       if (AuthErrorMapper.isEmailNotVerified(message)) {
         requiresEmailVerification.value = true;
         info.value =
-            'Tu cuenta aún no está verificada. Podemos reenviar el correo si lo necesitas.';
+            'Your account is not verified yet. We can resend the email if needed.';
       }
 
       _startLoginCooldown();
@@ -127,7 +127,7 @@ class LoginController extends GetxController {
     final targetEmail = (email ?? _lastAttemptedEmail).trim();
     if (targetEmail.isEmpty) {
       error.value =
-          'Ingresa tu correo electrónico para reenviar la verificación.';
+          'Enter your email to resend verification.';
       showValidation.value = true;
       return;
     }
@@ -139,7 +139,7 @@ class LoginController extends GetxController {
         ResendEmailVerificationParams(email: targetEmail),
       );
       info.value =
-          'Te enviamos un nuevo correo de verificación. Revisa tu bandeja de entrada.';
+          'We sent a new verification email. Check your inbox.';
       _startResendCooldown();
     } catch (err) {
       error.value = AuthErrorMapper.map(err);

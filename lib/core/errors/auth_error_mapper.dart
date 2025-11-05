@@ -6,7 +6,7 @@ import 'failures.dart';
 /// localized messages for the UI.
 class AuthErrorMapper {
   static const _unexpectedError =
-      'Ocurrió un error inesperado al procesar tu solicitud. Intenta nuevamente.';
+      'An unexpected error occurred while processing your request. Please try again.';
 
   /// Returns a localized message describing [error].
   static String map(dynamic error) {
@@ -27,11 +27,11 @@ class AuthErrorMapper {
 
   static String _fromFailure(Failure failure) {
     if (failure is NetworkFailure) {
-      return 'No hay conexión a internet. Revisa tu red e inténtalo de nuevo.';
+      return 'There is no internet connection. Check your network and try again.';
     }
 
     if (failure is ServerFailure) {
-      return 'Tenemos problemas para contactar el servidor. Por favor, inténtalo más tarde.';
+      return 'We are having trouble connecting to the server. Please try again later.';
     }
 
     if (failure is AuthFailure) {
@@ -48,28 +48,28 @@ class AuthErrorMapper {
     if (statusCode == '429' ||
         message.contains('too many requests') ||
         message.contains('rate limit')) {
-      return 'Hiciste demasiados intentos. Espera unos segundos antes de volver a intentarlo.';
+      return 'You made too many attempts. Wait a few seconds before trying again.';
     }
 
     if (message.contains('invalid login credentials') ||
         message.contains('invalid email or password') ||
         message.contains('wrong email or password') ||
         message.contains('invalid credentials')) {
-      return 'Correo o contraseña incorrectos.';
+      return 'Incorrect email or password.';
     }
 
     if (message.contains('email not confirmed') ||
         message.contains('email not verified')) {
-      return 'Tu correo aún no está verificado. Revisa tu bandeja de entrada para confirmar tu cuenta.';
+      return 'Your email address is not yet verified. Check your inbox to confirm your account.';
     }
 
     if (message.contains('otp') && message.contains('expired')) {
-      return 'El código ha expirado. Solicita uno nuevo.';
+      return 'The code has expired. Request a new one.';
     }
 
     if (message.contains('password') &&
         (message.contains('weak') || message.contains('short'))) {
-      return 'La contraseña es demasiado débil. Asegúrate de cumplir con los requisitos mínimos.';
+      return 'The password is too weak. Make sure you meet the minimum requirements.';
     }
 
     return _normalizeMessage(exception.message);
@@ -86,24 +86,24 @@ class AuthErrorMapper {
         normalized.contains('invalid email or password') ||
         normalized.contains('invalid credentials') ||
         normalized.contains('wrong email or password')) {
-      return 'Correo o contraseña incorrectos.';
+      return 'Incorrect email or password.';
     }
 
     if (normalized.contains('email not confirmed') ||
         normalized.contains('email not verified')) {
-      return 'Tu correo aún no está verificado. Revisa tu bandeja de entrada.';
+      return 'Your email address has not yet been verified. Please check your inbox.';
     }
 
     if (normalized.contains('too many requests') ||
         normalized.contains('rate limit') ||
         normalized.contains('demasiadas solicitudes')) {
-      return 'Hiciste demasiados intentos. Espera unos segundos antes de intentar de nuevo.';
+      return 'You made too many attempts. Wait a few seconds before trying again.';
     }
 
     if (normalized.contains('not found') ||
         normalized.contains('no user') ||
         normalized.contains('no existe')) {
-      return 'No encontramos una cuenta con esos datos.';
+      return 'We couldnt find an account with that information.';
     }
 
     return message;
@@ -120,8 +120,8 @@ class AuthErrorMapper {
         .replaceAll('ó', 'o')
         .replaceAll('ú', 'u');
 
-    return normalized.contains('no está verificado') ||
-        plain.contains('no esta verificado') ||
+    return normalized.contains('It is not verified') ||
+        plain.contains('It is not verified') ||
         normalized.contains('email not verified') ||
         normalized.contains('email not confirmed');
   }

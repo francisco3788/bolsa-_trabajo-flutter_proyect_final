@@ -14,7 +14,7 @@ class RegisterController extends GetxController {
   final password = ''.obs;
   final loading = false.obs;
   final error = RxnString();
-  final info = RxnString(); // mensajes informativos (ej. "Revisa tu correo")
+  final info = RxnString(); // Informational messages (e.g., "Check your email")
 
   Future<void> doRegister() async {
     error.value = null;
@@ -35,7 +35,7 @@ class RegisterController extends GetxController {
         Get.offAllNamed(AppRoutes.jobsHome);
       } else {
         info.value =
-            'Cuenta creada. Revisa tu correo para confirmar y luego inicia sesión.';
+            'Account created. Check your email to confirm, then sign in.';
         // Opcional: navegar a login
         // Get.offAllNamed(AppRoutes.login);
       }

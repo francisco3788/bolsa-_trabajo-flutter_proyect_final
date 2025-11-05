@@ -1,13 +1,13 @@
 class Validators {
-  static String? required(String? value, {String message = 'Campo requerido'}) {
+  static String? required(String? value, {String message = 'Required field'}) {
     if (value == null || value.trim().isEmpty) {
       return message;
     }
     return null;
   }
 
-  static String? email(String? value, {String message = 'Correo inválido'}) {
-    final baseValidation = required(value, message: 'El correo es obligatorio');
+  static String? email(String? value, {String message = 'Invalid email'}) {
+    final baseValidation = required(value, message: 'Email is required');
     if (baseValidation != null) {
       return baseValidation;
     }
@@ -22,15 +22,15 @@ class Validators {
   static String? password(String? value, {int minLength = 6}) {
     final baseValidation = required(
       value,
-      message: 'La contraseña es obligatoria',
+      message: 'Password is required',
     );
     if (baseValidation != null) {
       return baseValidation;
     }
     if (value!.trim().length < minLength) {
-      return 'Debe tener al menos $minLength caracteres';
+      return 'Must be at least $minLength characters';
     }
-    if (value.length < 6) return 'Mínimo 6 caracteres';
+    if (value.length < 6) return 'Minimum 6 characters';
 
     return null;
   }

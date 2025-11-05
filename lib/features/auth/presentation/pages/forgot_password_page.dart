@@ -51,7 +51,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Recuperar contraseña')),
+      appBar: AppBar(title: const Text('Reset Password')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Obx(
@@ -63,14 +63,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 children: [
                   Text(
                     controller.step.value == 0
-                        ? 'Ingresa tu correo electrónico y te enviaremos un código de verificación.'
-                        : 'Ingresa el código que recibiste por correo y define tu nueva contraseña.',
+                        ? 'Enter your email and we’ll send a verification code.'
+                        : 'Enter the code you received and set your new password.',
                   ),
                   const SizedBox(height: 24),
                   if (controller.step.value == 0) ...[
                     PrimaryInput(
                       controller: emailCtrl,
-                      label: 'Correo electrónico',
+                      label: 'Email',
                       keyboardType: TextInputType.emailAddress,
                     ),
                     const SizedBox(height: 24),
@@ -86,33 +86,33 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                     const SizedBox(height: 16),
                     PrimaryButton(
-                      text: 'Enviar código',
+                      text: 'Send code',
                       loading: controller.loading.value,
                       onPressed: controller.submitEmail,
                     ),
                   ] else ...[
                     PrimaryInput(
                       controller: emailCtrl,
-                      label: 'Correo electrónico',
+                      label: 'Email',
                       keyboardType: TextInputType.emailAddress,
                       enabled: false,
                     ),
                     const SizedBox(height: 16),
                     PrimaryInput(
                       controller: codeCtrl,
-                      label: 'Código de verificación',
+                      label: 'Verification code',
                       keyboardType: TextInputType.text,
                     ),
                     const SizedBox(height: 16),
                     PrimaryInput(
                       controller: passwordCtrl,
-                      label: 'Nueva contraseña',
+                      label: 'New password',
                       obscure: true,
                     ),
                     const SizedBox(height: 16),
                     PrimaryInput(
                       controller: confirmCtrl,
-                      label: 'Confirmar contraseña',
+                      label: 'Confirm password',
                       obscure: true,
                     ),
                     const SizedBox(height: 16),
@@ -128,7 +128,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                     const SizedBox(height: 16),
                     PrimaryButton(
-                      text: 'Actualizar contraseña',
+                      text: 'Update password',
                       loading: controller.loading.value,
                       onPressed: controller.submitNewPassword,
                     ),
@@ -142,13 +142,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               passwordCtrl.clear();
                               confirmCtrl.clear();
                             },
-                      child: const Text('Usar otro correo'),
+                      child: const Text('Use another email'),
                     ),
                   ],
                   const SizedBox(height: 24),
                   TextButton(
                     onPressed: () => Get.offAllNamed(AppRoutes.login),
-                    child: const Text('Volver al inicio de sesión'),
+                    child: const Text('Back to sign in'),
                   ),
                 ],
               ),

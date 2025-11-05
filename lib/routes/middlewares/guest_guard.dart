@@ -20,10 +20,10 @@ class GuestGuard extends GetMiddleware {
 
       final role = session.role;
       final target = role == 'company'
-          ? AppRoutes.dashboardEmpresa
+          ? AppRoutes.dashboardCompany
           : (role == null || role.isEmpty)
               ? AppRoutes.chooseRole
-              : AppRoutes.dashboardCandidato;
+              : AppRoutes.dashboardCandidate;
 
       if (route != target) {
         return RouteSettings(name: target);

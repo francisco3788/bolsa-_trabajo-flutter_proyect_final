@@ -28,7 +28,7 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
 
   String get _currentUserId {
     final user = _supabaseClient.auth.currentUser;
-    if (user == null) throw Exception('Usuario no autenticado');
+    if (user == null) throw Exception('Unauthenticated user');
     return user.id;
   }
 
@@ -49,7 +49,7 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
       final response = await queryBuilder;
       return response.map<JobModel>((json) => JobModel.fromJson(json)).toList();
     } catch (e) {
-      throw Exception('Error al obtener trabajos activos: $e');
+      throw Exception('Error retrieving active jobs: $e');
     }
   }
 
@@ -70,7 +70,7 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
       final response = await queryBuilder;
       return response.map<JobModel>((json) => JobModel.fromJson(json)).toList();
     } catch (e) {
-      throw Exception('Error al obtener trabajos de la empresa: $e');
+      throw Exception('Error obtaining jobs from the company: $e');
     }
   }
 
@@ -85,7 +85,7 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
 
       return JobModel.fromJson(response);
     } catch (e) {
-      throw Exception('Error al obtener trabajo por ID: $e');
+      throw Exception('Error retrieving job by ID: $e');
     }
   }
 
@@ -97,7 +97,7 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
 
       await _supabaseClient.from('jobs').insert(jobData);
     } catch (e) {
-      throw Exception('Error al crear trabajo: $e');
+      throw Exception('Error creating job: $e');
     }
   }
 
@@ -110,7 +110,7 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
           .eq('id', jobId)
           .eq('company_id', _currentUserId);
     } catch (e) {
-      throw Exception('Error al actualizar estado del trabajo: $e');
+      throw Exception('Error updating job status: $e');
     }
   }
 
@@ -140,7 +140,7 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
         });
       }
     } catch (e) {
-      throw Exception('Error al guardar/desguardar trabajo: $e');
+      throw Exception('Error saving/unsaving work: $e');
     }
   }
 
@@ -160,7 +160,7 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
           .map<JobModel>((item) => JobModel.fromJson(item['jobs_with_stats']))
           .toList();
     } catch (e) {
-      throw Exception('Error al obtener trabajos guardados: $e');
+      throw Exception('Error retrieving saved jobs: $e');
     }
   }
 
@@ -175,9 +175,9 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
       });
     } catch (e) {
       if (e.toString().contains('duplicate key')) {
-        throw Exception('Ya te has postulado a esta oferta');
+        throw Exception('You have already applied for this job');
       }
-      throw Exception('Error al postularse al trabajo: $e');
+      throw Exception('Error applying for the job: $e');
     }
   }
 
@@ -203,7 +203,7 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
         });
       }).toList();
     } catch (e) {
-      throw Exception('Error al obtener mis postulaciones: $e');
+      throw Exception('Error retrieving my applications: $e');
     }
   }
 
@@ -228,7 +228,7 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
         });
       }).toList();
     } catch (e) {
-      throw Exception('Error al obtener postulaciones del trabajo: $e');
+      throw Exception('Error obtaining job applications: $e');
     }
   }
 
@@ -240,7 +240,7 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
           .update({'status': status})
           .eq('id', appId);
     } catch (e) {
-      throw Exception('Error al actualizar estado de postulación: $e');
+      throw Exception('Error updating application status: $e');
     }
   }
 
@@ -277,7 +277,7 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
         savedJobs: savedJobsResponse.length,
       );
     } catch (e) {
-      throw Exception('Error al obtener KPIs de candidato: $e');
+      throw Exception('Error retrieving candidate KPIs: $e');
     }
   }
 
@@ -332,7 +332,7 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
         closedJobs: closedJobs,
       );
     } catch (e) {
-      throw Exception('Error al obtener KPIs de empresa: $e');
+      throw Exception('Error retrieving company KPIs: $e');
     }
   }
 }

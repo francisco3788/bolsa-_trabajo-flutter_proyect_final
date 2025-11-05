@@ -20,13 +20,13 @@ class RegisterPage extends GetView<RegisterController> {
     passCtrl.addListener(() => controller.password.value = passCtrl.text);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Crear cuenta')),
+      appBar: AppBar(title: const Text('Create Account')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Obx(
           () => Column(
             children: [
-              PrimaryInput(controller: nameCtrl, label: 'Nombre'),
+              PrimaryInput(controller: nameCtrl, label: 'Name'),
               const SizedBox(height: 12),
               PrimaryInput(
                 controller: emailCtrl,
@@ -36,7 +36,7 @@ class RegisterPage extends GetView<RegisterController> {
               const SizedBox(height: 12),
               PrimaryInput(
                 controller: passCtrl,
-                label: 'Contraseña',
+                label: 'Password',
                 obscure: true,
               ),
               const SizedBox(height: 16),
@@ -52,7 +52,7 @@ class RegisterPage extends GetView<RegisterController> {
                 ),
               const SizedBox(height: 8),
               PrimaryButton(
-                text: 'Registrarme',
+                text: 'Create account',
                 loading: controller.loading.value,
                 onPressed: controller.loading.value
                     ? () {}
@@ -61,7 +61,7 @@ class RegisterPage extends GetView<RegisterController> {
               const SizedBox(height: 12),
               TextButton(
                 onPressed: () => Get.offAllNamed(AppRoutes.login),
-                child: const Text('¿Ya tienes cuenta? Inicia sesión'),
+                child: const Text('Already have an account? Sign in'),
               ),
             ],
           ),

@@ -83,13 +83,13 @@ class ApplicationEntity {
     final difference = now.difference(appliedAt);
     
     if (difference.inDays > 0) {
-      return 'Hace ${difference.inDays} día${difference.inDays > 1 ? 's' : ''}';
+      return 'Does ${difference.inDays} day${difference.inDays > 1 ? 's' : ''}';
     } else if (difference.inHours > 0) {
-      return 'Hace ${difference.inHours} hora${difference.inHours > 1 ? 's' : ''}';
+      return 'Does ${difference.inHours} hour${difference.inHours > 1 ? 's' : ''}';
     } else if (difference.inMinutes > 0) {
-      return 'Hace ${difference.inMinutes} minuto${difference.inMinutes > 1 ? 's' : ''}';
+      return 'Does ${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''}';
     } else {
-      return 'Hace un momento';
+      return 'Just a moment';
     }
   }
 

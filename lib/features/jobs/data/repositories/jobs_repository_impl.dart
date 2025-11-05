@@ -17,7 +17,7 @@ class JobsRepositoryImpl implements JobsRepository {
       final jobs = await _remoteDataSource.getActiveJobs(query: query);
       return jobs.map((job) => job as JobEntity).toList();
     } catch (e) {
-      throw Exception('Error al obtener trabajos activos: $e');
+      throw Exception('Error retrieving active jobs: $e');
     }
   }
 
@@ -27,7 +27,7 @@ class JobsRepositoryImpl implements JobsRepository {
       final jobs = await _remoteDataSource.getCompanyJobs(status: status);
       return jobs.map((job) => job as JobEntity).toList();
     } catch (e) {
-      throw Exception('Error al obtener trabajos de la empresa: $e');
+      throw Exception('Error obtaining jobs from the company: $e');
     }
   }
 
@@ -37,7 +37,7 @@ class JobsRepositoryImpl implements JobsRepository {
       final job = await _remoteDataSource.getJobById(jobId);
       return job as JobEntity;
     } catch (e) {
-      throw Exception('Error al obtener trabajo por ID: $e');
+      throw Exception('Error retrieving job by ID: $e');
     }
   }
 
@@ -46,7 +46,7 @@ class JobsRepositoryImpl implements JobsRepository {
     try {
       await _remoteDataSource.createJob(data);
     } catch (e) {
-      throw Exception('Error al crear trabajo: $e');
+      throw Exception('Error creating job: $e');
     }
   }
 
@@ -55,7 +55,7 @@ class JobsRepositoryImpl implements JobsRepository {
     try {
       await _remoteDataSource.updateJobStatus(jobId, status);
     } catch (e) {
-      throw Exception('Error al actualizar estado del trabajo: $e');
+      throw Exception('Error updating job status: $e');
     }
   }
 
@@ -64,7 +64,7 @@ class JobsRepositoryImpl implements JobsRepository {
     try {
       await _remoteDataSource.toggleSaved(jobId);
     } catch (e) {
-      throw Exception('Error al guardar/desguardar trabajo: $e');
+      throw Exception('Error saving/unsaving work: $e');
     }
   }
 
@@ -74,7 +74,7 @@ class JobsRepositoryImpl implements JobsRepository {
       final jobs = await _remoteDataSource.getSavedJobs();
       return jobs.map((job) => job as JobEntity).toList();
     } catch (e) {
-      throw Exception('Error al obtener trabajos guardados: $e');
+      throw Exception('Error retrieving saved jobs: $e');
     }
   }
 
@@ -83,7 +83,7 @@ class JobsRepositoryImpl implements JobsRepository {
     try {
       await _remoteDataSource.applyToJob(jobId, coverLetter: coverLetter);
     } catch (e) {
-      throw Exception('Error al postularse al trabajo: $e');
+      throw Exception('Error applying for the job: $e');
     }
   }
 
@@ -93,7 +93,7 @@ class JobsRepositoryImpl implements JobsRepository {
       final applications = await _remoteDataSource.getMyApplications();
       return applications.map((app) => app as ApplicationEntity).toList();
     } catch (e) {
-      throw Exception('Error al obtener mis postulaciones: $e');
+      throw Exception('Error retrieving my applications: $e');
     }
   }
 
@@ -103,7 +103,7 @@ class JobsRepositoryImpl implements JobsRepository {
       final applications = await _remoteDataSource.getJobApplications(jobId);
       return applications.map((app) => app as ApplicationEntity).toList();
     } catch (e) {
-      throw Exception('Error al obtener postulaciones del trabajo: $e');
+      throw Exception('Error obtaining job applications: $e');
     }
   }
 
@@ -112,7 +112,7 @@ class JobsRepositoryImpl implements JobsRepository {
     try {
       await _remoteDataSource.setApplicationStatus(appId, status);
     } catch (e) {
-      throw Exception('Error al actualizar estado de postulación: $e');
+      throw Exception('Error updating application status: $e');
     }
   }
 
@@ -122,7 +122,7 @@ class JobsRepositoryImpl implements JobsRepository {
       final kpis = await _remoteDataSource.getCandidateKpis();
       return kpis as KpisEntity;
     } catch (e) {
-      throw Exception('Error al obtener KPIs de candidato: $e');
+      throw Exception('Error retrieving candidate KPIs: $e');
     }
   }
 
@@ -132,7 +132,7 @@ class JobsRepositoryImpl implements JobsRepository {
       final kpis = await _remoteDataSource.getCompanyKpis();
       return kpis as KpisEntity;
     } catch (e) {
-      throw Exception('Error al obtener KPIs de empresa: $e');
+      throw Exception('Error retrieving company KPIs: $e');
     }
   }
 }

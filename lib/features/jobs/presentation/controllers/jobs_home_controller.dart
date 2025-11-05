@@ -16,23 +16,23 @@ class JobsHomeController extends GetxController {
   }) : _jobsRepository = jobsRepository,
        _logoutUser = logoutUser;
 
-  // Estados observables
+  // Observable states
   final _isLoading = false.obs;
   final _isLoadingKpis = false.obs;
   final _isApplying = false.obs;
   final _isTogglingSaved = false.obs;
   final _error = Rx<String?>(null);
 
-  // Datos
+  // Data
   final _kpis = Rx<KpisEntity?>(null);
   final _recommendedJobs = <JobEntity>[].obs;
   final _myApplications = <ApplicationEntity>[].obs;
   final _savedJobs = <JobEntity>[].obs;
 
-  // Tab actual
+  // Current tab
   final _currentTabIndex = 0.obs;
 
-  // Búsqueda
+  // Search
   final _searchQuery = ''.obs;
 
   // Getters
@@ -63,7 +63,7 @@ class JobsHomeController extends GetxController {
     ]);
   }
 
-  // Cambiar tab
+  // Change tab
   void changeTab(int index) {
     _currentTabIndex.value = index;
     
@@ -80,7 +80,7 @@ class JobsHomeController extends GetxController {
     }
   }
 
-  // Cargar KPIs
+  // Load KPIs
   Future<void> loadKPIs() async {
     try {
       _isLoadingKpis.value = true;
@@ -89,7 +89,7 @@ class JobsHomeController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'No se pudieron cargar las estadísticas: ${e.toString()}',
+        'Failed to load statistics: ${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -97,7 +97,7 @@ class JobsHomeController extends GetxController {
     }
   }
 
-  // Cargar trabajos recomendados
+  // Load recommended jobs
   Future<void> loadRecommended({String? query}) async {
     try {
       _isLoading.value = true;
@@ -108,7 +108,7 @@ class JobsHomeController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'No se pudieron cargar los trabajos: ${e.toString()}',
+        'Failed to load jobs: ${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -116,7 +116,7 @@ class JobsHomeController extends GetxController {
     }
   }
 
-  // Postularse a un trabajo
+  // Apply to a job
   Future<void> applyToJob(String jobId, {String? coverLetter}) async {
     try {
       _isApplying.value = true;
@@ -124,12 +124,12 @@ class JobsHomeController extends GetxController {
       await _jobsRepository.applyToJob(jobId, coverLetter: coverLetter);
       
       Get.snackbar(
-        'Éxito',
-        'Te has postulado exitosamente',
+        'Success',
+        'You have successfully applied',
         snackPosition: SnackPosition.BOTTOM,
       );
 
-      // Actualizar KPIs y mis postulaciones
+      // Update KPIs and my applications
       await Future.wait([
         loadKPIs(),
         loadMyApplications(),
@@ -138,9 +138,9 @@ class JobsHomeController extends GetxController {
     } catch (e) {
       String message = e.toString();
       if (message.contains('Ya te has postulado')) {
-        message = 'Ya te postulaste a esta oferta';
+        message = 'You have already applied to this job';
       } else {
-        message = 'Error al postularse: $message';
+        message = 'Error applying: $message';
       }
       
       Get.snackbar(
@@ -160,22 +160,22 @@ class JobsHomeController extends GetxController {
       
       await _jobsRepository.toggleSaved(jobId);
       
-      // Actualizar listas
+      // Update lists
       await Future.wait([
         loadKPIs(),
         loadSaved(),
       ]);
       
       Get.snackbar(
-        'Éxito',
-        'Trabajo actualizado en guardados',
+        'Success',
+        'Saved jobs updated',
         snackPosition: SnackPosition.BOTTOM,
       );
       
     } catch (e) {
       Get.snackbar(
         'Error',
-        'Error al guardar trabajo: ${e.toString()}',
+        'Failed to save job: ${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -183,7 +183,7 @@ class JobsHomeController extends GetxController {
     }
   }
 
-  // Cargar mis postulaciones
+  // Load my applications
   Future<void> loadMyApplications() async {
     try {
       _isLoading.value = true;
@@ -193,7 +193,7 @@ class JobsHomeController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'No se pudieron cargar las postulaciones: ${e.toString()}',
+        'Failed to load applications: ${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -201,7 +201,7 @@ class JobsHomeController extends GetxController {
     }
   }
 
-  // Cargar trabajos guardados
+  // Load saved jobs
   Future<void> loadSaved() async {
     try {
       _isLoading.value = true;
@@ -211,7 +211,7 @@ class JobsHomeController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'No se pudieron cargar los trabajos guardados: ${e.toString()}',
+        'Failed to load saved jobs: ${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -219,17 +219,17 @@ class JobsHomeController extends GetxController {
     }
   }
 
-  // Verificar si un trabajo está guardado
+  // Check if a job is saved
   bool isJobSaved(String jobId) {
     return _savedJobs.any((job) => job.id == jobId);
   }
 
-  // Verificar si ya se postuló a un trabajo
+  // Check if already applied to a job
   bool hasAppliedToJob(String jobId) {
     return _myApplications.any((app) => app.jobId == jobId);
   }
 
-  // Refrescar datos
+  // Refresh data
   Future<void> refresh() async {
     switch (_currentTabIndex.value) {
       case 0:
@@ -245,18 +245,18 @@ class JobsHomeController extends GetxController {
     await loadKPIs();
   }
 
-  // Buscar trabajos
+  // Search jobs
   void searchJobs(String query) {
     loadRecommended(query: query.isEmpty ? null : query);
   }
 
-  // Limpiar búsqueda
+  // Clear search
   void clearSearch() {
     _searchQuery.value = '';
     loadRecommended();
   }
 
-  // Cerrar sesión
+  // Logout
   Future<void> doLogout() async {
     try {
       await _logoutUser(NoParams());
@@ -264,7 +264,7 @@ class JobsHomeController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'No se pudo cerrar la sesión: ${e.toString()}',
+        'Failed to sign out: ${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     }

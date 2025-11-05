@@ -6,14 +6,14 @@ import '../widgets/application_card.dart';
 import '../widgets/kpi_chip.dart';
 import '../widgets/apply_job_dialog.dart';
 
-class DashboardCandidatoPage extends GetView<JobsHomeController> {
-  const DashboardCandidatoPage({super.key});
+class DashboardCandidatePage extends GetView<JobsHomeController> {
+  const DashboardCandidatePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Bolsa de Trabajo'),
+  appBar: AppBar(
+        title: const Text('Job Board'),
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
         actions: [
@@ -57,7 +57,7 @@ class DashboardCandidatoPage extends GetView<JobsHomeController> {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Candidato',
+                  'Candidate',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -69,7 +69,7 @@ class DashboardCandidatoPage extends GetView<JobsHomeController> {
           ),
           ListTile(
             leading: const Icon(Icons.work),
-            title: const Text('Trabajos'),
+            title: const Text('Jobs'),
             onTap: () {
               Get.back();
               controller.changeTab(0);
@@ -77,7 +77,7 @@ class DashboardCandidatoPage extends GetView<JobsHomeController> {
           ),
           ListTile(
             leading: const Icon(Icons.assignment),
-            title: const Text('Mis Postulaciones'),
+            title: const Text('My Applications'),
             onTap: () {
               Get.back();
               controller.changeTab(1);
@@ -85,7 +85,7 @@ class DashboardCandidatoPage extends GetView<JobsHomeController> {
           ),
           ListTile(
             leading: const Icon(Icons.bookmark),
-            title: const Text('Guardados'),
+            title: const Text('Saved'),
             onTap: () {
               Get.back();
               controller.changeTab(2);
@@ -94,7 +94,7 @@ class DashboardCandidatoPage extends GetView<JobsHomeController> {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.logout),
-            title: const Text('Cerrar Sesión'),
+            title: const Text('Sign Out'),
             onTap: () {
               Get.back();
               controller.doLogout();
@@ -121,7 +121,7 @@ class DashboardCandidatoPage extends GetView<JobsHomeController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Bienvenido, Candidato',
+            'Welcome, Candidate',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -138,14 +138,15 @@ class DashboardCandidatoPage extends GetView<JobsHomeController> {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   ),
                   SizedBox(width: 8),
-                  Text('Cargando estadísticas...'),
+                  Text('Loading statistics...'),
+                  
                 ],
               );
             }
 
             final kpis = controller.kpis.value;
             if (kpis == null) {
-              return const Text('No se pudieron cargar las estadísticas');
+              return const Text('Failed to load statistics');
             }
 
             return Wrap(
@@ -153,23 +154,23 @@ class DashboardCandidatoPage extends GetView<JobsHomeController> {
               runSpacing: 8,
               children: [
                 KpiChip(
-                  label: 'Disponibles',
+                  label: 'Available',
                   value: kpis.totalJobs.toString(),
                   color: Colors.blue,
                 ),
                 KpiChip(
-                  label: 'Mis Postulaciones',
+                  label: 'My Applications',
                   value: kpis.totalApplications.toString(),
                   color: Colors.orange,
                 ),
                 KpiChip(
-                  label: 'Entrevistas',
+                  label: 'Interviews',
                   value: kpis.totalInterviews.toString(),
                   color: Colors.green,
                 ),
                 if (kpis.savedJobs != null)
                   KpiChip(
-                    label: 'Guardados',
+                    label: 'Saved',
                     value: kpis.savedJobs.toString(),
                     color: Colors.purple,
                   ),
@@ -192,21 +193,21 @@ class DashboardCandidatoPage extends GetView<JobsHomeController> {
         children: [
           Expanded(
             child: _buildTabButton(
-              'Recomendados',
+              'Recommended',
               0,
               controller.currentTabIndex.value == 0,
             ),
           ),
           Expanded(
             child: _buildTabButton(
-              'Mis Postulaciones',
+              'My Applications',
               1,
               controller.currentTabIndex.value == 1,
             ),
           ),
           Expanded(
             child: _buildTabButton(
-              'Guardados',
+              'Saved',
               2,
               controller.currentTabIndex.value == 2,
             ),
@@ -266,7 +267,7 @@ class DashboardCandidatoPage extends GetView<JobsHomeController> {
             Icon(Icons.work_off, size: 64, color: Colors.grey),
             SizedBox(height: 16),
             Text(
-              'No hay trabajos disponibles',
+              'No jobs available',
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
           ],
@@ -309,7 +310,7 @@ class DashboardCandidatoPage extends GetView<JobsHomeController> {
             Icon(Icons.assignment_outlined, size: 64, color: Colors.grey),
             SizedBox(height: 16),
             Text(
-              'No tienes postulaciones',
+              'You have no applications',
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
           ],
@@ -344,7 +345,7 @@ class DashboardCandidatoPage extends GetView<JobsHomeController> {
             Icon(Icons.bookmark_border, size: 64, color: Colors.grey),
             SizedBox(height: 16),
             Text(
-              'No tienes trabajos guardados',
+              'You have no saved jobs',
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
           ],
@@ -377,10 +378,10 @@ class DashboardCandidatoPage extends GetView<JobsHomeController> {
   void _showSearchDialog() {
     Get.dialog(
       AlertDialog(
-        title: const Text('Buscar trabajos'),
+        title: const Text('Search jobs'),
         content: TextField(
           decoration: const InputDecoration(
-            hintText: 'Título, empresa, ubicación...',
+            hintText: 'Title, company, location...',
             border: OutlineInputBorder(),
           ),
           onSubmitted: (query) {
@@ -394,11 +395,11 @@ class DashboardCandidatoPage extends GetView<JobsHomeController> {
               Get.back();
               controller.clearSearch();
             },
-            child: const Text('Limpiar'),
+            child: const Text('Clear'),
           ),
           TextButton(
             onPressed: () => Get.back(),
-            child: const Text('Cancelar'),
+            child: const Text('Cancel'),
           ),
         ],
       ),

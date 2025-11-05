@@ -74,8 +74,8 @@ class AppPages {
     ),
     // New job-related pages
     GetPage(
-      name: AppRoutes.dashboardCandidato,
-      page: () => const DashboardCandidatoPage(),
+      name: AppRoutes.dashboardCandidate,
+      page: () => const DashboardCandidatePage(),
       binding: JobsHomeBinding(),
       middlewares: [
         AuthGuard(),
@@ -83,8 +83,8 @@ class AppPages {
       ],
     ),
     GetPage(
-      name: AppRoutes.dashboardEmpresa,
-      page: () => const DashboardEmpresaPage(),
+      name: AppRoutes.dashboardCompany,
+      page: () => const DashboardCompanyPage(),
       binding: jobs_company_binding.CompanyHomeBinding(),
       middlewares: [
         AuthGuard(),
@@ -92,8 +92,8 @@ class AppPages {
       ],
     ),
     GetPage(
-      name: AppRoutes.publicarOferta,
-      page: () => const PublicarOfertaPage(),
+      name: AppRoutes.jobNew,
+      page: () => const PublishJobPage(),
       binding: jobs_company_binding.CompanyHomeBinding(),
       middlewares: [
         AuthGuard(),
@@ -101,8 +101,8 @@ class AppPages {
       ],
     ),
     GetPage(
-      name: AppRoutes.postulacionesJob,
-      page: () => const PostulacionesJobPage(),
+      name: AppRoutes.jobApplications,
+      page: () => const JobApplicationsPage(),
       binding: CompanyApplicationsBinding(),
       middlewares: [
         AuthGuard(),

@@ -25,14 +25,14 @@ class SplashController extends GetxController {
         AppRoutes.chooseRole,
       }.toSet(),
       unauthenticatedRoute: AppRoutes.login,
-      authenticatedRoute: AppRoutes.dashboardCandidato,
+      authenticatedRoute: AppRoutes.dashboardCandidate,
       authenticatedRouteResolver: (_, currentRole) {
         if (currentRole == null || currentRole.isEmpty) {
           return AppRoutes.chooseRole;
         }
         return currentRole == 'company'
-            ? AppRoutes.dashboardEmpresa
-            : AppRoutes.dashboardCandidato;
+            ? AppRoutes.dashboardCompany
+            : AppRoutes.dashboardCandidate;
       },
     );
     if (!_sessionService.isAuthenticated) {

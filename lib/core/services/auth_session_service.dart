@@ -168,8 +168,8 @@ class AuthSessionService extends GetxService {
 
     final isPublicRoute = _publicRoutes.contains(currentRoute);
 
-    // Si el rol aún no existe y el destino sería choose-role, espera un instante
-    // por si el rol se resuelve inmediatamente para evitar un flash de navegación.
+    // If the role doesn't exist yet and the destination would be choose-role, wait a moment
+    // in case the role resolves immediately, to avoid a navigation flash.
     final roleIsMissing = role == null || role!.isEmpty;
     if (roleIsMissing &&
         (isPublicRoute || currentRoute == _unauthenticatedRoute)) {

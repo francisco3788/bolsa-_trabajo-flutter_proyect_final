@@ -41,8 +41,7 @@ class ForgotPasswordController extends GetxController {
     loading.value = true;
     try {
       await _sendRecoveryCode(SendRecoveryCodeParams(emailValue));
-      info.value =
-          'Te enviamos un código al correo. Revísalo e ingrésalo debajo.';
+      info.value ='We sent a code to your email. Check it and enter it below.';
       step.value = 1;
     } catch (e) {
       if (e is Failure) {
@@ -65,7 +64,7 @@ class ForgotPasswordController extends GetxController {
     final confirmValue = confirmPassword.value.trim();
 
     if (codeValue.isEmpty) {
-      error.value = 'Ingresa el código recibido.';
+      error.value = 'Enter the code you received.';
       return;
     }
 
@@ -76,7 +75,7 @@ class ForgotPasswordController extends GetxController {
     }
 
     if (passwordValue != confirmValue) {
-      error.value = 'Las contraseñas no coinciden.';
+      error.value = 'Passwords do not match.';
       return;
     }
 
@@ -87,7 +86,7 @@ class ForgotPasswordController extends GetxController {
       );
       await _updatePassword(UpdatePasswordParams(passwordValue));
       info.value =
-          'Contraseña actualizada correctamente. Inicia sesión con tu nueva clave.';
+          'Password updated successfully. Sign in with your new password.';
     } catch (e) {
       if (e is Failure) {
         error.value = e.message;

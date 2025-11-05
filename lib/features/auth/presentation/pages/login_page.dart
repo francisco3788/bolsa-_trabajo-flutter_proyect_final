@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Iniciar sesión')),
+      appBar: AppBar(title: const Text('Sign In')),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                       TextFormField(
                         controller: emailController,
                         decoration: const InputDecoration(
-                          labelText: 'Correo electrónico',
+                          labelText: 'Email',
                           prefixIcon: Icon(Icons.email_outlined),
                         ),
                         keyboardType: TextInputType.emailAddress,
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                       TextFormField(
                         controller: passwordController,
                         decoration: InputDecoration(
-                          labelText: 'Contraseña',
+                          labelText: 'Password',
                           prefixIcon: const Icon(Icons.lock_outline),
                           suffixIcon: IconButton(
                             onPressed: controller.togglePasswordVisibility,
@@ -130,17 +130,17 @@ class _LoginPageState extends State<LoginPage> {
                               : const Icon(Icons.mark_email_unread_outlined),
                           label: Text(
                             canResend
-                                ? 'Reenviar verificación'
+                                ? 'Resend verification'
                                 : resendCooldown > 0
-                                ? 'Espera ${resendCooldown}s para reenviar'
-                                : 'Reenviar verificación',
+                                ? 'Wait ${resendCooldown}s to resend'
+                                : 'Resend verification',
                           ),
                         ),
                       ],
                       if (inCooldown) ...[
                         const SizedBox(height: 8),
                         Text(
-                          'Espera ${cooldown}s antes de reintentar.',
+                          'Wait ${cooldown}s before trying again.',
                           style: Theme.of(
                             context,
                           ).textTheme.bodySmall?.copyWith(color: Colors.orange),
@@ -149,8 +149,8 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 16),
                       PrimaryButton(
                         text: inCooldown
-                            ? 'Entrar (espera ${cooldown}s)'
-                            : 'Entrar',
+                            ? 'Sign in (wait ${cooldown}s)'
+                            : 'Sign in',
                         loading: isLoading,
                         enabled: !inCooldown,
                         onPressed: _submit,
@@ -158,14 +158,14 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 12),
                       TextButton(
                         onPressed: () => Get.toNamed(AppRoutes.register),
-                        child: const Text('¿No tienes cuenta? Crear cuenta'),
+                        child: const Text("Don't have an account? Create account"),
                       ),
                       const SizedBox(height: 4),
                       TextButton(
                         onPressed: isLoading
                             ? null
                             : () => Get.toNamed(AppRoutes.forgot),
-                        child: const Text('¿Olvidaste tu contraseña?'),
+                        child: const Text('Forgot your password?'),
                       ),
                     ],
                   ),

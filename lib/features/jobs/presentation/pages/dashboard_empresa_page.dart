@@ -5,20 +5,20 @@ import '../controllers/jobs_home_controller.dart';
 import '../widgets/kpi_chip.dart';
 import '../../domain/entities/job_entity.dart';
 
-class DashboardEmpresaPage extends StatelessWidget {
-  const DashboardEmpresaPage({super.key});
+class DashboardCompanyPage extends StatelessWidget {
+  const DashboardCompanyPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<CompanyHomeController>();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mi Empresa'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-        elevation: 0,
-      ),
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('My Company'),
+      backgroundColor: Colors.blue,
+      foregroundColor: Colors.white,
+      elevation: 0,
+    ),
       drawer: _buildDrawer(context),
       floatingActionButton: FloatingActionButton(
         onPressed: () => controller.goToCreateJob(),
@@ -65,7 +65,7 @@ class DashboardEmpresaPage extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Panel Empresa',
+                  'Company Panel',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -77,14 +77,14 @@ class DashboardEmpresaPage extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.work),
-            title: const Text('Mis Ofertas'),
+            title: const Text('My Jobs'),
             onTap: () {
               Navigator.pop(context);
             },
           ),
           ListTile(
             leading: const Icon(Icons.add_circle),
-            title: const Text('Publicar Oferta'),
+            title: const Text('Post a Job'),
             onTap: () {
               Navigator.pop(context);
               Get.toNamed('/job/new');
@@ -92,7 +92,7 @@ class DashboardEmpresaPage extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.person),
-            title: const Text('Mi Perfil'),
+            title: const Text('My Profile'),
             onTap: () {
               Navigator.pop(context);
               Get.toNamed('/profile');
@@ -101,7 +101,7 @@ class DashboardEmpresaPage extends StatelessWidget {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text('Cerrar Sesión', style: TextStyle(color: Colors.red)),
+            title: const Text('Sign Out', style: TextStyle(color: Colors.red)),
             onTap: () {
               Navigator.pop(context);
               _showLogoutDialog(context);
@@ -135,16 +135,16 @@ class DashboardEmpresaPage extends StatelessWidget {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+              children: [
               const Text(
-                'Bienvenido',
+                'Welcome',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
                 ),
               ),
               const Text(
-                'Mi Empresa',
+                'My Company',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -162,17 +162,17 @@ class DashboardEmpresaPage extends StatelessWidget {
                   runSpacing: 8,
                   children: [
                     KpiChip(
-                      label: 'Trabajos',
+                      label: 'Jobs',
                       value: kpis?.totalJobs.toString() ?? '0',
                       color: Colors.white,
                     ),
                     KpiChip(
-                      label: 'Postulaciones',
+                      label: 'Applications',
                       value: kpis?.totalApplications.toString() ?? '0',
                       color: Colors.white,
                     ),
                     KpiChip(
-                      label: 'Entrevistas',
+                      label: 'Interviews',
                       value: kpis?.totalInterviews.toString() ?? '0',
                       color: Colors.white,
                     ),
@@ -190,7 +190,7 @@ class DashboardEmpresaPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Mis Ofertas de Trabajo',
+          'My Job Listings',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -209,13 +209,13 @@ class DashboardEmpresaPage extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          _buildTabButton(controller, 'all', 'Todos'),
+          _buildTabButton(controller, 'all', 'All'),
           const SizedBox(width: 8),
-          _buildTabButton(controller, 'active', 'Activos'),
+          _buildTabButton(controller, 'active', 'Active'),
           const SizedBox(width: 8),
-          _buildTabButton(controller, 'pending', 'Pendientes'),
+          _buildTabButton(controller, 'pending', 'Pending'),
           const SizedBox(width: 8),
-          _buildTabButton(controller, 'closed', 'Cerrados'),
+          _buildTabButton(controller, 'closed', 'Closed'),
         ],
       ),
     );
@@ -271,7 +271,7 @@ class DashboardEmpresaPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No hay ofertas de trabajo',
+                  'No job listings',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey[600],
@@ -279,7 +279,7 @@ class DashboardEmpresaPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Publica tu primera oferta usando el botón +',
+                  'Publish your first job using the + button',
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey[500],
@@ -363,7 +363,7 @@ class DashboardEmpresaPage extends StatelessWidget {
                           children: [
                             Icon(Icons.people),
                             SizedBox(width: 8),
-                            Text('Ver Postulaciones'),
+                            Text('View Applications'),
                           ],
                         ),
                       ),
@@ -373,7 +373,7 @@ class DashboardEmpresaPage extends StatelessWidget {
                           children: [
                             Icon(Icons.edit),
                             SizedBox(width: 8),
-                            Text('Cambiar Estado'),
+                            Text('Change Status'),
                           ],
                         ),
                       ),
@@ -467,11 +467,11 @@ class DashboardEmpresaPage extends StatelessWidget {
   String _getStatusDisplayName(String status) {
     switch (status) {
       case 'active':
-        return 'Activo';
+        return 'Active';
       case 'pending':
-        return 'Pendiente';
+        return 'Pending';
       case 'closed':
-        return 'Cerrado';
+        return 'Closed';
       default:
         return status;
     }
@@ -480,22 +480,22 @@ class DashboardEmpresaPage extends StatelessWidget {
   void _showChangeStatusDialog(JobEntity job, CompanyHomeController controller) {
     Get.dialog(
       AlertDialog(
-        title: const Text('Cambiar Estado'),
+        title: const Text('Change Status'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('¿Cambiar el estado de "${job.title}"?'),
+            Text('Change the status of "${job.title}"?'),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               initialValue: job.status,
               decoration: const InputDecoration(
-                labelText: 'Nuevo Estado',
+                labelText: 'New Status',
                 border: OutlineInputBorder(),
               ),
               items: const [
-                DropdownMenuItem(value: 'active', child: Text('Activo')),
-                DropdownMenuItem(value: 'pending', child: Text('Pendiente')),
-                DropdownMenuItem(value: 'closed', child: Text('Cerrado')),
+                DropdownMenuItem(value: 'active', child: Text('Active')),
+                DropdownMenuItem(value: 'pending', child: Text('Pending')),
+                DropdownMenuItem(value: 'closed', child: Text('Closed')),
               ],
               onChanged: (value) {
                 if (value != null && value != job.status) {
@@ -509,7 +509,7 @@ class DashboardEmpresaPage extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Get.back(),
-            child: const Text('Cancelar'),
+            child: const Text('Cancel'),
           ),
         ],
       ),
@@ -520,12 +520,12 @@ class DashboardEmpresaPage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Cerrar Sesión'),
-        content: const Text('¿Estás seguro de que quieres cerrar sesión?'),
+        title: const Text('Sign Out'),
+        content: const Text('Are you sure you want to sign out?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () async {
@@ -537,12 +537,12 @@ class DashboardEmpresaPage extends StatelessWidget {
               } catch (e) {
                 Get.snackbar(
                   'Error',
-                  'No se pudo cerrar la sesión: ${e.toString()}',
+                  'Failed to sign out: ${e.toString()}',
                   snackPosition: SnackPosition.BOTTOM,
                 );
               }
             },
-            child: const Text('Cerrar Sesión'),
+            child: const Text('Sign Out'),
           ),
         ],
       ),

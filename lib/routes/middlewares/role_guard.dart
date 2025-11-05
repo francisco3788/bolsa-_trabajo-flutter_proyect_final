@@ -31,8 +31,8 @@ class RoleGuard extends GetMiddleware {
     final currentRole = session.role;
 
     if (currentRole == null || currentRole.isEmpty) {
-      // Cuando el rol no está listo o no existe, delega la decisión al Splash
-      // para evitar renderizar /choose-role de forma intermitente.
+      // When the role is not ready or absent, delegate the decision to Splash
+      // to avoid rendering /choose-role intermittently.
       if (route != AppRoutes.splash) {
         return const RouteSettings(name: AppRoutes.splash);
       }
@@ -43,9 +43,9 @@ class RoleGuard extends GetMiddleware {
         allowedRoles!.isNotEmpty &&
         !allowedRoles!.contains(currentRole)) {
       if (currentRole == 'company') {
-        return const RouteSettings(name: AppRoutes.dashboardEmpresa);
+        return const RouteSettings(name: AppRoutes.dashboardCompany);
       }
-      return const RouteSettings(name: AppRoutes.dashboardCandidato);
+      return const RouteSettings(name: AppRoutes.dashboardCandidate);
     }
 
     return null;

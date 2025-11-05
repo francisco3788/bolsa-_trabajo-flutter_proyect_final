@@ -10,7 +10,7 @@ class CompanyHomePage extends GetView<CompanyHomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Panel de empresa'),
+        title: const Text('Company Dashboard'),
         actions: [
           Obx(
             () => IconButton(
@@ -22,7 +22,7 @@ class CompanyHomePage extends GetView<CompanyHomeController> {
                     )
                   : const Icon(Icons.logout),
               onPressed: controller.loading.value ? null : controller.doLogout,
-              tooltip: 'Cerrar sesion',
+              tooltip: 'Sign out',
             ),
           ),
         ],
@@ -37,7 +37,7 @@ class CompanyHomePage extends GetView<CompanyHomeController> {
           );
         }
         return const Center(
-          child: Text('Gestion de vacantes y talento (muy pronto).'),
+          child: Text('Job and talent management (coming soon).'),
         );
       }),
     );
