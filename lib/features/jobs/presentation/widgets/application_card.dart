@@ -29,7 +29,7 @@ class ApplicationCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        application.jobTitle ?? 'Trabajo',
+                        application.jobTitle ?? 'Job',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -93,7 +93,7 @@ class ApplicationCard extends StatelessWidget {
                 Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
                 const SizedBox(width: 4),
                 Text(
-                  'Postulado: ${application.appliedAtFormatted}',
+                  'Applied: ${application.appliedAtFormatted}',
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.grey[600],
@@ -114,7 +114,7 @@ class ApplicationCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Carta de presentación:',
+                      'Cover letter:',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
@@ -161,15 +161,15 @@ class ApplicationCard extends StatelessWidget {
   String _getStatusDisplayName(String status) {
     switch (status) {
       case 'submitted':
-        return 'Enviada';
+        return 'Submitted';
       case 'seen':
-        return 'Vista';
+        return 'Viewed';
       case 'interview':
-        return 'Entrevista';
+        return 'Interview';
       case 'rejected':
-        return 'Rechazada';
+        return 'Rejected';
       case 'hired':
-        return 'Contratada';
+        return 'Hired';
       default:
         return status;
     }

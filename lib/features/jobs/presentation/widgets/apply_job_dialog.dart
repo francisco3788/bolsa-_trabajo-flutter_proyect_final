@@ -4,10 +4,7 @@ import 'package:get/get.dart';
 class ApplyJobDialog extends StatefulWidget {
   final Function(String?) onApply;
 
-  const ApplyJobDialog({
-    super.key,
-    required this.onApply,
-  });
+  const ApplyJobDialog({super.key, required this.onApply});
 
   @override
   State<ApplyJobDialog> createState() => _ApplyJobDialogState();
@@ -26,7 +23,7 @@ class _ApplyJobDialogState extends State<ApplyJobDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Postularse al trabajo'),
+      title: const Text('Apply for the job'),
       content: SizedBox(
         width: double.maxFinite,
         child: Column(
@@ -34,7 +31,7 @@ class _ApplyJobDialogState extends State<ApplyJobDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Carta de presentación (opcional):',
+              'Cover letter (optional):',
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 8),
@@ -42,7 +39,7 @@ class _ApplyJobDialogState extends State<ApplyJobDialog> {
               controller: _coverLetterController,
               maxLines: 4,
               decoration: const InputDecoration(
-                hintText: 'Escribe una breve carta de presentación...',
+                hintText: 'Write a short cover letter...',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -52,7 +49,7 @@ class _ApplyJobDialogState extends State<ApplyJobDialog> {
       actions: [
         TextButton(
           onPressed: _isApplying ? null : () => Get.back(),
-          child: const Text('Cancelar'),
+          child: const Text('Cancel'),
         ),
         ElevatedButton(
           onPressed: _isApplying ? null : _handleApply,
@@ -62,7 +59,7 @@ class _ApplyJobDialogState extends State<ApplyJobDialog> {
                   height: 16,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Postularme'),
+              : const Text('Apply'),
         ),
       ],
     );
@@ -78,15 +75,15 @@ class _ApplyJobDialogState extends State<ApplyJobDialog> {
       await widget.onApply(coverLetter.isEmpty ? null : coverLetter);
       Get.back();
       Get.snackbar(
-        'Éxito',
-        'Te has postulado exitosamente',
+        'Success',
+        'You have successfully applied',
         backgroundColor: Colors.green,
         colorText: Colors.white,
       );
     } catch (e) {
       Get.snackbar(
-        'Error',
-        'No se pudo completar la postulación',
+        'Mistake',
+        'The application could not be completed',
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );

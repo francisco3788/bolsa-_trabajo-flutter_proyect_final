@@ -21,8 +21,10 @@ class JobsHomePage extends GetView<JobsHomeController> {
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : const Icon(Icons.logout),
-              onPressed: controller.isLoading.value ? null : controller.doLogout,
-              tooltip: 'Cerrar sesión',
+              onPressed: controller.isLoading.value
+                  ? null
+                  : controller.doLogout,
+              tooltip: 'Sign out',
             ),
           ),
         ],
@@ -36,7 +38,7 @@ class JobsHomePage extends GetView<JobsHomeController> {
             ),
           );
         }
-        return const Center(child: Text('Listado de ofertas (próximamente)'));
+        return const Center(child: Text('List of offers (coming soon)'));
       }),
     );
   }
