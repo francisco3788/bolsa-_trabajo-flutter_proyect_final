@@ -14,8 +14,8 @@ import 'package:bolsa_de_trabajo/features/jobs/presentation/bindings/company_app
 import 'package:bolsa_de_trabajo/features/jobs/presentation/pages/jobs_home_page.dart';
 import 'package:bolsa_de_trabajo/features/jobs/presentation/pages/dashboard_candidato_page.dart';
 import 'package:bolsa_de_trabajo/features/jobs/presentation/pages/dashboard_empresa_page.dart';
-import 'package:bolsa_de_trabajo/features/jobs/presentation/pages/publicar_oferta_page.dart';
-import 'package:bolsa_de_trabajo/features/jobs/presentation/pages/postulaciones_job_page.dart';
+import 'package:bolsa_de_trabajo/features/jobs/presentation/pages/publish_job_page.dart';
+import 'package:bolsa_de_trabajo/features/jobs/presentation/pages/job_applications_page.dart';
 import 'package:bolsa_de_trabajo/features/profile/presentation/bindings/choose_role_binding.dart';
 import 'package:bolsa_de_trabajo/features/profile/presentation/pages/choose_role_page.dart';
 import 'package:bolsa_de_trabajo/routes/app_routes.dart';
