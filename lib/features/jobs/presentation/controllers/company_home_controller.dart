@@ -73,7 +73,7 @@ class CompanyHomeController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'No se pudieron cargar los trabajos: ${e.toString()}',
+        'Could not load jobs: ${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -89,16 +89,16 @@ class CompanyHomeController extends GetxController {
       // Mostrar diálogo de confirmación
       final confirmed = await Get.dialog<bool>(
         AlertDialog(
-          title: const Text('Confirmar cambio'),
-          content: Text('¿Estás seguro de cambiar el estado a "$status"?'),
+          title: const Text('Confirm Change'),
+          content: Text('Are you sure to change the status to "$status"?'),
           actions: [
             TextButton(
               onPressed: () => Get.back(result: false),
-              child: const Text('Cancelar'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => Get.back(result: true),
-              child: const Text('Confirmar'),
+              child: const Text('Confirm'),
             ),
           ],
         ),
@@ -109,8 +109,8 @@ class CompanyHomeController extends GetxController {
       await _jobsRepository.updateJobStatus(jobId, status);
       
       Get.snackbar(
-        'Éxito',
-        'Estado del trabajo actualizado',
+        'Success',
+        'Job status updated',
         snackPosition: SnackPosition.BOTTOM,
       );
 
@@ -123,7 +123,7 @@ class CompanyHomeController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'Error al actualizar estado: ${e.toString()}',
+        'Error updating status: ${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {

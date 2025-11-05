@@ -41,7 +41,7 @@ class CompanyApplicationsController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'No se pudieron cargar los detalles del trabajo: ${e.toString()}',
+        'Could not load job details: ${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
@@ -66,7 +66,7 @@ class CompanyApplicationsController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'No se pudieron cargar las postulaciones: ${e.toString()}',
+        'Could not load applications: ${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -82,16 +82,16 @@ class CompanyApplicationsController extends GetxController {
       // Mostrar diálogo de confirmación
       final confirmed = await Get.dialog<bool>(
         AlertDialog(
-          title: const Text('Confirmar cambio'),
-          content: Text('¿Estás seguro de cambiar el estado a "${_getStatusDisplayName(status)}"?'),
+          title: const Text('Confirm Change'),
+          content: Text('Are you sure to change the status to "${_getStatusDisplayName(status)}"?'),
           actions: [
             TextButton(
               onPressed: () => Get.back(result: false),
-              child: const Text('Cancelar'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => Get.back(result: true),
-              child: const Text('Confirmar'),
+              child: const Text('Confirm'),
             ),
           ],
         ),
@@ -102,8 +102,8 @@ class CompanyApplicationsController extends GetxController {
       await _jobsRepository.setApplicationStatus(appId, status);
       
       Get.snackbar(
-        'Éxito',
-        'Estado de la postulación actualizado',
+        'Success',
+        'Application status updated',
         snackPosition: SnackPosition.BOTTOM,
       );
 
@@ -113,7 +113,7 @@ class CompanyApplicationsController extends GetxController {
     } catch (e) {
       Get.snackbar(
         'Error',
-        'Error al actualizar estado: ${e.toString()}',
+        'Error updating status: ${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -145,15 +145,15 @@ class CompanyApplicationsController extends GetxController {
   String _getStatusDisplayName(String status) {
     switch (status) {
       case 'submitted':
-        return 'Enviada';
+        return 'Submitted';
       case 'seen':
-        return 'Vista';
+        return 'Viewed';
       case 'interview':
-        return 'Entrevista';
+        return 'Interview';
       case 'rejected':
-        return 'Rechazada';
+        return 'Rejected';
       case 'hired':
-        return 'Contratada';
+        return 'Hired';
       default:
         return status;
     }
@@ -199,7 +199,7 @@ class CompanyApplicationsController extends GetxController {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Cambiar estado de ${application.candidateName ?? 'Candidato'}',
+              'Change status of ${application.candidateName ?? 'Candidate'}',
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -207,7 +207,7 @@ class CompanyApplicationsController extends GetxController {
             ),
             const SizedBox(height: 16),
             Text(
-              'Estado actual: ${_getStatusDisplayName(application.status)}',
+              'Current status: ${_getStatusDisplayName(application.status)}',
               style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
             const SizedBox(height: 16),
@@ -227,7 +227,7 @@ class CompanyApplicationsController extends GetxController {
               width: double.infinity,
               child: TextButton(
                 onPressed: () => Get.back(),
-                child: const Text('Cancelar'),
+                child: const Text('Cancel'),
               ),
             ),
           ],

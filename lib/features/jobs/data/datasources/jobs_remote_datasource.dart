@@ -210,23 +210,64 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
   @override
   Future<List<ApplicationModel>> getJobApplications(String jobId) async {
     try {
-      final response = await _supabaseClient
-          .from('applications')
-          .select('''
-            *,
-            candidate_profiles!inner(name)
-          ''')
-          .eq('job_id', jobId)
-          .order('applied_at', ascending: false);
+      // Prefer embedded join (cleaner). Fallback to two-step if relationship not available.
+      try {
+        final response = await _supabaseClient
+            .from('applications')
+            .select('''
+              *,
+              candidate_profiles(name)
+            ''')
+            .eq('job_id', jobId)
+            .order('applied_at', ascending: false);
 
-      return response.map<ApplicationModel>((json) {
-        final candidate = json['candidate_profiles'];
-        return ApplicationModel.fromJson({
-          ...json,
-          'candidate_name': candidate?['name'],
-          'candidate_email': null, // Email no disponible por seguridad
-        });
-      }).toList();
+        return response.map<ApplicationModel>((json) {
+          final candidate = json['candidate_profiles'];
+          return ApplicationModel.fromJson({
+            ...json,
+            'candidate_name': candidate?['name'],
+            'candidate_email': null,
+          });
+        }).toList();
+      } on PostgrestException catch (pe) {
+        // Known error when PostgREST cannot infer relationship: PGRST200
+        final msg = pe.message.toLowerCase();
+        if (msg.contains('could not find a relationship') || msg.contains('pgrst200')) {
+          // Fallback: fetch applications then candidate profiles by id
+          final applications = await _supabaseClient
+              .from('applications')
+              .select('*')
+              .eq('job_id', jobId)
+              .order('applied_at', ascending: false);
+
+          final candidateIds = applications
+              .map<String?>((app) => app['candidate_id'] as String?)
+              .where((id) => id != null)
+              .cast<String>()
+              .toSet()
+              .toList();
+
+          Map<String, dynamic> profilesById = {};
+          if (candidateIds.isNotEmpty) {
+            final profiles = await _supabaseClient
+                .from('candidate_profiles')
+                .select('id, name')
+                .inFilter('id', candidateIds);
+            profilesById = {for (final p in profiles) p['id'] as String: p};
+          }
+
+          return applications.map<ApplicationModel>((json) {
+            final candidateId = json['candidate_id'] as String?;
+            final candidate = candidateId != null ? profilesById[candidateId] : null;
+            return ApplicationModel.fromJson({
+              ...json,
+              'candidate_name': candidate != null ? candidate['name'] as String? : null,
+              'candidate_email': null,
+            });
+          }).toList();
+        }
+        rethrow;
+      }
     } catch (e) {
       throw Exception('Error obtaining job applications: $e');
     }

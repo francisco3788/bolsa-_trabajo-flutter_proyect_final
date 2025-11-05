@@ -64,15 +64,15 @@ class ApplicationEntity {
   String get statusDisplay {
     switch (status) {
       case 'submitted':
-        return 'Enviada';
+        return 'Submitted';
       case 'seen':
-        return 'Vista';
+        return 'Viewed';
       case 'interview':
-        return 'Entrevista';
+        return 'Interview';
       case 'rejected':
-        return 'Rechazada';
+        return 'Rejected';
       case 'hired':
-        return 'Contratado';
+        return 'Hired';
       default:
         return status;
     }

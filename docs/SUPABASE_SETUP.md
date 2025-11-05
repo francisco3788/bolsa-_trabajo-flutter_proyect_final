@@ -90,3 +90,16 @@ select * from public.user_roles limit 1;
 select * from public.candidate_profiles limit 1;
 select * from public.company_profiles limit 1;
 ```
+
+## Fix: applications → candidate_profiles relationship
+
+Ejecuta el script `SCRIPT_FIX_APPLICATIONS_FK_AND_POLICIES.sql` en el editor SQL de Supabase para:
+
+- Normalizar `candidate_profiles.id` (renombrar `user_id` a `id` si existe).
+- Agregar PK en `candidate_profiles(id)` y FK a `auth.users(id)`.
+- Reapuntar `applications(candidate_id)` a `candidate_profiles(id)`.
+- Habilitar RLS con dos políticas:
+  - `candidate_read_own_profile`: el candidato puede leer su propio perfil.
+  - `company_read_applicants_for_own_jobs`: la empresa puede leer perfiles de candidatos que aplicaron a sus trabajos.
+
+Tras esto, los `embedded selects` funcionan: `applications(*, candidate_profiles(name))`.
