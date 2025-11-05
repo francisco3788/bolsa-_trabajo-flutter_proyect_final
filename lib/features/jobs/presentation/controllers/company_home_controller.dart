@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../../../auth/domain/usecases/logout_user.dart';
+import '../../../../routes/app_routes.dart';
 import '../../domain/entities/job_entity.dart';
 import '../../domain/entities/kpis_entity.dart';
 import '../../domain/repositories/jobs_repository.dart';
@@ -195,5 +198,20 @@ class CompanyHomeController extends GetxController {
   // Refrescar datos
   Future<void> refreshData() async {
     await _initializeData();
+  }
+
+  // Cerrar sesión
+  Future<void> doLogout() async {
+    try {
+      final logoutUser = Get.find<LogoutUser>();
+      await logoutUser(const NoParams());
+      Get.offAllNamed(AppRoutes.login);
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed to sign out: ${e.toString()}',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 }

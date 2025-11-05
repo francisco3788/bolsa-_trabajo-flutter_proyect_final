@@ -531,9 +531,8 @@ class DashboardCompanyPage extends StatelessWidget {
             onPressed: () async {
               Navigator.pop(context);
               try {
-                final controller = Get.find<JobsHomeController>();
+                final controller = Get.find<CompanyHomeController>();
                 await controller.doLogout();
-                Get.offAllNamed('/login');
               } catch (e) {
                 Get.snackbar(
                   'Error',
