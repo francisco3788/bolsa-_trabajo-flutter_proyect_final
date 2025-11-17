@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/application_entity.dart';
+import '../../constants/job_status.dart';
+import '../../constants/jobs_texts.dart';
 
 class ApplicationCard extends StatelessWidget {
   final ApplicationEntity application;
@@ -93,7 +95,7 @@ class ApplicationCard extends StatelessWidget {
                 Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
                 const SizedBox(width: 4),
                 Text(
-                  'Applied: ${application.appliedAtFormatted}',
+                  '${JobsTexts.appliedPrefix}${application.appliedAtFormatted}',
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.grey[600],
@@ -114,7 +116,7 @@ class ApplicationCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Cover letter:',
+                      JobsTexts.coverLetter,
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
@@ -143,15 +145,15 @@ class ApplicationCard extends StatelessWidget {
 
   Color _getStatusColor(String status) {
     switch (status) {
-      case 'submitted':
+      case JobStatus.submitted:
         return Colors.blue;
-      case 'seen':
+      case JobStatus.seen:
         return Colors.orange;
-      case 'interview':
+      case JobStatus.interview:
         return Colors.purple;
-      case 'rejected':
+      case JobStatus.rejected:
         return Colors.red;
-      case 'hired':
+      case JobStatus.hired:
         return Colors.green;
       default:
         return Colors.grey;
@@ -159,19 +161,6 @@ class ApplicationCard extends StatelessWidget {
   }
 
   String _getStatusDisplayName(String status) {
-    switch (status) {
-      case 'submitted':
-        return 'Submitted';
-      case 'seen':
-        return 'Viewed';
-      case 'interview':
-        return 'Interview';
-      case 'rejected':
-        return 'Rejected';
-      case 'hired':
-        return 'Hired';
-      default:
-        return status;
-    }
+    return JobStatus.displayName[status] ?? status;
   }
 }

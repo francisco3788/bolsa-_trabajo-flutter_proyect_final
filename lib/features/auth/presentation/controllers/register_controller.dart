@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../../../core/errors/auth_error_mapper.dart';
+import '../../constants/auth_texts.dart';
 import '../../../../routes/app_routes.dart';
 import '../../domain/usecases/sign_up_user.dart';
 
@@ -34,8 +35,7 @@ class RegisterController extends GetxController {
       if (hasSession) {
         Get.offAllNamed(AppRoutes.jobsHome);
       } else {
-        info.value =
-            'Account created. Check your email to confirm, then sign in.';
+        info.value = AuthTexts.accountCreatedConfirmEmailInfo;
         // Opcional: navegar a login
         // Get.offAllNamed(AppRoutes.login);
       }

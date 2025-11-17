@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../shared/utils/validators.dart';
+import '../../constants/auth_texts.dart';
+import '../../constants/auth_messages.dart';
 import '../../domain/usecases/send_recovery_code.dart';
 import '../../domain/usecases/update_password.dart';
 import '../../domain/usecases/verify_recovery_code.dart';
@@ -41,7 +43,7 @@ class ForgotPasswordController extends GetxController {
     loading.value = true;
     try {
       await _sendRecoveryCode(SendRecoveryCodeParams(emailValue));
-      info.value ='We sent a code to your email. Check it and enter it below.';
+      info.value = AuthTexts.recoveryCodeSentInfo;
       step.value = 1;
     } catch (e) {
       if (e is Failure) {
@@ -64,7 +66,7 @@ class ForgotPasswordController extends GetxController {
     final confirmValue = confirmPassword.value.trim();
 
     if (codeValue.isEmpty) {
-      error.value = 'Enter the code you received.';
+      error.value = AuthMessages.codeRequiredPrompt;
       return;
     }
 
@@ -75,7 +77,7 @@ class ForgotPasswordController extends GetxController {
     }
 
     if (passwordValue != confirmValue) {
-      error.value = 'Passwords do not match.';
+      error.value = AuthMessages.passwordsDoNotMatch;
       return;
     }
 
@@ -85,8 +87,7 @@ class ForgotPasswordController extends GetxController {
         VerifyRecoveryCodeParams(email: emailValue, code: codeValue),
       );
       await _updatePassword(UpdatePasswordParams(passwordValue));
-      info.value =
-          'Password updated successfully. Sign in with your new password.';
+      info.value = AuthTexts.passwordUpdatedInfo;
     } catch (e) {
       if (e is Failure) {
         error.value = e.message;

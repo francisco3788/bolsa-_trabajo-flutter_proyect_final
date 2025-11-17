@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../shared/constants/validation_messages.dart';
+import '../../constants/auth_texts.dart';
 
 import '../../../../core/errors/auth_error_mapper.dart';
 import '../../domain/usecases/login_user.dart';
@@ -42,12 +44,12 @@ class LoginController extends GetxController {
   String? validateEmail(String? value) {
     final trimmed = value?.trim() ?? '';
     if (trimmed.isEmpty) {
-      return 'Enter your email.';
+      return ValidationMessages.emailRequired;
     }
 
     final emailRegex = RegExp(r'^[\w\.-]+@([\w-]+\.)+[a-zA-Z]{2,}$');
     if (!emailRegex.hasMatch(trimmed)) {
-      return 'Email format is not valid.';
+      return ValidationMessages.invalidEmail;
     }
 
     return null;
@@ -56,11 +58,11 @@ class LoginController extends GetxController {
   String? validatePassword(String? value) {
     final trimmed = value?.trim() ?? '';
     if (trimmed.isEmpty) {
-      return 'Enter your password.';
+      return ValidationMessages.passwordRequired;
     }
 
     if (trimmed.length < 6) {
-      return 'Password must be at least 6 characters.';
+      return ValidationMessages.minSixChars;
     }
 
     return null;
@@ -107,8 +109,7 @@ class LoginController extends GetxController {
 
       if (AuthErrorMapper.isEmailNotVerified(message)) {
         requiresEmailVerification.value = true;
-        info.value =
-            'Your account is not verified yet. We can resend the email if needed.';
+        info.value = AuthTexts.accountNotVerifiedHint;
       }
 
       _startLoginCooldown();
@@ -126,20 +127,18 @@ class LoginController extends GetxController {
 
     final targetEmail = (email ?? _lastAttemptedEmail).trim();
     if (targetEmail.isEmpty) {
-      error.value =
-          'Enter your email to resend verification.';
+      error.value = AuthTexts.enterEmailToResend;
       showValidation.value = true;
       return;
     }
 
     resendLoading.value = true;
 
-    try {
-      await _resendEmailVerification(
-        ResendEmailVerificationParams(email: targetEmail),
-      );
-      info.value =
-          'We sent a new verification email. Check your inbox.';
+      try {
+        await _resendEmailVerification(
+          ResendEmailVerificationParams(email: targetEmail),
+        );
+      info.value = AuthTexts.verificationEmailSentInfo;
       _startResendCooldown();
     } catch (err) {
       error.value = AuthErrorMapper.map(err);

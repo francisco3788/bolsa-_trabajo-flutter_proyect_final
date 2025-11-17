@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../core/constants/roles.dart';
+import '../../constants/profile_messages.dart';
 
 import '../controllers/choose_role_controller.dart';
 
@@ -10,7 +12,7 @@ class ChooseRolePage extends GetView<ChooseRoleController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Configura tu experiencia'),
+        title: const Text(ProfileTexts.configureExperienceTitle),
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
@@ -20,38 +22,33 @@ class ChooseRolePage extends GetView<ChooseRoleController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text(
-                  'Selecciona el rol con el que trabajaras en la plataforma. '
-                  'Luego completa los datos minimos para personalizar tu inicio.',
-                ),
+                const Text(ProfileTexts.introText),
                 const SizedBox(height: 24),
                 Row(
                   children: [
                     Expanded(
                       child: RoleOptionCard(
-                        title: 'Candidato',
-                        description:
-                            'Busca oportunidades y encuentra vacantes alineadas contigo.',
+                        title: ProfileTexts.roleCandidateTitle,
+                        description: ProfileTexts.roleCandidateDesc,
                         isSelected: controller.isCandidateSelected,
                         isLoading: controller.selectingRole.value &&
                             controller.pendingRole.value == 'candidate',
                         onTap: controller.selectingRole.value
                             ? null
-                            : () => controller.selectRole('candidate'),
+                            : () => controller.selectRole(Roles.candidate),
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: RoleOptionCard(
-                        title: 'Empresa',
-                        description:
-                            'Publica vacantes y gestiona candidatos de forma agil.',
+                        title: ProfileTexts.roleCompanyTitle,
+                        description: ProfileTexts.roleCompanyDesc,
                         isSelected: controller.isCompanySelected,
                         isLoading: controller.selectingRole.value &&
                             controller.pendingRole.value == 'company',
                         onTap: controller.selectingRole.value
                             ? null
-                            : () => controller.selectRole('company'),
+                            : () => controller.selectRole(Roles.company),
                       ),
                     ),
                   ],
@@ -68,7 +65,7 @@ class ChooseRolePage extends GetView<ChooseRoleController> {
                       onPressed: controller.savingProfile.value
                           ? null
                           : controller.cancelSelection,
-                      child: const Text('Elegir otro rol'),
+                      child: const Text(ProfileTexts.chooseAnotherRole),
                     ),
                   ),
               ],
@@ -173,7 +170,7 @@ class _CandidateForm extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Datos de candidato',
+            ProfileTexts.candidateFormTitle,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
@@ -181,8 +178,8 @@ class _CandidateForm extends StatelessWidget {
             controller: controller.candidateNameController,
             textInputAction: TextInputAction.next,
             decoration: const InputDecoration(
-              labelText: 'Nombre completo',
-              hintText: 'Maria Perez',
+              labelText: ProfileTexts.candidateNameLabel,
+              hintText: ProfileTexts.candidateNameHint,
             ),
             validator: (value) =>
                 controller.validateRequired(value, 'El nombre'),
@@ -192,8 +189,8 @@ class _CandidateForm extends StatelessWidget {
             controller: controller.candidateLocationController,
             textInputAction: TextInputAction.done,
             decoration: const InputDecoration(
-              labelText: 'Ubicacion',
-              hintText: 'Bogota, Colombia',
+              labelText: ProfileTexts.candidateLocationLabel,
+              hintText: ProfileTexts.candidateLocationHint,
             ),
             validator: (value) =>
                 controller.validateRequired(value, 'La ubicacion'),
@@ -286,7 +283,7 @@ class _CompanyForm extends StatelessWidget {
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
                     )
-                  : const Text('Guardar y continuar'),
+                  : const Text(ProfileTexts.saveAndContinue),
             ),
           ),
         ],

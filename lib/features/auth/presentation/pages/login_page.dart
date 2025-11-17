@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../constants/auth_texts.dart';
 
 import '../../../../routes/app_routes.dart';
 import '../../../../shared/widgets/primary_button.dart';
@@ -45,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign In')),
+      appBar: AppBar(title: const Text(AuthTexts.signInTitle)),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -77,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                       TextFormField(
                         controller: emailController,
                         decoration: const InputDecoration(
-                          labelText: 'Email',
+                          labelText: AuthTexts.emailLabel,
                           prefixIcon: Icon(Icons.email_outlined),
                         ),
                         keyboardType: TextInputType.emailAddress,
@@ -90,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                       TextFormField(
                         controller: passwordController,
                         decoration: InputDecoration(
-                          labelText: 'Password',
+                          labelText: AuthTexts.passwordLabel,
                           prefixIcon: const Icon(Icons.lock_outline),
                           suffixIcon: IconButton(
                             onPressed: controller.togglePasswordVisibility,
@@ -130,17 +131,17 @@ class _LoginPageState extends State<LoginPage> {
                               : const Icon(Icons.mark_email_unread_outlined),
                           label: Text(
                             canResend
-                                ? 'Resend verification'
+                                ? AuthTexts.resendVerification
                                 : resendCooldown > 0
-                                ? 'Wait ${resendCooldown}s to resend'
-                                : 'Resend verification',
+                                    ? '${AuthTexts.waitToResendPrefix}$resendCooldown${AuthTexts.secondsSuffix}${AuthTexts.toResendSuffix}'
+                                    : AuthTexts.resendVerification,
                           ),
                         ),
                       ],
                       if (inCooldown) ...[
                         const SizedBox(height: 8),
                         Text(
-                          'Wait ${cooldown}s before trying again.',
+                          '${AuthTexts.waitBeforeTryingPrefix}$cooldown${AuthTexts.secondsSuffix}${AuthTexts.beforeTryingSuffix}',
                           style: Theme.of(
                             context,
                           ).textTheme.bodySmall?.copyWith(color: Colors.orange),
@@ -149,8 +150,8 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 16),
                       PrimaryButton(
                         text: inCooldown
-                            ? 'Sign in (wait ${cooldown}s)'
-                            : 'Sign in',
+                            ? '${AuthTexts.signInWaitPrefix}$cooldown${AuthTexts.secondsSuffix})'
+                            : AuthTexts.signInAction,
                         loading: isLoading,
                         enabled: !inCooldown,
                         onPressed: _submit,
@@ -158,14 +159,14 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 12),
                       TextButton(
                         onPressed: () => Get.toNamed(AppRoutes.register),
-                        child: const Text("Don't have an account? Create account"),
+                        child: const Text("${AuthTexts.dontHaveAccount} ${AuthTexts.createAccountLink}"),
                       ),
                       const SizedBox(height: 4),
                       TextButton(
                         onPressed: isLoading
                             ? null
                             : () => Get.toNamed(AppRoutes.forgot),
-                        child: const Text('Forgot your password?'),
+                        child: const Text(AuthTexts.forgotPasswordLink),
                       ),
                     ],
                   ),

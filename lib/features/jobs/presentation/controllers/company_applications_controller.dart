@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import '../../domain/entities/application_entity.dart';
 import '../../domain/entities/job_entity.dart';
 import '../../domain/repositories/jobs_repository.dart';
+import '../../constants/job_status.dart';
+import '../../constants/jobs_texts.dart';
 
 class CompanyApplicationsController extends GetxController {
   final JobsRepository _jobsRepository;
@@ -40,8 +42,8 @@ class CompanyApplicationsController extends GetxController {
       _currentJob.value = job;
     } catch (e) {
       Get.snackbar(
-        'Error',
-        'Could not load job details: ${e.toString()}',
+        JobsTexts.error,
+        '${JobsTexts.couldNotLoadJobDetailsPrefix}${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
@@ -65,8 +67,8 @@ class CompanyApplicationsController extends GetxController {
       _applications.assignAll(applications);
     } catch (e) {
       Get.snackbar(
-        'Error',
-        'Could not load applications: ${e.toString()}',
+        JobsTexts.error,
+        '${JobsTexts.couldNotLoadApplicationsPrefix}${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -82,16 +84,16 @@ class CompanyApplicationsController extends GetxController {
       // Mostrar diálogo de confirmación
       final confirmed = await Get.dialog<bool>(
         AlertDialog(
-          title: const Text('Confirm Change'),
-          content: Text('Are you sure to change the status to "${_getStatusDisplayName(status)}"?'),
+          title: const Text(JobsTexts.confirmChangeTitle),
+          content: Text('${JobsTexts.confirmChangeBodyPrefix}${_getStatusDisplayName(status)}"?'),
           actions: [
             TextButton(
               onPressed: () => Get.back(result: false),
-              child: const Text('Cancel'),
+              child: const Text(JobsTexts.cancel),
             ),
             TextButton(
               onPressed: () => Get.back(result: true),
-              child: const Text('Confirm'),
+              child: const Text(JobsTexts.confirm),
             ),
           ],
         ),
@@ -102,8 +104,8 @@ class CompanyApplicationsController extends GetxController {
       await _jobsRepository.setApplicationStatus(appId, status);
       
       Get.snackbar(
-        'Success',
-        'Application status updated',
+        JobsTexts.success,
+        JobsTexts.applicationStatusUpdated,
         snackPosition: SnackPosition.BOTTOM,
       );
 
@@ -112,8 +114,8 @@ class CompanyApplicationsController extends GetxController {
       
     } catch (e) {
       Get.snackbar(
-        'Error',
-        'Error updating status: ${e.toString()}',
+        JobsTexts.error,
+        '${JobsTexts.errorUpdatingStatusPrefix}${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -143,34 +145,21 @@ class CompanyApplicationsController extends GetxController {
 
   // Obtener nombre de estado para mostrar
   String _getStatusDisplayName(String status) {
-    switch (status) {
-      case 'submitted':
-        return 'Submitted';
-      case 'seen':
-        return 'Viewed';
-      case 'interview':
-        return 'Interview';
-      case 'rejected':
-        return 'Rejected';
-      case 'hired':
-        return 'Hired';
-      default:
-        return status;
-    }
+    return JobStatus.displayName[status] ?? status;
   }
 
   // Obtener color para el estado
   Color getStatusColor(String status) {
     switch (status) {
-      case 'submitted':
+      case JobStatus.submitted:
         return Colors.blue;
-      case 'seen':
+      case JobStatus.seen:
         return Colors.orange;
-      case 'interview':
+      case JobStatus.interview:
         return Colors.purple;
-      case 'rejected':
+      case JobStatus.rejected:
         return Colors.red;
-      case 'hired':
+      case JobStatus.hired:
         return Colors.green;
       default:
         return Colors.grey;
@@ -179,7 +168,13 @@ class CompanyApplicationsController extends GetxController {
 
   // Obtener opciones de estado disponibles para una postulación
   List<String> getAvailableStatusOptions(String currentStatus) {
-    const allStatuses = ['submitted', 'seen', 'interview', 'rejected', 'hired'];
+    const allStatuses = [
+      JobStatus.submitted,
+      JobStatus.seen,
+      JobStatus.interview,
+      JobStatus.rejected,
+      JobStatus.hired,
+    ];
     return allStatuses.where((status) => status != currentStatus).toList();
   }
 
@@ -199,7 +194,7 @@ class CompanyApplicationsController extends GetxController {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Change status of ${application.candidateName ?? 'Candidate'}',
+              '${JobsTexts.changeStatusOfPrefix}${application.candidateName ?? 'Candidate'}',
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -207,7 +202,7 @@ class CompanyApplicationsController extends GetxController {
             ),
             const SizedBox(height: 16),
             Text(
-              'Current status: ${_getStatusDisplayName(application.status)}',
+              '${JobsTexts.currentStatusPrefix}${_getStatusDisplayName(application.status)}',
               style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
             const SizedBox(height: 16),
@@ -227,7 +222,7 @@ class CompanyApplicationsController extends GetxController {
               width: double.infinity,
               child: TextButton(
                 onPressed: () => Get.back(),
-                child: const Text('Cancel'),
+                child: const Text(JobsTexts.cancel),
               ),
             ),
           ],
@@ -238,7 +233,7 @@ class CompanyApplicationsController extends GetxController {
   }
 
   // Filtro de estado seleccionado
-  final _selectedStatusFilter = 'all'.obs;
+  final _selectedStatusFilter = JobStatus.all.obs;
   String get selectedStatusFilter => _selectedStatusFilter.value;
 
   // Filtrar aplicaciones por estado
@@ -248,7 +243,7 @@ class CompanyApplicationsController extends GetxController {
 
   // Obtener aplicaciones filtradas
   List<ApplicationEntity> get filteredApplications {
-    if (_selectedStatusFilter.value == 'all') {
+    if (_selectedStatusFilter.value == JobStatus.all) {
       return _applications;
     }
     return _applications.where((app) => app.status == _selectedStatusFilter.value).toList();
@@ -256,7 +251,7 @@ class CompanyApplicationsController extends GetxController {
 
   // Obtener conteo de aplicaciones por estado
   int getApplicationsCountByStatus(String status) {
-    if (status == 'all') {
+    if (status == JobStatus.all) {
       return _applications.length;
     }
     return _applications.where((app) => app.status == status).length;
@@ -265,7 +260,7 @@ class CompanyApplicationsController extends GetxController {
   // Obtener conteo de aplicaciones filtradas por estado (más eficiente para UI)
   int getFilteredApplicationsCountByStatus(String status) {
     final filtered = filteredApplications;
-    if (status == 'all') {
+    if (status == JobStatus.all) {
       return filtered.length;
     }
     return filtered.where((app) => app.status == status).length;

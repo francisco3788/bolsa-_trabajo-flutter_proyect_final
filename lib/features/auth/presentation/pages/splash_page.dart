@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../constants/auth_texts.dart';
 
 import '../controllers/splash_controller.dart';
 
@@ -15,7 +16,7 @@ class SplashPage extends GetView<SplashController> {
           children: const [
             SizedBox(height: 48, width: 48, child: CircularProgressIndicator()),
             SizedBox(height: 16),
-            Text('Preparing your experience...'),
+            Text(AuthTexts.preparingExperience),
           ],
         ),
       ),

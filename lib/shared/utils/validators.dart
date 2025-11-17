@@ -1,13 +1,15 @@
+import '../constants/validation_messages.dart';
+
 class Validators {
-  static String? required(String? value, {String message = 'Required field'}) {
+  static String? required(String? value, {String message = ValidationMessages.requiredField}) {
     if (value == null || value.trim().isEmpty) {
       return message;
     }
     return null;
   }
 
-  static String? email(String? value, {String message = 'Invalid email'}) {
-    final baseValidation = required(value, message: 'Email is required');
+  static String? email(String? value, {String message = ValidationMessages.invalidEmail}) {
+    final baseValidation = required(value, message: ValidationMessages.emailRequired);
     if (baseValidation != null) {
       return baseValidation;
     }
@@ -22,7 +24,7 @@ class Validators {
   static String? password(String? value, {int minLength = 6}) {
     final baseValidation = required(
       value,
-      message: 'Password is required',
+      message: ValidationMessages.passwordRequired,
     );
     if (baseValidation != null) {
       return baseValidation;
@@ -30,7 +32,7 @@ class Validators {
     if (value!.trim().length < minLength) {
       return 'Must be at least $minLength characters';
     }
-    if (value.length < 6) return 'Minimum 6 characters';
+    if (value.length < 6) return ValidationMessages.minSixChars;
 
     return null;
   }

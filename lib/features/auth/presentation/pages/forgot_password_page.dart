@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../constants/auth_texts.dart';
 
 import '../../../../routes/app_routes.dart';
 import '../../../../shared/widgets/primary_button.dart';
@@ -51,7 +52,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Reset Password')),
+      appBar: AppBar(title: const Text(AuthTexts.resetPasswordTitle)),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Obx(
@@ -63,14 +64,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 children: [
                   Text(
                     controller.step.value == 0
-                        ? 'Enter your email and we’ll send a verification code.'
-                        : 'Enter the code you received and set your new password.',
+                        ? AuthTexts.step0Text
+                        : AuthTexts.step1Text,
                   ),
                   const SizedBox(height: 24),
                   if (controller.step.value == 0) ...[
                     PrimaryInput(
                       controller: emailCtrl,
-                      label: 'Email',
+                      label: AuthTexts.emailLabel,
                       keyboardType: TextInputType.emailAddress,
                     ),
                     const SizedBox(height: 24),
@@ -86,33 +87,33 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                     const SizedBox(height: 16),
                     PrimaryButton(
-                      text: 'Send code',
+                      text: AuthTexts.sendCodeAction,
                       loading: controller.loading.value,
                       onPressed: controller.submitEmail,
                     ),
                   ] else ...[
                     PrimaryInput(
                       controller: emailCtrl,
-                      label: 'Email',
+                      label: AuthTexts.emailLabel,
                       keyboardType: TextInputType.emailAddress,
                       enabled: false,
                     ),
                     const SizedBox(height: 16),
                     PrimaryInput(
                       controller: codeCtrl,
-                      label: 'Verification code',
+                      label: AuthTexts.verificationCodeLabel,
                       keyboardType: TextInputType.text,
                     ),
                     const SizedBox(height: 16),
                     PrimaryInput(
                       controller: passwordCtrl,
-                      label: 'New password',
+                      label: AuthTexts.newPasswordLabel,
                       obscure: true,
                     ),
                     const SizedBox(height: 16),
                     PrimaryInput(
                       controller: confirmCtrl,
-                      label: 'Confirm password',
+                      label: AuthTexts.confirmPasswordLabel,
                       obscure: true,
                     ),
                     const SizedBox(height: 16),
@@ -128,7 +129,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                     const SizedBox(height: 16),
                     PrimaryButton(
-                      text: 'Update password',
+                      text: AuthTexts.updatePasswordAction,
                       loading: controller.loading.value,
                       onPressed: controller.submitNewPassword,
                     ),
@@ -142,13 +143,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               passwordCtrl.clear();
                               confirmCtrl.clear();
                             },
-                      child: const Text('Use another email'),
+                      child: const Text(AuthTexts.useAnotherEmail),
                     ),
                   ],
                   const SizedBox(height: 24),
                   TextButton(
                     onPressed: () => Get.offAllNamed(AppRoutes.login),
-                    child: const Text('Back to sign in'),
+                    child: const Text(AuthTexts.backToSignIn),
                   ),
                 ],
               ),

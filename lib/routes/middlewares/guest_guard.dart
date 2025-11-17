@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../core/services/auth_session_service.dart';
+import '../../core/constants/roles.dart';
 import '../app_routes.dart';
 
 class GuestGuard extends GetMiddleware {
@@ -19,7 +20,7 @@ class GuestGuard extends GetMiddleware {
       }
 
       final role = session.role;
-      final target = role == 'company'
+      final target = role == Roles.company
           ? AppRoutes.dashboardCompany
           : (role == null || role.isEmpty)
               ? AppRoutes.chooseRole

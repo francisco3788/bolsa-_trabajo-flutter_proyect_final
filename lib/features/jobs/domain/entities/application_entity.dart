@@ -1,3 +1,5 @@
+import '../../constants/job_status.dart';
+
 class ApplicationEntity {
   final String id;
   final String jobId;
@@ -62,20 +64,7 @@ class ApplicationEntity {
   }
 
   String get statusDisplay {
-    switch (status) {
-      case 'submitted':
-        return 'Submitted';
-      case 'seen':
-        return 'Viewed';
-      case 'interview':
-        return 'Interview';
-      case 'rejected':
-        return 'Rejected';
-      case 'hired':
-        return 'Hired';
-      default:
-        return status;
-    }
+    return JobStatus.displayName[status] ?? status;
   }
 
   String get appliedAtFormatted {
@@ -93,8 +82,9 @@ class ApplicationEntity {
     }
   }
 
-  bool get isActive => status == 'submitted' || status == 'seen' || status == 'interview';
-  bool get isFinalized => status == 'rejected' || status == 'hired';
+  bool get isActive =>
+      status == JobStatus.submitted || status == JobStatus.seen || status == JobStatus.interview;
+  bool get isFinalized => status == JobStatus.rejected || status == JobStatus.hired;
 
   @override
   bool operator ==(Object other) {

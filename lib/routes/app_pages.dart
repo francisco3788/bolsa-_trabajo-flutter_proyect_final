@@ -23,6 +23,7 @@ import 'package:bolsa_de_trabajo/routes/middlewares/auth_guard.dart';
 import 'package:bolsa_de_trabajo/routes/middlewares/guest_guard.dart';
 import 'package:bolsa_de_trabajo/routes/middlewares/role_guard.dart';
 import 'package:get/get.dart';
+import '../core/constants/roles.dart';
 
 class AppPages {
   static final pages = <GetPage<dynamic>>[
@@ -49,7 +50,7 @@ class AppPages {
       binding: JobsHomeBinding(),
       middlewares: [
         AuthGuard(),
-        RoleGuard(allowedRoles: ['candidate']),
+        RoleGuard(allowedRoles: [Roles.candidate]),
       ],
     ),
     GetPage(
@@ -58,7 +59,7 @@ class AppPages {
       binding: company_binding.CompanyHomeBinding(),
       middlewares: [
         AuthGuard(),
-        RoleGuard(allowedRoles: ['company']),
+        RoleGuard(allowedRoles: [Roles.company]),
       ],
     ),
     GetPage(
@@ -79,7 +80,7 @@ class AppPages {
       binding: JobsHomeBinding(),
       middlewares: [
         AuthGuard(),
-        RoleGuard(allowedRoles: ['candidate']),
+        RoleGuard(allowedRoles: [Roles.candidate]),
       ],
     ),
     GetPage(
@@ -88,7 +89,7 @@ class AppPages {
       binding: jobs_company_binding.CompanyHomeBinding(),
       middlewares: [
         AuthGuard(),
-        RoleGuard(allowedRoles: ['company']),
+        RoleGuard(allowedRoles: [Roles.company]),
       ],
     ),
     GetPage(
@@ -97,7 +98,7 @@ class AppPages {
       binding: jobs_company_binding.CompanyHomeBinding(),
       middlewares: [
         AuthGuard(),
-        RoleGuard(allowedRoles: ['company']),
+        RoleGuard(allowedRoles: [Roles.company]),
       ],
     ),
     GetPage(

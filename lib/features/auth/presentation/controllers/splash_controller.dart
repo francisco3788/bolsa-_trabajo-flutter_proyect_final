@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../../../core/services/auth_session_service.dart';
+import '../../../../core/constants/roles.dart';
 import '../../../../routes/app_routes.dart';
 
 class SplashController extends GetxController {
@@ -30,7 +31,7 @@ class SplashController extends GetxController {
         if (currentRole == null || currentRole.isEmpty) {
           return AppRoutes.chooseRole;
         }
-        return currentRole == 'company'
+        return currentRole == Roles.company
             ? AppRoutes.dashboardCompany
             : AppRoutes.dashboardCandidate;
       },

@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:bolsa_de_trabajo/core/errors/failures.dart';
+import 'package:bolsa_de_trabajo/features/auth/constants/auth_messages.dart';
 import 'package:bolsa_de_trabajo/features/auth/data/models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
@@ -35,13 +36,13 @@ class AuthRemoteDataSourceSupabase implements AuthRemoteDataSource {
       );
       final user = res.user;
       if (user == null) {
-        throw const AuthFailure('We were unable to log in.');
+        throw const AuthFailure(AuthMessages.loginFailed);
       }
       return UserModel.fromSupabase(user);
     } on AuthApiException catch (e) {
       throw AuthFailure(e.message);
     } catch (_) {
-      throw const ServerFailure('Unknown error during authentication.');
+      throw const ServerFailure(AuthMessages.unknownAuthError);
     }
   }
 
@@ -67,11 +68,11 @@ class AuthRemoteDataSourceSupabase implements AuthRemoteDataSource {
         return UserModel.fromSupabase(res.user!);
       }
 
-      throw const AuthFailure('Registration could not be completed.');
+      throw const AuthFailure(AuthMessages.registerFailed);
     } on AuthException catch (e) {
       throw AuthFailure(e.message);
     } catch (_) {
-      throw const ServerFailure('Unknown error registering user.');
+      throw const ServerFailure(AuthMessages.unknownRegisterError);
     }
   }
 
@@ -85,9 +86,7 @@ class AuthRemoteDataSourceSupabase implements AuthRemoteDataSource {
     } on AuthException catch (e) {
       throw AuthFailure(e.message);
     } catch (_) {
-      throw const ServerFailure(
-        'The email verification could not be resent.',
-      );
+      throw const ServerFailure(AuthMessages.resendEmailVerificationFailed);
     }
   }
 
@@ -98,7 +97,7 @@ class AuthRemoteDataSourceSupabase implements AuthRemoteDataSource {
     } on AuthException catch (e) {
       throw AuthFailure(e.message);
     } catch (_) {
-      throw const ServerFailure('The recovery code could not be sent.');
+      throw const ServerFailure(AuthMessages.recoveryCodeSendFailed);
     }
   }
 
@@ -111,12 +110,12 @@ class AuthRemoteDataSourceSupabase implements AuthRemoteDataSource {
         token: token,
       );
       if (response.session == null) {
-        throw const AuthFailure('Invalid or expired code.');
+        throw const AuthFailure(AuthMessages.codeInvalidOrExpired);
       }
     } on AuthException catch (e) {
       throw AuthFailure(e.message);
     } catch (_) {
-      throw const ServerFailure('The code could not be validated.');
+      throw const ServerFailure(AuthMessages.codeValidationFailed);
     }
   }
 
@@ -127,7 +126,7 @@ class AuthRemoteDataSourceSupabase implements AuthRemoteDataSource {
     } on AuthException catch (e) {
       throw AuthFailure(e.message);
     } catch (_) {
-      throw const ServerFailure('The password could not be updated.');
+      throw const ServerFailure(AuthMessages.passwordUpdateFailed);
     }
   }
 }

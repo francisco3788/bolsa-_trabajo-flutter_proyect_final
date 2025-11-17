@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../core/constants/roles.dart';
+import '../../constants/profile_messages.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/services/auth_session_service.dart';
@@ -39,8 +41,8 @@ class ChooseRoleController extends GetxController {
   final companySectorController = TextEditingController();
   final companyLocationController = TextEditingController();
 
-  bool get isCandidateSelected => selectedRole.value == 'candidate';
-  bool get isCompanySelected => selectedRole.value == 'company';
+  bool get isCandidateSelected => selectedRole.value == Roles.candidate;
+  bool get isCompanySelected => selectedRole.value == Roles.company;
 
   Future<void> selectRole(String role) async {
     if (selectingRole.value) return;
@@ -49,7 +51,7 @@ class ChooseRoleController extends GetxController {
     pendingRole.value = role;
     try {
       await _setUserRole(SetUserRoleParams(role));
-      if (role == 'candidate') {
+      if (role == Roles.candidate) {
         companyNameController.clear();
         companySectorController.clear();
         companyLocationController.clear();
@@ -86,8 +88,8 @@ class ChooseRoleController extends GetxController {
           location: candidateLocationController.text.trim(),
         ),
       );
-      _sessionService.setRole('candidate');
-      _showSuccessSnack('Perfil guardado', 'Te llevaremos al inicio de ofertas.');
+      _sessionService.setRole(Roles.candidate);
+      _showSuccessSnack(ProfileMessages.profileSaved, ProfileMessages.profileSavedRedirect);
       Get.offAllNamed(AppRoutes.jobsHome);
     } catch (err) {
       _showErrorSnack(_mapError(err));
@@ -116,10 +118,10 @@ class ChooseRoleController extends GetxController {
           location: companyLocationController.text.trim(),
         ),
       );
-      _sessionService.setRole('company');
+      _sessionService.setRole(Roles.company);
       _showSuccessSnack(
-        'Perfil guardado',
-        'Configuramos tu experiencia como empresa.',
+        ProfileMessages.profileSaved,
+        ProfileMessages.companyProfileSavedRedirect,
       );
       Get.offAllNamed(AppRoutes.companyHome);
     } catch (err) {
@@ -159,7 +161,7 @@ class ChooseRoleController extends GetxController {
 
   void _showErrorSnack(String message) {
     Get.snackbar(
-      'Ocurrio un problema',
+      ProfileMessages.errorTitle,
       message,
       snackPosition: SnackPosition.BOTTOM,
     );
@@ -177,6 +179,6 @@ class ChooseRoleController extends GetxController {
     if (error is Failure && error.message.isNotEmpty) {
       return error.message;
     }
-    return 'No se pudo completar la accion. Intenta nuevamente.';
+    return ProfileMessages.errorFallback;
   }
 }

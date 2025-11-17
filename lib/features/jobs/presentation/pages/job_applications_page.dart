@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/company_applications_controller.dart';
+import '../../constants/job_status.dart';
 import '../../domain/entities/application_entity.dart';
+import '../../constants/jobs_texts.dart';
 
 class JobApplicationsPage extends StatelessWidget {
   const JobApplicationsPage({super.key});
@@ -18,7 +20,7 @@ class JobApplicationsPage extends StatelessWidget {
 
   return Scaffold(
     appBar: AppBar(
-      title: const Text('Applications'),
+      title: const Text(JobsTexts.applications),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         elevation: 0,
@@ -105,7 +107,7 @@ class JobApplicationsPage extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    'Posted: ${job.createdAtFormatted}',
+                    '${JobsTexts.postedPrefix}${job.createdAtFormatted}',
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey[600],
@@ -135,7 +137,7 @@ class JobApplicationsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Application Statistics',
+                JobsTexts.applicationStatistics,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -152,18 +154,18 @@ class JobApplicationsPage extends StatelessWidget {
                     Colors.blue,
                   ),
                   _buildStatChip(
-                    'New',
-                    applications.where((app) => app.status == 'submitted').length.toString(),
+                    JobStatus.filterLabel[JobStatus.submitted]!,
+                    applications.where((app) => app.status == JobStatus.submitted).length.toString(),
                     Colors.orange,
                   ),
                   _buildStatChip(
-                    'Interviews',
-                    applications.where((app) => app.status == 'interview').length.toString(),
+                    JobStatus.filterLabel[JobStatus.interview]!,
+                    applications.where((app) => app.status == JobStatus.interview).length.toString(),
                     Colors.purple,
                   ),
                   _buildStatChip(
-                    'Hired',
-                    applications.where((app) => app.status == 'hired').length.toString(),
+                    JobStatus.filterLabel[JobStatus.hired]!,
+                    applications.where((app) => app.status == JobStatus.hired).length.toString(),
                     Colors.green,
                   ),
                 ],
@@ -214,7 +216,7 @@ class JobApplicationsPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Filter by Status',
+          JobsTexts.filterByStatus,
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -225,17 +227,17 @@ class JobApplicationsPage extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              _buildFilterChip(controller, 'all', 'All'),
+              _buildFilterChip(controller, JobStatus.all, JobStatus.filterLabel[JobStatus.all]!),
               const SizedBox(width: 8),
-              _buildFilterChip(controller, 'submitted', 'New'),
+              _buildFilterChip(controller, JobStatus.submitted, JobStatus.filterLabel[JobStatus.submitted]!),
               const SizedBox(width: 8),
-              _buildFilterChip(controller, 'seen', 'Viewed'),
+              _buildFilterChip(controller, JobStatus.seen, JobStatus.filterLabel[JobStatus.seen]!),
               const SizedBox(width: 8),
-              _buildFilterChip(controller, 'interview', 'Interviews'),
+              _buildFilterChip(controller, JobStatus.interview, JobStatus.filterLabel[JobStatus.interview]!),
               const SizedBox(width: 8),
-              _buildFilterChip(controller, 'rejected', 'Rejected'),
+              _buildFilterChip(controller, JobStatus.rejected, JobStatus.filterLabel[JobStatus.rejected]!),
               const SizedBox(width: 8),
-              _buildFilterChip(controller, 'hired', 'Hired'),
+              _buildFilterChip(controller, JobStatus.hired, JobStatus.filterLabel[JobStatus.hired]!),
             ],
           ),
         ),
@@ -293,7 +295,7 @@ class JobApplicationsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No applications',
+                  JobsTexts.noApplicationsTitle,
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey[600],
@@ -301,7 +303,7 @@ class JobApplicationsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'No applications received for this job yet',
+                  JobsTexts.noApplicationsSubtitle,
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey[500],
@@ -318,7 +320,7 @@ class JobApplicationsPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Applications (${applications.length})',
+            '${JobsTexts.applicationsCountPrefix}${applications.length})',
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -381,7 +383,7 @@ class JobApplicationsPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Applied: ${application.appliedAtFormatted}',
+                          '${JobsTexts.appliedPrefix}${application.appliedAtFormatted}',
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],
@@ -440,10 +442,10 @@ class JobApplicationsPage extends StatelessWidget {
                         ),
                       ),
                       child: const Text(
-                        'Change Status',
+                        JobsTexts.changeStatus,
                         style: TextStyle(color: Colors.blue),
                       ),
-                    ),
+                      ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -456,8 +458,8 @@ class JobApplicationsPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text('View Details'),
-                    ),
+                      child: const Text(JobsTexts.viewDetails),
+                      ),
                   ),
                 ],
               ),
@@ -507,7 +509,7 @@ class JobApplicationsPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Applied: ${application.appliedAtFormatted}',
+                        '${JobsTexts.appliedPrefix}${application.appliedAtFormatted}',
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey[600],
@@ -536,7 +538,7 @@ class JobApplicationsPage extends StatelessWidget {
             if (application.coverLetter != null && application.coverLetter!.isNotEmpty) ...[
               const SizedBox(height: 20),
               const Text(
-                'Cover Letter:',
+                JobsTexts.coverLetter,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -591,7 +593,7 @@ class JobApplicationsPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text('Close'),
+                    child: const Text(JobsTexts.close),
                   ),
                 ),
               ],
@@ -619,11 +621,11 @@ class JobApplicationsPage extends StatelessWidget {
   String _getJobStatusDisplayName(String status) {
     switch (status) {
       case 'active':
-        return 'Active';
+        return JobsTexts.active;
       case 'pending':
-        return 'Pending';
+        return JobsTexts.pending;
       case 'closed':
-        return 'Closed';
+        return JobsTexts.closed;
       default:
         return status;
     }
@@ -631,15 +633,15 @@ class JobApplicationsPage extends StatelessWidget {
 
   Color _getStatusColor(String status) {
     switch (status) {
-      case 'submitted':
+      case JobStatus.submitted:
         return Colors.blue;
-      case 'seen':
+      case JobStatus.seen:
         return Colors.orange;
-      case 'interview':
+      case JobStatus.interview:
         return Colors.purple;
-      case 'rejected':
+      case JobStatus.rejected:
         return Colors.red;
-      case 'hired':
+      case JobStatus.hired:
         return Colors.green;
       default:
         return Colors.grey;
@@ -647,19 +649,6 @@ class JobApplicationsPage extends StatelessWidget {
   }
 
   String _getStatusDisplayName(String status) {
-    switch (status) {
-      case 'submitted':
-        return 'Submitted';
-      case 'seen':
-        return 'Viewed';
-      case 'interview':
-        return 'Interview';
-      case 'rejected':
-        return 'Rejected';
-      case 'hired':
-        return 'Hired';
-      default:
-        return status;
-    }
+    return JobStatus.displayName[status] ?? status;
   }
 }

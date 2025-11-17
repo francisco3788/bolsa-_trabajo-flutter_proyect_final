@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../constants/auth_texts.dart';
 
 import '../../../../routes/app_routes.dart';
 import '../../../../shared/widgets/primary_button.dart';
@@ -20,23 +21,23 @@ class RegisterPage extends GetView<RegisterController> {
     passCtrl.addListener(() => controller.password.value = passCtrl.text);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Create Account')),
+      appBar: AppBar(title: const Text(AuthTexts.createAccountTitle)),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Obx(
           () => Column(
             children: [
-              PrimaryInput(controller: nameCtrl, label: 'Name'),
+              PrimaryInput(controller: nameCtrl, label: AuthTexts.nameLabel),
               const SizedBox(height: 12),
               PrimaryInput(
                 controller: emailCtrl,
-                label: 'Email',
+                label: AuthTexts.emailLabel,
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 12),
               PrimaryInput(
                 controller: passCtrl,
-                label: 'Password',
+                label: AuthTexts.passwordLabel,
                 obscure: true,
               ),
               const SizedBox(height: 16),
@@ -52,7 +53,7 @@ class RegisterPage extends GetView<RegisterController> {
                 ),
               const SizedBox(height: 8),
               PrimaryButton(
-                text: 'Create account',
+                text: AuthTexts.createAccountAction,
                 loading: controller.loading.value,
                 onPressed: controller.loading.value
                     ? () {}
@@ -61,7 +62,7 @@ class RegisterPage extends GetView<RegisterController> {
               const SizedBox(height: 12),
               TextButton(
                 onPressed: () => Get.offAllNamed(AppRoutes.login),
-                child: const Text('Already have an account? Sign in'),
+                child: const Text('${AuthTexts.alreadyHaveAccount} ${AuthTexts.signInLink}'),
               ),
             ],
           ),

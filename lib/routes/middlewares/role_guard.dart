@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../core/services/auth_session_service.dart';
+import '../../core/constants/roles.dart';
 import '../app_routes.dart';
 
 class RoleGuard extends GetMiddleware {
@@ -42,7 +43,7 @@ class RoleGuard extends GetMiddleware {
     if (allowedRoles != null &&
         allowedRoles!.isNotEmpty &&
         !allowedRoles!.contains(currentRole)) {
-      if (currentRole == 'company') {
+      if (currentRole == Roles.company) {
         return const RouteSettings(name: AppRoutes.dashboardCompany);
       }
       return const RouteSettings(name: AppRoutes.dashboardCandidate);
