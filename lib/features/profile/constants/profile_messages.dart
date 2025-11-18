@@ -6,6 +6,8 @@ class ProfileMessages {
   static const errorFallback = 'Could not complete the action. Please try again.';
   static const companyLogoUploaded = 'Company logo uploaded successfully';
   static const companyLogoUploadError = 'Failed to upload company logo';
+  static const candidateCvUploaded = 'Resume uploaded successfully';
+  static const candidateCvUploadError = 'Failed to upload resume';
   static const websiteInvalid = 'Please enter a valid website URL';
   static const emailInvalid = 'Please enter a valid email address';
   static const phoneInvalid = 'Please enter a valid phone number';

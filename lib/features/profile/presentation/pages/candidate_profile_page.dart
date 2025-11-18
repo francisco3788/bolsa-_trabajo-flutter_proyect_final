@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../controllers/candidate_profile_controller.dart';
 import '../../constants/profile_messages.dart';
 
@@ -235,18 +236,26 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
                       null,
                     ),
                     const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        ElevatedButton.icon(
-                          onPressed: controller.isUploadingCv.value ? null : controller.pickAndUploadCv,
-                          icon: const Icon(Icons.upload_file),
-                          label: const Text('Upload PDF'),
-                        ),
-                        const SizedBox(width: 12),
-                        if (controller.isUploadingCv.value)
-                          const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2)),
-                      ],
-                    ),
+                    Obx(() => Row(
+                          children: [
+                            ElevatedButton.icon(
+                              onPressed: controller.isUploadingCv.value ? null : controller.pickAndUploadCv,
+                              icon: const Icon(Icons.upload_file),
+                              label: const Text('Upload PDF'),
+                            ),
+                            const SizedBox(width: 12),
+                            if (controller.isUploadingCv.value)
+                              const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2)),
+                            const SizedBox(width: 12),
+                            ElevatedButton.icon(
+                              onPressed: controller.cvLinkController.text.isEmpty
+                                  ? null
+                                  : () => _openCv(controller.cvLinkController.text),
+                              icon: const Icon(Icons.open_in_new),
+                              label: const Text('Open CV'),
+                            ),
+                          ],
+                        )),
                     const SizedBox(height: 16),
                     _buildStyledTextField(
                       context,
@@ -648,5 +657,11 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
         onSelected: (_) => controller.toggleInterest(label),
       );
     });
+  }
+
+  Future<void> _openCv(String url) async {
+    final uri = Uri.parse(url);
+    if (!await canLaunchUrl(uri)) return;
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 }

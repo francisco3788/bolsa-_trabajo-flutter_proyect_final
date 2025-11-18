@@ -236,6 +236,7 @@ class CandidateProfileController extends GetxController {
     if (result == null) return;
     isUploadingCv(true);
     errorMessage('');
+    successMessage('');
     try {
       if (kIsWeb) {
         final file = result.files.first;
@@ -243,8 +244,11 @@ class CandidateProfileController extends GetxController {
         if (bytes != null) {
           final upload = await uploadCandidateCv.callWeb(bytes, file.name, 'application/pdf');
           upload.fold(
-            (failure) => errorMessage(failure.message),
-            (url) => cvLinkController.text = url,
+            (failure) => errorMessage(failure.message.isNotEmpty ? failure.message : ProfileMessages.candidateCvUploadError),
+            (url) {
+              cvLinkController.text = url;
+              successMessage(ProfileMessages.candidateCvUploaded);
+            },
           );
         }
       } else {
@@ -252,8 +256,11 @@ class CandidateProfileController extends GetxController {
         if (path != null && path.isNotEmpty) {
           final upload = await uploadCandidateCv.call(path);
           upload.fold(
-            (failure) => errorMessage(failure.message),
-            (url) => cvLinkController.text = url,
+            (failure) => errorMessage(failure.message.isNotEmpty ? failure.message : ProfileMessages.candidateCvUploadError),
+            (url) {
+              cvLinkController.text = url;
+              successMessage(ProfileMessages.candidateCvUploaded);
+            },
           );
         }
       }

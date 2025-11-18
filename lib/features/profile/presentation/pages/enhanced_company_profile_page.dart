@@ -553,3 +553,4 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
     }
   }
 }
+
