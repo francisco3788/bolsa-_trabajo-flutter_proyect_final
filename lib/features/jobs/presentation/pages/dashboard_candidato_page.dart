@@ -6,6 +6,7 @@ import '../widgets/job_card.dart';
 import '../widgets/application_card.dart';
 import '../widgets/kpi_chip.dart';
 import '../widgets/apply_job_dialog.dart';
+import '../../../../core/services/auth_session_service.dart';
 
 class DashboardCandidatePage extends GetView<JobsHomeController> {
   const DashboardCandidatePage({super.key});
@@ -98,7 +99,7 @@ class DashboardCandidatePage extends GetView<JobsHomeController> {
             title: const Text(JobsTexts.signOut),
             onTap: () {
               Get.back();
-              controller.doLogout();
+              _showLogoutDialog(context);
             },
           ),
         ],
@@ -107,6 +108,7 @@ class DashboardCandidatePage extends GetView<JobsHomeController> {
   }
 
   Widget _buildWelcomeCard(BuildContext context) {
+    final AuthSessionService session = Get.find();
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.all(16),
@@ -121,13 +123,13 @@ class DashboardCandidatePage extends GetView<JobsHomeController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            JobsTexts.welcomeCandidate,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          Obx(() => Text(
+                '${JobsTexts.welcomePrefix}${session.displayName ?? JobsTexts.candidate}',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
           const SizedBox(height: 12),
           Obx(() {
             if (controller.isLoadingKpis.value) {
@@ -411,6 +413,37 @@ class DashboardCandidatePage extends GetView<JobsHomeController> {
     Get.dialog(
       ApplyJobDialog(
         onApply: (coverLetter) => controller.applyToJob(jobId, coverLetter: coverLetter),
+      ),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(JobsTexts.signOut),
+        content: const Text(JobsTexts.signOutQuestion),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text(JobsTexts.cancel),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              try {
+                await controller.doLogout();
+              } catch (e) {
+                Get.snackbar(
+                  JobsTexts.error,
+                  '${JobsTexts.failedToSignOutPrefix}${e.toString()}',
+                  snackPosition: SnackPosition.BOTTOM,
+                );
+              }
+            },
+            child: const Text(JobsTexts.signOut),
+          ),
+        ],
       ),
     );
   }

@@ -89,8 +89,9 @@ class ChooseRoleController extends GetxController {
         ),
       );
       _sessionService.setRole(Roles.candidate);
+      await _sessionService.refreshProfileName();
       _showSuccessSnack(ProfileMessages.profileSaved, ProfileMessages.profileSavedRedirect);
-      Get.offAllNamed(AppRoutes.jobsHome);
+      Get.offAllNamed(AppRoutes.dashboardCandidate);
     } catch (err) {
       _showErrorSnack(_mapError(err));
     } finally {
@@ -119,11 +120,12 @@ class ChooseRoleController extends GetxController {
         ),
       );
       _sessionService.setRole(Roles.company);
+      await _sessionService.refreshProfileName();
       _showSuccessSnack(
         ProfileMessages.profileSaved,
         ProfileMessages.companyProfileSavedRedirect,
       );
-      Get.offAllNamed(AppRoutes.companyHome);
+      Get.offAllNamed(AppRoutes.dashboardCompany);
     } catch (err) {
       _showErrorSnack(_mapError(err));
     } finally {

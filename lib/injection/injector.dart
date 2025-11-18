@@ -17,6 +17,8 @@ import 'package:bolsa_de_trabajo/features/profile/data/datasources/profile_remot
 import 'package:bolsa_de_trabajo/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:bolsa_de_trabajo/features/profile/domain/repositories/profile_repository.dart';
 import 'package:bolsa_de_trabajo/features/profile/domain/usecases/get_current_role.dart';
+import 'package:bolsa_de_trabajo/features/profile/domain/usecases/get_candidate_profile.dart';
+import 'package:bolsa_de_trabajo/features/profile/domain/usecases/get_company_profile.dart';
 import 'package:bolsa_de_trabajo/features/profile/domain/usecases/save_candidate_profile.dart';
 import 'package:bolsa_de_trabajo/features/profile/domain/usecases/save_company_profile.dart';
 import 'package:bolsa_de_trabajo/features/profile/domain/usecases/set_user_role.dart';
@@ -76,6 +78,14 @@ class Injector {
     );
     Get.lazyPut<SaveCompanyProfile>(
       () => SaveCompanyProfile(Get.find()),
+      fenix: true,
+    );
+    Get.lazyPut<GetCandidateProfile>(
+      () => GetCandidateProfile(Get.find()),
+      fenix: true,
+    );
+    Get.lazyPut<GetCompanyProfile>(
+      () => GetCompanyProfile(Get.find()),
       fenix: true,
     );
 

@@ -1,4 +1,5 @@
 class JobsTexts {
+  static const welcomePrefix = 'Welcome, ';
   static const applications = 'Applications';
   static const applicationStatistics = 'Application Statistics';
   static const filterByStatus = 'Filter by Status';

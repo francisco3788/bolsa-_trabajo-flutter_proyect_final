@@ -6,6 +6,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../features/auth/domain/entities/user_entity.dart';
 import '../../features/auth/domain/usecases/get_current_user.dart';
 import '../../features/profile/domain/usecases/get_current_role.dart';
+import '../../features/profile/domain/usecases/get_candidate_profile.dart';
+import '../../features/profile/domain/usecases/get_company_profile.dart';
 import '../usecases/usecase.dart';
 
 class AuthSessionService extends GetxService {
@@ -25,6 +27,7 @@ class AuthSessionService extends GetxService {
   final RxBool _ready = false.obs;
   final RxnString _role = RxnString();
   final RxBool _roleReady = false.obs;
+  final RxnString _displayName = RxnString();
 
   StreamSubscription<AuthState>? _authSubscription;
   Worker? _routeWorker;
@@ -43,11 +46,13 @@ class AuthSessionService extends GetxService {
   bool get isReady => _ready.value;
   String? get role => _role.value;
   bool get isRoleReady => _roleReady.value;
+  String? get displayName => _displayName.value;
 
   Stream<UserEntity?> get userStream => _user.stream;
   Stream<bool> get readyStream => _ready.stream;
   Stream<String?> get roleStream => _role.stream;
   Stream<bool> get roleReadyStream => _roleReady.stream;
+  Stream<String?> get displayNameStream => _displayName.stream;
 
   void setRole(String? role) {
     _role.value = role;
@@ -72,6 +77,10 @@ class AuthSessionService extends GetxService {
 
   Future<void> refreshRole() async {
     await _loadRole();
+  }
+
+  Future<void> refreshProfileName() async {
+    await _loadDisplayName();
   }
 
   Future<void> waitForRoleResolution() async {
@@ -212,9 +221,33 @@ class AuthSessionService extends GetxService {
       _role.value = null;
     } finally {
       _roleReady.value = true;
+      await _loadDisplayName();
       if (_routerSynced) {
         _handleRouteChange();
       }
+    }
+  }
+
+  Future<void> _loadDisplayName() async {
+    try {
+      final current = _role.value;
+      if (current == null || current.isEmpty) {
+        _displayName.value = null;
+        return;
+      }
+      if (current == 'candidate') {
+        final profile = await Get.find<GetCandidateProfile>()(const NoParams());
+        _displayName.value = profile.name.trim().isEmpty ? null : profile.name.trim();
+        return;
+      }
+      if (current == 'company') {
+        final profile = await Get.find<GetCompanyProfile>()(const NoParams());
+        _displayName.value = profile.companyName.trim().isEmpty ? null : profile.companyName.trim();
+        return;
+      }
+      _displayName.value = null;
+    } catch (_) {
+      _displayName.value = null;
     }
   }
 

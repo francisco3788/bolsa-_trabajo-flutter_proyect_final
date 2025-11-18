@@ -10,4 +10,19 @@ abstract class ProfileRepository {
     required String sector,
     required String location,
   });
+  Future<CandidateProfile> getCandidateProfile();
+  Future<CompanyProfile> getCompanyProfile();
+}
+
+class CandidateProfile {
+  CandidateProfile({required this.name, required this.location});
+  final String name;
+  final String location;
+}
+
+class CompanyProfile {
+  CompanyProfile({required this.companyName, required this.sector, required this.location});
+  final String companyName;
+  final String sector;
+  final String location;
 }

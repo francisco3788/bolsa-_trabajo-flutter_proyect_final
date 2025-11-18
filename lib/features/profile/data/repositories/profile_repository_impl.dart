@@ -36,4 +36,23 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<void> setUserRole(String role) {
     return remote.setUserRole(role);
   }
+
+  @override
+  Future<CandidateProfile> getCandidateProfile() async {
+    final data = await remote.getCandidateProfile();
+    return CandidateProfile(
+      name: data['name'] ?? '',
+      location: data['location'] ?? '',
+    );
+  }
+
+  @override
+  Future<CompanyProfile> getCompanyProfile() async {
+    final data = await remote.getCompanyProfile();
+    return CompanyProfile(
+      companyName: data['company_name'] ?? '',
+      sector: data['sector'] ?? '',
+      location: data['location'] ?? '',
+    );
+  }
 }

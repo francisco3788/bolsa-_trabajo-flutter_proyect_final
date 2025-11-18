@@ -14,6 +14,8 @@ abstract class ProfileRemoteDataSource {
     required String sector,
     required String location,
   });
+  Future<Map<String, String?>> getCandidateProfile();
+  Future<Map<String, String?>> getCompanyProfile();
 }
 
 class ProfileRemoteDataSourceSupabase implements ProfileRemoteDataSource {
@@ -141,6 +143,49 @@ class ProfileRemoteDataSourceSupabase implements ProfileRemoteDataSource {
       throw const ServerFailure('No se pudo guardar el perfil de la empresa.');
     }
   }
+
+  @override
+  Future<Map<String, String?>> getCandidateProfile() async {
+    final userId = _requireUserId();
+    try {
+      final data = await _client
+          .from('candidate_profiles')
+          .select('name, location')
+          .eq('id', userId)
+          .maybeSingle();
+      return {
+        'name': data?['name'] as String?,
+        'location': data?['location'] as String?,
+      };
+    } on PostgrestException catch (err) {
+      throw ServerFailure(err.message.isNotEmpty ? err.message : 'Could not load candidate profile.');
+    } catch (_) {
+      throw const ServerFailure('Could not load candidate profile.');
+    }
+  }
+
+  @override
+  Future<Map<String, String?>> getCompanyProfile() async {
+    final userId = _requireUserId();
+    try {
+      final data = await _client
+          .from('company_profiles')
+          .select('company_name, sector, location')
+          .eq('id', userId)
+          .maybeSingle();
+      return {
+        'company_name': data?['company_name'] as String?,
+        'sector': data?['sector'] as String?,
+        'location': data?['location'] as String?,
+      };
+    } on PostgrestException catch (err) {
+      throw ServerFailure(err.message.isNotEmpty ? err.message : 'Could not load company profile.');
+    } catch (_) {
+      throw const ServerFailure('Could not load company profile.');
+    }
+  }
+
+  // No update method in previous minimal state
 
   String _requireUserId() {
     final userId = _client.auth.currentUser?.id;

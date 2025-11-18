@@ -4,6 +4,7 @@ import '../../constants/jobs_texts.dart';
 import '../controllers/company_home_controller.dart';
 import '../widgets/kpi_chip.dart';
 import '../../domain/entities/job_entity.dart';
+import '../../../../core/services/auth_session_service.dart';
 
 class DashboardCompanyPage extends StatelessWidget {
   const DashboardCompanyPage({super.key});
@@ -113,6 +114,7 @@ class DashboardCompanyPage extends StatelessWidget {
   }
 
   Widget _buildWelcomeCard(CompanyHomeController controller) {
+    final AuthSessionService session = Get.find();
     return Obx(() {
       final kpis = controller.kpis.value;
       final isLoading = controller.isLoadingKpis.value;
@@ -136,21 +138,14 @@ class DashboardCompanyPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              const Text(
-                JobsTexts.welcome,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-              const Text(
-                JobsTexts.companyAppBarTitle,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              Obx(() => Text(
+                    '${JobsTexts.welcomePrefix}${session.displayName ?? JobsTexts.companyAppBarTitle}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )),
               const SizedBox(height: 16),
               if (isLoading)
                 const Center(
