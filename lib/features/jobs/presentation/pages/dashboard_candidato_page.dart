@@ -7,6 +7,8 @@ import '../widgets/application_card.dart';
 import '../widgets/kpi_chip.dart';
 import '../widgets/apply_job_dialog.dart';
 import '../../../../core/services/auth_session_service.dart';
+import 'package:bolsa_de_trabajo/routes/app_routes.dart';
+import 'package:bolsa_de_trabajo/features/profile/constants/profile_messages.dart';
 
 class DashboardCandidatePage extends GetView<JobsHomeController> {
   const DashboardCandidatePage({super.key});
@@ -91,6 +93,14 @@ class DashboardCandidatePage extends GetView<JobsHomeController> {
             onTap: () {
               Get.back();
               controller.changeTab(2);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.person),
+            title: const Text(ProfileMessages.profileTitle),
+            onTap: () {
+              Get.back();
+              Get.toNamed(AppRoutes.profile);
             },
           ),
           const Divider(),

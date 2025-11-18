@@ -236,13 +236,28 @@ class AuthSessionService extends GetxService {
         return;
       }
       if (current == 'candidate') {
-        final profile = await Get.find<GetCandidateProfile>()(const NoParams());
-        _displayName.value = profile.name.trim().isEmpty ? null : profile.name.trim();
+        final result = await Get.find<GetCandidateProfile>()(const NoParams());
+        result.fold(
+          (failure) => _displayName.value = null,
+          (profile) {
+            _displayName.value = profile.name.trim().isEmpty ? null : profile.name.trim();
+          },
+        );
         return;
       }
       if (current == 'company') {
-        final profile = await Get.find<GetCompanyProfile>()(const NoParams());
-        _displayName.value = profile.companyName.trim().isEmpty ? null : profile.companyName.trim();
+        final result = await Get.find<GetCompanyProfile>()(const NoParams());
+        result.fold(
+          (failure) => _displayName.value = null,
+          (profile) {
+            final companyName = profile.companyName;
+            if (companyName != null && companyName.trim().isNotEmpty) {
+              _displayName.value = companyName.trim();
+            } else {
+              _displayName.value = null;
+            }
+          },
+        );
         return;
       }
       _displayName.value = null;

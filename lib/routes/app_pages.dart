@@ -18,6 +18,8 @@ import 'package:bolsa_de_trabajo/features/jobs/presentation/pages/publish_job_pa
 import 'package:bolsa_de_trabajo/features/jobs/presentation/pages/job_applications_page.dart';
 import 'package:bolsa_de_trabajo/features/profile/presentation/bindings/choose_role_binding.dart';
 import 'package:bolsa_de_trabajo/features/profile/presentation/pages/choose_role_page.dart';
+import 'package:bolsa_de_trabajo/features/profile/presentation/pages/profile_page.dart';
+import 'package:bolsa_de_trabajo/features/profile/presentation/bindings/profile_binding.dart';
 import 'package:bolsa_de_trabajo/routes/app_routes.dart';
 import 'package:bolsa_de_trabajo/routes/middlewares/auth_guard.dart';
 import 'package:bolsa_de_trabajo/routes/middlewares/guest_guard.dart';
@@ -108,6 +110,15 @@ class AppPages {
       middlewares: [
         AuthGuard(),
         RoleGuard(allowedRoles: ['company']),
+      ],
+    ),
+    // Profile Route - handles both company and candidate profiles
+    GetPage(
+      name: AppRoutes.profile,
+      page: () => const ProfilePage(),
+      binding: ProfileBinding(),
+      middlewares: [
+        AuthGuard(),
       ],
     ),
   ];
