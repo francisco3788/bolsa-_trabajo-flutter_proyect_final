@@ -80,7 +80,7 @@ class JobCardWithApplication extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
-            color: Colors.blue[50],
+            color: Theme.of(Get.context!).colorScheme.primary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
@@ -89,13 +89,13 @@ class JobCardWithApplication extends StatelessWidget {
               Icon(
                 Icons.auto_awesome,
                 size: 14,
-                color: Colors.blue[800],
+                color: Theme.of(Get.context!).colorScheme.primary,
               ),
               const SizedBox(width: 4),
               Text(
                 '${(job.aiConfidenceScore * 100).toStringAsFixed(0)}%',
                 style: TextStyle(
-                  color: Colors.blue[800],
+                  color: Theme.of(Get.context!).colorScheme.primary,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
@@ -159,6 +159,10 @@ class JobCardWithApplication extends StatelessWidget {
         Expanded(
           child: OutlinedButton(
             onPressed: () => _showJobDetails(Get.context!),
+            style: OutlinedButton.styleFrom(
+              side: BorderSide(color: Theme.of(Get.context!).colorScheme.primary),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
             child: const Text(AiTexts.viewDetails),
           ),
         ),
@@ -168,8 +172,9 @@ class JobCardWithApplication extends StatelessWidget {
             icon: const Icon(Icons.send),
             label: const Text(AiTexts.applyNow),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue[800],
+              backgroundColor: Theme.of(Get.context!).colorScheme.primary,
               foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
             onPressed: _navigateToApplication,
           ),
@@ -228,11 +233,11 @@ class JobCardWithApplication extends StatelessWidget {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Icon(Icons.auto_awesome, color: Colors.blue[800]),
+                  Icon(Icons.auto_awesome, color: Theme.of(Get.context!).colorScheme.primary),
                   const SizedBox(width: 8),
                   Text(
                     '${AiTexts.generatedByAi} - ${AiTexts.confidenceLabel}: ${(job.aiConfidenceScore * 100).toStringAsFixed(0)}%',
-                    style: TextStyle(color: Colors.blue[800], fontSize: 12),
+                    style: TextStyle(color: Theme.of(Get.context!).colorScheme.primary, fontSize: 12),
                   ),
                 ],
               ),
@@ -248,8 +253,9 @@ class JobCardWithApplication extends StatelessWidget {
             icon: const Icon(Icons.send),
             label: const Text(AiTexts.applyNow),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue[800],
+              backgroundColor: Theme.of(Get.context!).colorScheme.primary,
               foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
             onPressed: () {
               Navigator.of(context).pop();

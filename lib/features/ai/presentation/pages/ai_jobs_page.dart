@@ -36,7 +36,7 @@ class AiJobsPage extends GetView<AiJobsController> {
         return Scaffold(
           appBar: AppBar(
             title: const Text(AiTexts.appTitle),
-            backgroundColor: Colors.blue[800],
+            backgroundColor: Theme.of(context).colorScheme.primary,
           ),
           body: Center(
             child: Column(
@@ -72,7 +72,7 @@ class AiJobsPage extends GetView<AiJobsController> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(AiTexts.appTitle),
-        backgroundColor: Colors.blue[800],
+        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -105,11 +105,19 @@ class AiJobsPage extends GetView<AiJobsController> {
                   decoration: InputDecoration(
                     hintText: AiTexts.aiSearchPlaceholder,
                     prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: Colors.grey.shade50,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary),
+                    ),
                   ),
                   onChanged: controller.updateSearchQuery,
                   onSubmitted: (_) => controller.generateAiJobs(),
@@ -119,8 +127,9 @@ class AiJobsPage extends GetView<AiJobsController> {
               Obx(() => ElevatedButton(
                 onPressed: controller.generateAiJobs,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue[800],
+                  backgroundColor: Theme.of(Get.context!).colorScheme.primary,
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
                 ),
                 child: controller.isGenerating.value
                     ? const SizedBox(
@@ -135,12 +144,12 @@ class AiJobsPage extends GetView<AiJobsController> {
           const SizedBox(height: 8),
           Row(
             children: [
-              const Icon(Icons.auto_awesome, color: Colors.blue, size: 16),
+              Icon(Icons.auto_awesome, color: Theme.of(Get.context!).colorScheme.primary, size: 16),
               const SizedBox(width: 4),
               Text(
                 AiTexts.aiPoweredBy,
                 style: TextStyle(
-                  color: Colors.blue[800],
+                  color: Theme.of(Get.context!).colorScheme.primary,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
@@ -159,10 +168,14 @@ class AiJobsPage extends GetView<AiJobsController> {
         children: [
           Expanded(
             child: DropdownButtonFormField<String>(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: AiTexts.labelLocation,
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary, width: 2),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               ),
               value: controller.selectedLocation.value.isEmpty ? null : controller.selectedLocation.value,
               items: ['']
@@ -179,10 +192,14 @@ class AiJobsPage extends GetView<AiJobsController> {
           const SizedBox(width: 8),
           Expanded(
             child: DropdownButtonFormField<String>(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: AiTexts.labelWorkMode,
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary, width: 2),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               ),
               value: controller.selectedWorkMode.value.isEmpty ? null : controller.selectedWorkMode.value,
               items: ['']
@@ -199,10 +216,14 @@ class AiJobsPage extends GetView<AiJobsController> {
           const SizedBox(width: 8),
           Expanded(
             child: DropdownButtonFormField<String>(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: AiTexts.labelJobType,
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary, width: 2),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               ),
               value: controller.selectedJobType.value.isEmpty ? null : controller.selectedJobType.value,
               items: ['']
@@ -272,7 +293,7 @@ class AiJobsPage extends GetView<AiJobsController> {
       if (controller.isGenerating.value) {
         return Container(
           padding: const EdgeInsets.all(16),
-          color: Colors.blue[50],
+          color: Theme.of(Get.context!).colorScheme.primary.withOpacity(0.08),
           child: Row(
             children: [
               const SizedBox(
@@ -283,7 +304,7 @@ class AiJobsPage extends GetView<AiJobsController> {
               const SizedBox(width: 12),
               Text(
                 AiTexts.generatingJobs,
-                style: TextStyle(color: Colors.blue[800]),
+                style: TextStyle(color: Theme.of(Get.context!).colorScheme.primary),
               ),
             ],
           ),
@@ -404,11 +425,11 @@ class AiJobsPage extends GetView<AiJobsController> {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Icon(Icons.auto_awesome, color: Colors.blue[800]),
+                  Icon(Icons.auto_awesome, color: Theme.of(context).colorScheme.primary),
                   const SizedBox(width: 8),
                   Text(
                     '${AiTexts.generatedByAi} - ${AiTexts.confidenceLabel}: ${(job.aiConfidenceScore * 100).toStringAsFixed(0)}%',
-                    style: TextStyle(color: Colors.blue[800], fontSize: 12),
+                    style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12),
                   ),
                 ],
               ),
