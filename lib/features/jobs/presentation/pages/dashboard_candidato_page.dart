@@ -46,9 +46,9 @@ class DashboardCandidatePage extends GetView<JobsHomeController> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
+          DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Theme.of(context).colorScheme.primary,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +60,7 @@ class DashboardCandidatePage extends GetView<JobsHomeController> {
                   color: Colors.white,
                 ),
                 SizedBox(height: 8),
-                Text(
+                const Text(
                   JobsTexts.candidate,
                   style: TextStyle(
                     color: Colors.white,
@@ -132,10 +132,10 @@ class DashboardCandidatePage extends GetView<JobsHomeController> {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+        color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
         ),
       ),
       child: Column(
@@ -170,34 +170,34 @@ class DashboardCandidatePage extends GetView<JobsHomeController> {
               return const Text(JobsTexts.failedToLoadStatistics);
             }
 
-            return Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
+          return Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
                 KpiChip(
                   label: JobsTexts.availableJobs,
                   value: kpis.totalJobs.toString(),
-                  color: Colors.blue,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
                 KpiChip(
                   label: JobsTexts.myApplicationsMenu,
                   value: kpis.totalApplications.toString(),
-                  color: Colors.orange,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
                 KpiChip(
                   label: JobsTexts.interviews,
                   value: kpis.totalInterviews.toString(),
-                  color: Colors.green,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
                 if (kpis.savedJobs != null)
                   KpiChip(
                     label: JobsTexts.savedMenu,
                     value: kpis.savedJobs.toString(),
-                    color: Colors.purple,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
-              ],
-            );
-          }),
+            ],
+          );
+        }),
         ],
       ),
     );
@@ -208,7 +208,7 @@ class DashboardCandidatePage extends GetView<JobsHomeController> {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Obx(() => Row(
         children: [
@@ -217,6 +217,7 @@ class DashboardCandidatePage extends GetView<JobsHomeController> {
               JobsTexts.recommendedTab,
               0,
               controller.currentTabIndex.value == 0,
+              context,
             ),
           ),
           Expanded(
@@ -224,6 +225,7 @@ class DashboardCandidatePage extends GetView<JobsHomeController> {
               JobsTexts.myApplicationsMenu,
               1,
               controller.currentTabIndex.value == 1,
+              context,
             ),
           ),
           Expanded(
@@ -231,6 +233,7 @@ class DashboardCandidatePage extends GetView<JobsHomeController> {
               JobsTexts.savedMenu,
               2,
               controller.currentTabIndex.value == 2,
+              context,
             ),
           ),
         ],
@@ -238,14 +241,14 @@ class DashboardCandidatePage extends GetView<JobsHomeController> {
     );
   }
 
-  Widget _buildTabButton(String title, int index, bool isSelected) {
+  Widget _buildTabButton(String title, int index, bool isSelected, BuildContext context) {
     return GestureDetector(
       onTap: () => controller.changeTab(index),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
+          color: isSelected ? Theme.of(context).colorScheme.primary : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Text(
           title,

@@ -69,7 +69,7 @@ class JobCard extends StatelessWidget {
                           )
                         : Icon(
                             isSaved ? Icons.bookmark : Icons.bookmark_border,
-                            color: isSaved ? Colors.blue : Colors.grey,
+                            color: isSaved ? Theme.of(context).colorScheme.primary : Colors.grey,
                           ),
                   ),
               ],
@@ -96,7 +96,7 @@ class JobCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: _getWorkModeColor(
                       job.workMode,
-                    ).withValues(alpha: 0.1),
+                    ).withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -119,14 +119,14 @@ class JobCard extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.blue.withValues(alpha: 0.1),
+                    color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     job.jobTypeDisplay,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 10,
-                      color: Colors.blue,
+                      color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -205,7 +205,7 @@ class JobCard extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: hasApplied || isApplying ? null : onApply,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: hasApplied ? Colors.grey : Colors.blue,
+                    backgroundColor: hasApplied ? Colors.grey : Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
