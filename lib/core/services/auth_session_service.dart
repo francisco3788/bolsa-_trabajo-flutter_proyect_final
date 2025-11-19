@@ -9,6 +9,7 @@ import '../../features/profile/domain/usecases/get_current_role.dart';
 import '../../features/profile/domain/usecases/get_candidate_profile.dart';
 import '../../features/profile/domain/usecases/get_company_profile.dart';
 import '../usecases/usecase.dart';
+import '../constants/roles.dart';
 
 class AuthSessionService extends GetxService {
   AuthSessionService({
@@ -235,7 +236,7 @@ class AuthSessionService extends GetxService {
         _displayName.value = null;
         return;
       }
-      if (current == 'candidate') {
+      if (current == Roles.candidate) {
         final result = await Get.find<GetCandidateProfile>()(const NoParams());
         result.fold(
           (failure) => _displayName.value = null,
@@ -245,7 +246,7 @@ class AuthSessionService extends GetxService {
         );
         return;
       }
-      if (current == 'company') {
+      if (current == Roles.company) {
         final result = await Get.find<GetCompanyProfile>()(const NoParams());
         result.fold(
           (failure) => _displayName.value = null,
