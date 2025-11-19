@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:bolsa_de_trabajo/features/job_applications/domain/entities/job_application.dart';
+import '../../constants/job_application_texts.dart';
 
 class JobApplicationNotificationService {
   final SupabaseClient supabaseClient;
@@ -59,8 +60,8 @@ class JobApplicationNotificationService {
         'id': DateTime.now().millisecondsSinceEpoch.toString(),
         'user_id': companyId ?? application.jobId,
         'type': 'new_application',
-        'title': 'New Job Application',
-        'message': '${application.candidateName} has applied for your job posting',
+        'title': JobApplicationTexts.newJobApplicationTitle,
+        'message': '${application.candidateName}${JobApplicationTexts.newApplicationMessageSuffix}',
         'data': {
           'application_id': application.id,
           'job_id': application.jobId,
@@ -85,16 +86,16 @@ class JobApplicationNotificationService {
 
     switch (newStatus) {
       case ApplicationStatus.underReview:
-        title = 'Application Under Review';
-        message = 'Your application for the position is being reviewed by the hiring team.';
+        title = JobApplicationTexts.applicationUnderReviewTitle;
+        message = JobApplicationTexts.applicationUnderReviewMessage;
         break;
       case ApplicationStatus.accepted:
-        title = 'Application Accepted!';
-        message = 'Congratulations! Your application has been accepted. The company will contact you soon.';
+        title = JobApplicationTexts.applicationAcceptedTitle;
+        message = JobApplicationTexts.applicationAcceptedMessage;
         break;
       case ApplicationStatus.rejected:
-        title = 'Application Update';
-        message = 'Thank you for your application. Unfortunately, we have decided to move forward with other candidates.';
+        title = JobApplicationTexts.applicationUpdateTitle;
+        message = JobApplicationTexts.applicationRejectedMessage;
         break;
       default:
         return; // Don't notify for pending status
@@ -147,11 +148,11 @@ class JobApplicationNotificationService {
     String message;
 
     if (newStatus == ApplicationStatus.accepted) {
-      title = 'Candidate Accepted';
-      message = 'You have accepted ${application.candidateName}\'s application.';
+      title = JobApplicationTexts.candidateAcceptedTitle;
+      message = '${JobApplicationTexts.candidateAcceptedMessagePrefix}${application.candidateName}${JobApplicationTexts.candidateAcceptedMessageSuffix}';
     } else {
-      title = 'Candidate Rejected';
-      message = 'You have rejected ${application.candidateName}\'s application.';
+      title = JobApplicationTexts.candidateRejectedTitle;
+      message = '${JobApplicationTexts.candidateRejectedMessagePrefix}${application.candidateName}${JobApplicationTexts.candidateRejectedMessageSuffix}';
     }
 
     try {
@@ -172,8 +173,8 @@ class JobApplicationNotificationService {
     required JobApplication application,
   }) async {
     Get.snackbar(
-      'New Application Received',
-      '${application.candidateName} has applied for your job posting',
+      JobApplicationTexts.newApplicationReceivedTitle,
+      '${application.candidateName}${JobApplicationTexts.newApplicationMessageSuffix}',
       snackPosition: SnackPosition.TOP,
       backgroundColor: Colors.blue,
       colorText: Colors.white,
@@ -191,8 +192,8 @@ class JobApplicationNotificationService {
         'id': DateTime.now().millisecondsSinceEpoch.toString(),
         'user_id': application.candidateId,
         'type': 'application_status_changed',
-        'title': 'Application Status Updated',
-        'message': 'Your application status changed from ${oldStatus.name} to ${newStatus.name}',
+        'title': JobApplicationTexts.applicationStatusUpdatedTitle,
+        'message': '${JobApplicationTexts.applicationStatusChangedFromPrefix}${oldStatus.name}${JobApplicationTexts.applicationStatusChangedToConnector}${newStatus.name}',
         'data': {
           'application_id': application.id,
           'job_id': application.jobId,

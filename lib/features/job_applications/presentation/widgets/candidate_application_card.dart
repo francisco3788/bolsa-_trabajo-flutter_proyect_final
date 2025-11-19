@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/job_application.dart';
+import '../../constants/job_application_texts.dart';
 
 class CandidateApplicationCard extends StatelessWidget {
   final JobApplication application;
@@ -54,7 +55,7 @@ class CandidateApplicationCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Application',
+                JobApplicationTexts.applicationHeaderTitle,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -82,7 +83,7 @@ class CandidateApplicationCard extends StatelessWidget {
         Icon(Icons.calendar_today, size: 14, color: Colors.grey[600]),
         const SizedBox(width: 4),
         Text(
-          'Applied ${_formatDate(application.appliedAt)}',
+          '${JobApplicationTexts.appliedPrefix} ${_formatDate(application.appliedAt)}',
           style: TextStyle(
             color: Colors.grey[600],
             fontSize: 12,
@@ -100,27 +101,27 @@ class CandidateApplicationCard extends StatelessWidget {
     switch (application.status) {
       case ApplicationStatus.pending:
         color = Colors.orange;
-        text = 'Pending';
+        text = JobApplicationTexts.pendingStatus;
         icon = Icons.pending;
         break;
       case ApplicationStatus.underReview:
         color = Colors.blue;
-        text = 'Under Review';
+        text = JobApplicationTexts.underReviewStatus;
         icon = Icons.visibility;
         break;
       case ApplicationStatus.accepted:
         color = Colors.green;
-        text = 'Accepted';
+        text = JobApplicationTexts.acceptedStatus;
         icon = Icons.check_circle;
         break;
       case ApplicationStatus.rejected:
         color = Colors.red;
-        text = 'Rejected';
+        text = JobApplicationTexts.rejectedStatus;
         icon = Icons.cancel;
         break;
       case ApplicationStatus.cancelled:
         color = Colors.grey;
-        text = 'Cancelled';
+        text = JobApplicationTexts.cancelledStatus;
         icon = Icons.remove_circle_outline;
         break;
     }
@@ -157,23 +158,23 @@ class CandidateApplicationCard extends StatelessWidget {
     switch (application.status) {
       case ApplicationStatus.pending:
         color = Colors.orange;
-        text = 'Pending';
+        text = JobApplicationTexts.pendingStatus;
         break;
       case ApplicationStatus.underReview:
         color = Colors.blue;
-        text = 'Review';
+        text = JobApplicationTexts.underReviewStatus;
         break;
       case ApplicationStatus.accepted:
         color = Colors.green;
-        text = 'Accepted';
+        text = JobApplicationTexts.acceptedStatus;
         break;
       case ApplicationStatus.rejected:
         color = Colors.red;
-        text = 'Rejected';
+        text = JobApplicationTexts.rejectedStatus;
         break;
       case ApplicationStatus.cancelled:
         color = Colors.grey;
-        text = 'Cancelled';
+        text = JobApplicationTexts.cancelledStatus;
         break;
     }
 
@@ -211,7 +212,7 @@ class CandidateApplicationCard extends StatelessWidget {
               Icon(Icons.comment, size: 16, color: Colors.blue[700]),
               const SizedBox(width: 6),
               Text(
-                'Review Notes',
+                JobApplicationTexts.reviewNotes,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.blue[700],
@@ -238,14 +239,14 @@ class CandidateApplicationCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Application ID: ${application.id.substring(0, 8)}...',
+          '${JobApplicationTexts.applicationIdPrefix} ${application.id.substring(0, 8)}...',
           style: TextStyle(
             color: Colors.grey[500],
             fontSize: 11,
           ),
         ),
         Text(
-          'Tap for details',
+          JobApplicationTexts.tapForDetails,
           style: TextStyle(
             color: Colors.blue[600],
             fontSize: 11,
@@ -261,13 +262,13 @@ class CandidateApplicationCard extends StatelessWidget {
     final difference = now.difference(date);
 
     if (difference.inDays > 0) {
-      return '${difference.inDays} days ago';
+      return JobApplicationTexts.relativeDays(difference.inDays);
     } else if (difference.inHours > 0) {
-      return '${difference.inHours} hours ago';
+      return JobApplicationTexts.relativeHours(difference.inHours);
     } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes} minutes ago';
+      return JobApplicationTexts.relativeMinutes(difference.inMinutes);
     } else {
-      return 'Just now';
+      return JobApplicationTexts.justNow;
     }
   }
 }

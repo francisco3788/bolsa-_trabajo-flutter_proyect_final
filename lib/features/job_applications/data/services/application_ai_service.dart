@@ -1,5 +1,6 @@
 import 'dart:convert';
 import '../../domain/entities/job_application.dart';
+import '../../constants/job_application_texts.dart';
 
 class ApplicationAIService {
   final String apiKey;
@@ -25,29 +26,29 @@ class ApplicationAIService {
     if (coverLen >= 300) {
       suggested = 'underReview';
       confidence = 0.7;
-      strengths.add('Detailed cover letter');
+      strengths.add(JobApplicationTexts.strengthDetailedCoverLetter);
     }
     if (experienceYears is int && experienceYears >= 3) {
       suggested = 'underReview';
       confidence = 0.75;
-      strengths.add('Relevant experience');
+      strengths.add(JobApplicationTexts.strengthRelevantExperience);
     }
     if (hasLinkedIn) {
       confidence += 0.05;
-      strengths.add('Has LinkedIn profile');
+      strengths.add(JobApplicationTexts.strengthHasLinkedInProfile);
     }
     if (coverLen < 50) {
-      concerns.add('Very short cover letter');
+      concerns.add(JobApplicationTexts.concernVeryShortCoverLetter);
       confidence -= 0.2;
     }
 
     final suggestion = {
       'suggested_status': suggested,
       'confidence_score': confidence.clamp(0.0, 1.0),
-      'reasoning': 'Heuristic based on cover letter length and experience.',
+      'reasoning': JobApplicationTexts.reasoningHeuristicSingle,
       'key_strengths': strengths,
       'key_concerns': concerns,
-      'recommended_next_steps': 'Proceed to human review if underReview; request more info if pending.',
+      'recommended_next_steps': JobApplicationTexts.nextStepsCombined,
     };
 
     return {
@@ -79,7 +80,7 @@ class ApplicationAIService {
         'suggestion': {
           'suggested_status': suggested,
           'confidence_score': confidence,
-          'reasoning': 'Heuristic batch suggestion',
+          'reasoning': JobApplicationTexts.reasoningHeuristicBatch,
           'key_strengths': [],
           'key_concerns': [],
         }
@@ -109,17 +110,17 @@ class ApplicationAIService {
       };
 
       final insights = {
-        'overall_assessment': 'Moderate application quality',
+        'overall_assessment': JobApplicationTexts.overallAssessmentModerate,
         'key_insights': [
-          'Pending rate: ${stats['pending']}',
-          'Under review: ${stats['underReview']}',
+          '${JobApplicationTexts.pendingRatePrefix} ${stats['pending']}',
+          '${JobApplicationTexts.underReviewPrefix} ${stats['underReview']}',
         ],
         'recommendations': [
-          'Prioritize underReview applications for human screening',
-          'Encourage candidates to provide detailed cover letters',
+          JobApplicationTexts.recommendationPrioritizeUnderReview,
+          JobApplicationTexts.recommendationEncourageCoverLetters,
         ],
         'quality_score': 0.65,
-        'expected_hiring_success': 'medium',
+        'expected_hiring_success': JobApplicationTexts.expectedHiringSuccessMedium,
       };
 
       return {

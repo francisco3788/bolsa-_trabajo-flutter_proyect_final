@@ -78,7 +78,7 @@ class ApplicationCard extends StatelessWidget {
       children: [
         const SizedBox(height: 4),
         Text(
-          'Applied: ${_formatDate(application.appliedAt)}',
+          '${JobApplicationTexts.appliedLabel} ${_formatDate(application.appliedAt)}',
           style: TextStyle(
             color: Colors.grey[600],
             fontSize: 12,
@@ -86,7 +86,7 @@ class ApplicationCard extends StatelessWidget {
         ),
         if (application.statusUpdatedAt != null) ...[
           Text(
-            'Updated: ${_formatDate(application.statusUpdatedAt!)}',
+            '${JobApplicationTexts.updatedLabel} ${_formatDate(application.statusUpdatedAt!)}',
             style: TextStyle(
               color: Colors.grey[600],
               fontSize: 12,

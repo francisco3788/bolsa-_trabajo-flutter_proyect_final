@@ -50,7 +50,7 @@ class AISuggestionsWidget extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              'AI Status Suggestion',
+              JobApplicationTexts.aiStatusSuggestionTitle,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -59,7 +59,7 @@ class AISuggestionsWidget extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Get AI-powered recommendations for this application',
+              JobApplicationTexts.aiPoweredRecommendationsIntro,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.grey[600],
@@ -71,7 +71,7 @@ class AISuggestionsWidget extends StatelessWidget {
                 ? const CircularProgressIndicator()
                 : ElevatedButton.icon(
                     icon: const Icon(Icons.auto_awesome),
-                    label: const Text('Get AI Suggestion'),
+                    label: const Text(JobApplicationTexts.getAiSuggestion),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
@@ -117,7 +117,7 @@ class AISuggestionsWidget extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'AI Recommendation',
+                    JobApplicationTexts.aiRecommendationTitle,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -131,18 +131,18 @@ class AISuggestionsWidget extends StatelessWidget {
             const SizedBox(height: 16),
             _buildStatusRecommendation(status, confidence),
             const SizedBox(height: 12),
-            _buildSection('Reasoning', reasoning),
+            _buildSection(JobApplicationTexts.reasoningTitle, reasoning),
             if (strengths.isNotEmpty) ...[
               const SizedBox(height: 12),
-              _buildListSection('Key Strengths', strengths, Colors.green),
+              _buildListSection(JobApplicationTexts.keyStrengthsTitle, strengths, Colors.green),
             ],
             if (concerns.isNotEmpty) ...[
               const SizedBox(height: 12),
-              _buildListSection('Key Concerns', concerns, Colors.orange),
+              _buildListSection(JobApplicationTexts.keyConcernsTitle, concerns, Colors.orange),
             ],
             if (nextSteps.isNotEmpty) ...[
               const SizedBox(height: 12),
-              _buildSection('Recommended Next Steps', nextSteps),
+              _buildSection(JobApplicationTexts.recommendedNextStepsTitle, nextSteps),
             ],
             const SizedBox(height: 16),
             Row(
@@ -217,7 +217,7 @@ class AISuggestionsWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Recommended Status: $statusText',
+                  '${JobApplicationTexts.recommendedStatus}: $statusText',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: color,
@@ -225,7 +225,7 @@ class AISuggestionsWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Confidence: ${(confidence * 100).round()}%',
+                  '${JobApplicationTexts.confidence}: ${(confidence * 100).round()}%',
                   style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 12,
@@ -308,7 +308,7 @@ class AISuggestionsWidget extends StatelessWidget {
       (app) => app.id == applicationId,
       orElse: () => controller.candidateApplications.firstWhere(
         (app) => app.id == applicationId,
-        orElse: () => throw Exception('Application not found'),
+        orElse: () => throw Exception(JobApplicationTexts.applicationNotFound),
       ),
     );
 

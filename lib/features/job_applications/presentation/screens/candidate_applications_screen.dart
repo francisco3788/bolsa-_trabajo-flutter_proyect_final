@@ -39,7 +39,7 @@ class CandidateApplicationsScreen extends GetView<JobApplicationController> {
         children: [
           Expanded(
             child: _buildStatCard(
-              'Total',
+              JobApplicationTexts.totalApplicationsStat,
               controller.candidateApplications.length.toString(),
               Colors.blue,
               Icons.assignment,
@@ -48,7 +48,7 @@ class CandidateApplicationsScreen extends GetView<JobApplicationController> {
           const SizedBox(width: 8),
           Expanded(
             child: _buildStatCard(
-              'Pending',
+              JobApplicationTexts.pendingApplicationsStat,
               controller.candidateApplications.where((app) => app.status == ApplicationStatus.pending).length.toString(),
               Colors.orange,
               Icons.pending,
@@ -57,7 +57,7 @@ class CandidateApplicationsScreen extends GetView<JobApplicationController> {
           const SizedBox(width: 8),
           Expanded(
             child: _buildStatCard(
-              'Accepted',
+              JobApplicationTexts.acceptedApplicationsStat,
               controller.candidateApplications.where((app) => app.status == ApplicationStatus.accepted).length.toString(),
               Colors.green,
               Icons.check_circle,
@@ -112,15 +112,15 @@ class CandidateApplicationsScreen extends GetView<JobApplicationController> {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            _buildFilterChip('All', null),
+            _buildFilterChip(JobApplicationTexts.allStatus, null),
             const SizedBox(width: 8),
-            _buildFilterChip('Pending', ApplicationStatus.pending),
+            _buildFilterChip(JobApplicationTexts.pendingStatus, ApplicationStatus.pending),
             const SizedBox(width: 8),
-            _buildFilterChip('Under Review', ApplicationStatus.underReview),
+            _buildFilterChip(JobApplicationTexts.underReviewStatus, ApplicationStatus.underReview),
             const SizedBox(width: 8),
-            _buildFilterChip('Accepted', ApplicationStatus.accepted),
+            _buildFilterChip(JobApplicationTexts.acceptedStatus, ApplicationStatus.accepted),
             const SizedBox(width: 8),
-            _buildFilterChip('Rejected', ApplicationStatus.rejected),
+            _buildFilterChip(JobApplicationTexts.rejectedStatus, ApplicationStatus.rejected),
           ],
         ),
       ),
@@ -163,7 +163,7 @@ class CandidateApplicationsScreen extends GetView<JobApplicationController> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No applications found',
+                  JobApplicationTexts.noApplications,
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.grey[600],
@@ -171,7 +171,7 @@ class CandidateApplicationsScreen extends GetView<JobApplicationController> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Start applying to jobs to see them here',
+                  JobApplicationTexts.startApplyingToJobsHint,
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey[500],
@@ -208,7 +208,7 @@ class CandidateApplicationsScreen extends GetView<JobApplicationController> {
     showDialog(
       context: Get.context!,
       builder: (context) => AlertDialog(
-        title: Text('Application Details'),
+        title: Text(JobApplicationTexts.applicationDetailsTitle),
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,25 +216,25 @@ class CandidateApplicationsScreen extends GetView<JobApplicationController> {
             children: [
               if (application.metadata != null) ...[
                 if (application.metadata!['job_title'] != null)
-                  Text('Position: ${application.metadata!['job_title']}'),
+                  Text('${JobApplicationTexts.positionLabel} ${application.metadata!['job_title']}'),
                 if (application.metadata!['company_name'] != null)
-                  Text('Company: ${application.metadata!['company_name']}'),
+                  Text('${JobApplicationTexts.companyLabel} ${application.metadata!['company_name']}'),
               ],
               const SizedBox(height: 8),
-              Text('Applied: ${_formatDate(application.appliedAt)}'),
-              Text('Status: ${_formatStatus(application.status)}'),
+              Text('${JobApplicationTexts.appliedLabel} ${_formatDate(application.appliedAt)}'),
+              Text('${JobApplicationTexts.statusLabel} ${_formatStatus(application.status)}'),
               if (application.statusUpdatedAt != null) ...[
                 const SizedBox(height: 8),
-                Text('Updated: ${_formatDate(application.statusUpdatedAt!)}'),
+                Text('${JobApplicationTexts.updatedLabel} ${_formatDate(application.statusUpdatedAt!)}'),
               ],
               if (application.notes != null) ...[
                 const SizedBox(height: 16),
-                const Text('Review Notes:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(JobApplicationTexts.reviewNotes, style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
                 Text(application.notes!),
               ],
               const SizedBox(height: 16),
-              const Text('Your Cover Letter:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(JobApplicationTexts.yourCoverLetterTitle, style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 4),
               Text(application.coverLetter ?? ''),
             ],
@@ -243,7 +243,7 @@ class CandidateApplicationsScreen extends GetView<JobApplicationController> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: const Text(JobApplicationTexts.close),
           ),
         ],
       ),
@@ -257,15 +257,15 @@ class CandidateApplicationsScreen extends GetView<JobApplicationController> {
   String _formatStatus(ApplicationStatus status) {
     switch (status) {
       case ApplicationStatus.pending:
-        return 'Pending';
+        return JobApplicationTexts.pendingStatus;
       case ApplicationStatus.underReview:
-        return 'Under Review';
+        return JobApplicationTexts.underReviewStatus;
       case ApplicationStatus.accepted:
-        return 'Accepted';
+        return JobApplicationTexts.acceptedStatus;
       case ApplicationStatus.rejected:
-        return 'Rejected';
+        return JobApplicationTexts.rejectedStatus;
       case ApplicationStatus.cancelled:
-        return 'Cancelled';
+        return JobApplicationTexts.cancelledStatus;
     }
   }
 }

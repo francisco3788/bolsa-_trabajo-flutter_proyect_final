@@ -84,8 +84,8 @@ class JobApplicationController extends GetxController {
         },
       );
     } catch (e) {
-      errorMessage.value = 'Failed to apply: $e';
-      Get.snackbar('Error', errorMessage.value);
+      errorMessage.value = '${JobApplicationTexts.failedToApplyPrefix} $e';
+      Get.snackbar(JobApplicationTexts.errorTitle, errorMessage.value);
     } finally {
       isLoading.value = false;
     }
@@ -110,8 +110,8 @@ class JobApplicationController extends GetxController {
         },
       );
     } catch (e) {
-      errorMessage.value = 'Failed to load applications: $e';
-      Get.snackbar('Error', errorMessage.value);
+      errorMessage.value = '${JobApplicationTexts.failedToLoadApplicationsPrefix} $e';
+      Get.snackbar(JobApplicationTexts.errorTitle, errorMessage.value);
     } finally {
       isLoading.value = false;
     }
@@ -144,8 +144,8 @@ class JobApplicationController extends GetxController {
         },
       );
     } catch (e) {
-      errorMessage.value = 'Failed to load company applications: $e';
-      Get.snackbar('Error', errorMessage.value);
+      errorMessage.value = '${JobApplicationTexts.failedToLoadCompanyApplicationsPrefix} $e';
+      Get.snackbar(JobApplicationTexts.errorTitle, errorMessage.value);
     } finally {
       isLoading.value = false;
     }
@@ -171,7 +171,7 @@ class JobApplicationController extends GetxController {
       result.fold(
         (error) {
           errorMessage.value = _mapErrorToMessage(error);
-          Get.snackbar('Error', errorMessage.value);
+          Get.snackbar(JobApplicationTexts.errorTitle, errorMessage.value);
         },
         (updatedApplication) {
           // Find the old application to get the previous status
@@ -202,7 +202,7 @@ class JobApplicationController extends GetxController {
         },
       );
     } catch (e) {
-      errorMessage.value = 'Failed to update status: $e';
+      errorMessage.value = '${JobApplicationTexts.failedToUpdateStatusPrefix} $e';
       Get.snackbar(JobApplicationTexts.errorTitle, errorMessage.value);
     } finally {
       isLoading.value = false;
@@ -224,7 +224,7 @@ class JobApplicationController extends GetxController {
         },
       );
     } catch (e) {
-      errorMessage.value = 'Failed to load stats: $e';
+      errorMessage.value = '${JobApplicationTexts.failedToLoadStatsPrefix} $e';
     }
   }
 
@@ -275,7 +275,7 @@ class JobApplicationController extends GetxController {
     required String companyRequirements,
   }) async {
     if (aiService == null) {
-      errorMessage.value = 'AI service not available';
+      errorMessage.value = JobApplicationTexts.aiServiceNotAvailable;
       return;
     }
 
@@ -294,10 +294,10 @@ class JobApplicationController extends GetxController {
         aiSuggestions[application.id] = result['suggestion'];
         Get.snackbar(JobApplicationTexts.aiSuggestionTitle, JobApplicationTexts.aiSuggestionGenerated);
       } else {
-        errorMessage.value = result['error'] ?? 'Failed to generate AI suggestion';
+        errorMessage.value = result['error'] ?? JobApplicationTexts.failedToGenerateAiSuggestion;
       }
     } catch (e) {
-      errorMessage.value = 'AI suggestion error: $e';
+      errorMessage.value = '${JobApplicationTexts.aiSuggestionErrorPrefix} $e';
     } finally {
       isAISuggesting.value = false;
     }
@@ -310,7 +310,7 @@ class JobApplicationController extends GetxController {
     required String companyRequirements,
   }) async {
     if (aiService == null) {
-      errorMessage.value = 'AI service not available';
+      errorMessage.value = JobApplicationTexts.aiServiceNotAvailable;
       return;
     }
 
@@ -345,7 +345,7 @@ class JobApplicationController extends GetxController {
     required String jobTitle,
   }) async {
     if (aiService == null) {
-      errorMessage.value = 'AI service not available';
+      errorMessage.value = JobApplicationTexts.aiServiceNotAvailable;
       return;
     }
 
@@ -362,10 +362,10 @@ class JobApplicationController extends GetxController {
         aiSuggestions['insights'] = result['insights'];
         Get.snackbar(JobApplicationTexts.aiInsightsTitle, JobApplicationTexts.aiInsightsGenerated);
       } else {
-        errorMessage.value = result['error'] ?? 'Failed to generate insights';
+        errorMessage.value = result['error'] ?? JobApplicationTexts.failedToGenerateInsights;
       }
     } catch (e) {
-      errorMessage.value = 'AI insights error: $e';
+      errorMessage.value = '${JobApplicationTexts.aiInsightsErrorPrefix} $e';
     } finally {
       isAISuggesting.value = false;
     }

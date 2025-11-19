@@ -40,7 +40,7 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
                     final companyId = Get.find<AuthSessionService>().user?.id ?? '';
                     await controller.loadUnreadNotificationCount(companyId);
                   },
-                  tooltip: 'Notifications',
+                  tooltip: JobApplicationTexts.notificationsTooltip,
                 ),
                 if (count > 0)
                   Positioned(
@@ -252,8 +252,8 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
                         color: Colors.blue.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Text('Quality: ${(quality * 100).round()}%'),
-                    ),
+                      child: Text('${JobApplicationTexts.qualityLabel} ${(quality * 100).round()}%'),
+                      ),
                   ],
                 ),
                 const SizedBox(height: 12),
