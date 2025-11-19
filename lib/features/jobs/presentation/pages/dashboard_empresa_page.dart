@@ -18,14 +18,14 @@ class DashboardCompanyPage extends StatelessWidget {
   return Scaffold(
     appBar: AppBar(
       title: const Text(JobsTexts.companyAppBarTitle),
-      backgroundColor: Colors.blue,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       foregroundColor: Colors.white,
       elevation: 0,
     ),
       drawer: _buildDrawer(context),
       floatingActionButton: FloatingActionButton(
         onPressed: () => controller.goToCreateJob(),
-        backgroundColor: Colors.blue,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         child: const Icon(Icons.add, color: Colors.white),
       ),
       body: RefreshIndicator(
@@ -53,9 +53,9 @@ class DashboardCompanyPage extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
+          DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Theme.of(context).colorScheme.primary,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +67,7 @@ class DashboardCompanyPage extends StatelessWidget {
                   size: 40,
                 ),
                 SizedBox(height: 8),
-                Text(
+                const Text(
                   JobsTexts.companyPanel,
                   style: TextStyle(
                     color: Colors.white,
@@ -142,8 +142,11 @@ class DashboardCompanyPage extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            gradient: const LinearGradient(
-              colors: [Colors.blue, Colors.blueAccent],
+            gradient: LinearGradient(
+              colors: [
+                Theme.of(Get.context!).colorScheme.primary,
+                Theme.of(Get.context!).colorScheme.primary.withOpacity(0.8),
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -237,7 +240,7 @@ class DashboardCompanyPage extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: isSelected ? Colors.blue : Colors.grey[200],
+            color: isSelected ? Theme.of(Get.context!).colorScheme.primary : Colors.grey[200],
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
@@ -395,7 +398,7 @@ class DashboardCompanyPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: _getStatusColor(job.status).withValues(alpha: 0.1),
+                      color: _getStatusColor(job.status).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
@@ -438,14 +441,14 @@ class DashboardCompanyPage extends StatelessWidget {
                     return Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF3A5A92).withOpacity(0.10),
+                        color: Theme.of(Get.context!).colorScheme.primary.withOpacity(0.10),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         skill,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 10,
-                          color: Color(0xFF3A5A92),
+                          color: Theme.of(Get.context!).colorScheme.primary,
                         ),
                       ),
                     );
