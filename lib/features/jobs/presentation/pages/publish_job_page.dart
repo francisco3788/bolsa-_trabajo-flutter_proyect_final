@@ -61,7 +61,7 @@ class _PublishJobPageState extends State<PublishJobPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(JobsTexts.publishJobTitle),
-        backgroundColor: Colors.blue,
+        backgroundColor: const Color(0xFF3A5A92),
         foregroundColor: Colors.white,
         elevation: 0,
       ),
@@ -214,7 +214,7 @@ class _PublishJobPageState extends State<PublishJobPage> {
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _submitJob,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: const Color(0xFF3A5A92),
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -245,7 +245,7 @@ class _PublishJobPageState extends State<PublishJobPage> {
       style: const TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
-        color: Colors.blue,
+        color: Color(0xFF3A5A92),
       ),
     );
   }
@@ -268,7 +268,7 @@ class _PublishJobPageState extends State<PublishJobPage> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.blue, width: 2),
+          borderSide: const BorderSide(color: Color(0xFF3A5A92), width: 2),
         ),
       ),
       maxLines: maxLines,
@@ -293,7 +293,7 @@ class _PublishJobPageState extends State<PublishJobPage> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.blue, width: 2),
+          borderSide: const BorderSide(color: Color(0xFF3A5A92), width: 2),
         ),
       ),
       items: items.map((item) {
