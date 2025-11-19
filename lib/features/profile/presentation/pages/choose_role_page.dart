@@ -210,7 +210,7 @@ class _CandidateForm extends StatelessWidget {
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
                     )
-                  : const Text('Guardar y continuar'),
+                  : const Text(ProfileTexts.saveAndContinue),
             ),
           ),
         ],
@@ -232,7 +232,7 @@ class _CompanyForm extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Datos de empresa',
+            ProfileTexts.companyFormTitle,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 16),
@@ -240,8 +240,8 @@ class _CompanyForm extends StatelessWidget {
             controller: controller.companyNameController,
             textInputAction: TextInputAction.next,
             decoration: const InputDecoration(
-              labelText: 'Nombre de la empresa',
-              hintText: 'Acme Corp',
+              labelText: ProfileTexts.companyNameLabel,
+              hintText: ProfileTexts.companyNameHint,
             ),
             validator: (value) =>
                 controller.validateRequired(value, 'El nombre'),
@@ -251,8 +251,8 @@ class _CompanyForm extends StatelessWidget {
             controller: controller.companySectorController,
             textInputAction: TextInputAction.next,
             decoration: const InputDecoration(
-              labelText: 'Sector',
-              hintText: 'Tecnologia, Educacion, Salud...',
+              labelText: ProfileTexts.companySectorLabel,
+              hintText: ProfileTexts.companySectorHint,
             ),
             validator: (value) =>
                 controller.validateRequired(value, 'El sector'),
@@ -262,8 +262,8 @@ class _CompanyForm extends StatelessWidget {
             controller: controller.companyLocationController,
             textInputAction: TextInputAction.done,
             decoration: const InputDecoration(
-              labelText: 'Ubicacion',
-              hintText: 'Medellin, Colombia',
+              labelText: ProfileTexts.companyLocationLabel,
+              hintText: ProfileTexts.companyLocationHint,
             ),
             validator: (value) =>
                 controller.validateRequired(value, 'La ubicacion'),

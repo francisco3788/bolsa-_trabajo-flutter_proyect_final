@@ -29,9 +29,9 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
                           child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                         )
                       : const Icon(Icons.save, size: 18),
-                  label: Text(controller.isSaving.value ? 'Saving...' : ProfileTexts.save),
+                  label: Text(controller.isSaving.value ? ProfileTexts.savingLabel : ProfileTexts.save),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white.withValues(alpha: 0.2),
+                    backgroundColor: Colors.white.withOpacity(0.2),
                     foregroundColor: Colors.white,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -54,7 +54,7 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Theme.of(context).colorScheme.primary.withValues(alpha: 0.02),
+                Theme.of(context).colorScheme.primary.withOpacity(0.02),
                 Colors.white,
                 Colors.white,
               ],
@@ -161,7 +161,7 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
                             controller.addSkill(controller.skillController.text);
                             controller.skillController.clear();
                           },
-                          child: const Text('Add'),
+                          child: const Text(ProfileTexts.add),
                         ),
                       ],
                     ),
@@ -211,7 +211,7 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
                         const SizedBox(width: 8),
                         ElevatedButton(
                           onPressed: controller.addLanguage,
-                          child: const Text('Add'),
+                          child: const Text(ProfileTexts.add),
                         ),
                       ],
                     ),
@@ -241,7 +241,7 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
                             ElevatedButton.icon(
                               onPressed: controller.isUploadingCv.value ? null : controller.pickAndUploadCv,
                               icon: const Icon(Icons.upload_file),
-                              label: const Text('Upload PDF'),
+                              label: const Text(ProfileTexts.uploadPdf),
                             ),
                             const SizedBox(width: 12),
                             if (controller.isUploadingCv.value)
@@ -252,7 +252,7 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
                                   ? null
                                   : () => _openCv(controller.cvLinkController.text),
                               icon: const Icon(Icons.open_in_new),
-                              label: const Text('Open CV'),
+                              label: const Text(ProfileTexts.openCv),
                             ),
                           ],
                         )),
@@ -294,7 +294,7 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
                     ),
                   ]),
                   const SizedBox(height: 24),
-                  _buildSectionCard(context, 'Preferences', Icons.tune, [
+                  _buildSectionCard(context, ProfileTexts.preferencesSection, Icons.tune, [
                     Obx(() => _buildDropdown<String>(
                           context,
                           controller.workType.value.isEmpty ? null : controller.workType.value,
@@ -356,7 +356,7 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        ElevatedButton(onPressed: controller.addPreferredLocation, child: const Text('Add')),
+                        ElevatedButton(onPressed: controller.addPreferredLocation, child: const Text(ProfileTexts.add)),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -377,10 +377,10 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.error.withValues(alpha: 0.1),
+                        color: Theme.of(context).colorScheme.error.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: Theme.of(context).colorScheme.error.withValues(alpha: 0.3),
+                          color: Theme.of(context).colorScheme.error.withOpacity(0.3),
                         ),
                       ),
                       child: Row(
@@ -409,10 +409,10 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+                          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
                         ),
                       ),
                       child: Row(
@@ -455,13 +455,13 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.08),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
         ],
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
           width: 1,
         ),
       ),
@@ -473,7 +473,7 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
@@ -508,13 +508,13 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
-            Theme.of(context).colorScheme.primary.withValues(alpha: 0.02),
+            Theme.of(context).colorScheme.primary.withOpacity(0.05),
+            Theme.of(context).colorScheme.primary.withOpacity(0.02),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
           width: 1,
         ),
       ),
@@ -574,19 +574,19 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
         decoration: InputDecoration(
           labelText: labelText,
           hintText: hintText,
-          prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.7)),
+          prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
           filled: true,
-          fillColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.03),
+          fillColor: Theme.of(context).colorScheme.primary.withOpacity(0.03),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
             ),
           ),
           focusedBorder: OutlineInputBorder(
@@ -597,11 +597,11 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
             ),
           ),
           labelStyle: TextStyle(
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
             fontWeight: FontWeight.w500,
           ),
           hintStyle: TextStyle(
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
           ),
         ),
         validator: validator,
@@ -627,13 +627,13 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
         decoration: InputDecoration(
           labelText: labelText,
           hintText: hintText,
-          prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.7)),
+          prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
           filled: true,
-          fillColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.03),
+          fillColor: Theme.of(context).colorScheme.primary.withOpacity(0.03),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
             ),
           ),
         ),

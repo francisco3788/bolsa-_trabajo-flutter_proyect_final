@@ -6,6 +6,7 @@ import 'package:bolsa_de_trabajo/features/profile/presentation/bindings/enhanced
 import 'package:bolsa_de_trabajo/features/profile/presentation/bindings/candidate_profile_binding.dart';
 import 'candidate_profile_page.dart';
 import 'enhanced_company_profile_page.dart';
+import '../../constants/profile_messages.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -20,12 +21,12 @@ class ProfilePage extends StatelessWidget {
       if (userRole == null) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Profile'),
+            title: const Text(ProfileMessages.profileTitle),
             backgroundColor: Theme.of(context).primaryColor,
             foregroundColor: Colors.white,
           ),
           body: const Center(
-            child: Text('Please log in to view your profile'),
+            child: Text(ProfileMessages.loginRequiredPrompt),
           ),
         );
       }
@@ -45,12 +46,12 @@ class ProfilePage extends StatelessWidget {
       } else {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Profile'),
+            title: const Text(ProfileMessages.profileTitle),
             backgroundColor: Theme.of(context).primaryColor,
             foregroundColor: Colors.white,
           ),
           body: const Center(
-            child: Text('Unknown user role'),
+            child: Text(ProfileMessages.unknownRoleMessage),
           ),
         );
       }

@@ -32,9 +32,9 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
                       child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                     )
                   : const Icon(Icons.save, size: 18),
-              label: Text(controller.isSaving.value ? 'Saving...' : 'Save'),
+              label: Text(controller.isSaving.value ? ProfileTexts.savingLabel : ProfileTexts.save),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white.withValues(alpha: 0.2),
+                backgroundColor: Colors.white.withOpacity(0.2),
                 foregroundColor: Colors.white,
                 elevation: 0,
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -57,7 +57,7 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Theme.of(context).colorScheme.primary.withValues(alpha: 0.02),
+                Theme.of(context).colorScheme.primary.withOpacity(0.02),
                 Colors.white,
                 Colors.white,
               ],
@@ -72,7 +72,7 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
                 children: [
                   _buildLogoSection(context),
                   const SizedBox(height: 24),
-                  _buildSectionCard(context, 'Basic Information', Icons.info_outline, [
+                  _buildSectionCard(context, ProfileTexts.basicInformationSection, Icons.info_outline, [
                     _buildStyledTextField(context, controller.companyNameController, 
                         ProfileTexts.companyNameLabel, ProfileTexts.companyNameHint, 
                         Icons.business, (value) => controller.validateRequired(value, 'Company name')),
@@ -99,7 +99,7 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
                         Icons.calendar_today, controller.validateYear, TextInputType.number),
                   ]),
                   const SizedBox(height: 24),
-                  _buildSectionCard(context, 'Contact Information', Icons.contact_mail, [
+                  _buildSectionCard(context, ProfileTexts.contactInformationSection, Icons.contact_mail, [
                     _buildStyledTextField(context, controller.companyContactPersonController,
                         ProfileTexts.companyContactPersonLabel, ProfileTexts.companyContactPersonHint,
                         Icons.person, null),
@@ -117,7 +117,7 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
                         Icons.location_city, null, TextInputType.text, null, 2),
                   ]),
                   const SizedBox(height: 24),
-                  _buildSectionCard(context, 'Company Details', Icons.info, [
+                  _buildSectionCard(context, ProfileTexts.companyDetailsSection, Icons.info, [
                     _buildStyledTextField(context, controller.companyDescriptionController,
                         ProfileTexts.companyDescriptionLabel, ProfileTexts.companyDescriptionHint,
                         Icons.description, null, TextInputType.multiline, null, 4),
@@ -136,7 +136,7 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
                         Icons.home_work, null)),
                   ]),
                   const SizedBox(height: 24),
-                  _buildSectionCard(context, 'Company Benefits', Icons.card_giftcard, [
+                  _buildSectionCard(context, ProfileTexts.companyBenefitsSection, Icons.card_giftcard, [
                     Row(
                       children: [
                         Expanded(
@@ -150,7 +150,7 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
                             gradient: LinearGradient(
                               colors: [
                                 Theme.of(context).colorScheme.primary,
-                                Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
+                                Theme.of(context).colorScheme.primary.withOpacity(0.8),
                               ],
                             ),
                             borderRadius: BorderRadius.circular(12),
@@ -179,12 +179,12 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                          backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                           deleteIconColor: Theme.of(context).colorScheme.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                             side: BorderSide(
-                              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+                              color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
                               width: 1,
                             ),
                           ),
@@ -194,7 +194,7 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
                     )),
                   ]),
                   const SizedBox(height: 24),
-                  _buildSectionCard(context, 'Social Media', Icons.share, [
+                  _buildSectionCard(context, ProfileTexts.socialMediaSection, Icons.share, [
                     _buildStyledTextField(context, controller.companyLinkedinController,
                         ProfileTexts.companyLinkedinLabel, ProfileTexts.companyLinkedinHint,
                         Icons.link, controller.validateWebsite),
@@ -208,10 +208,10 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.error.withValues(alpha: 0.1),
+                        color: Theme.of(context).colorScheme.error.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: Theme.of(context).colorScheme.error.withValues(alpha: 0.3),
+                          color: Theme.of(context).colorScheme.error.withOpacity(0.3),
                         ),
                       ),
                       child: Row(
@@ -240,10 +240,10 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+                          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
                         ),
                       ),
                       child: Row(
@@ -285,13 +285,13 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
-            Theme.of(context).colorScheme.primary.withValues(alpha: 0.02),
+            Theme.of(context).colorScheme.primary.withOpacity(0.05),
+            Theme.of(context).colorScheme.primary.withOpacity(0.02),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
           width: 1,
         ),
       ),
@@ -303,8 +303,8 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+                    BoxShadow(
+                    color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -318,7 +318,7 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
                     ? Icon(
                         Icons.business_center,
                         size: 70,
-                        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
                       )
                     : null,
               ),
@@ -371,13 +371,13 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.08),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
         ],
-        border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+          border: Border.all(
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
           width: 1,
         ),
       ),
@@ -389,7 +389,7 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
@@ -436,19 +436,19 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
         decoration: InputDecoration(
           labelText: labelText,
           hintText: hintText,
-          prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.7)),
+          prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
           filled: true,
-          fillColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.03),
+          fillColor: Theme.of(context).colorScheme.primary.withOpacity(0.03),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
             ),
           ),
           focusedBorder: OutlineInputBorder(
@@ -459,11 +459,11 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
             ),
           ),
           labelStyle: TextStyle(
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
             fontWeight: FontWeight.w500,
           ),
           hintStyle: TextStyle(
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
           ),
         ),
         validator: validator,
@@ -489,19 +489,19 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
         decoration: InputDecoration(
           labelText: labelText,
           hintText: hintText,
-          prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.7)),
+          prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.primary.withOpacity(0.7)),
           filled: true,
-          fillColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.03),
+          fillColor: Theme.of(context).colorScheme.primary.withOpacity(0.03),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
             ),
           ),
           focusedBorder: OutlineInputBorder(
@@ -512,11 +512,11 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
             ),
           ),
           labelStyle: TextStyle(
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.8),
             fontWeight: FontWeight.w500,
           ),
           hintStyle: TextStyle(
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
           ),
         ),
         items: items.map((item) {

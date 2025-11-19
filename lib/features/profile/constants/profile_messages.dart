@@ -17,6 +17,8 @@ class ProfileMessages {
   static const profileTitle = 'My Profile';
   static const candidateProfileTitle = 'Candidate Profile';
   static const companyProfileTitle = 'Company Profile';
+  static const loginRequiredPrompt = 'Please log in to view your profile';
+  static const unknownRoleMessage = 'Unknown user role';
 
   // Candidate profile fields
   static const personalInformation = 'Personal Information';
@@ -167,4 +169,18 @@ class ProfileTexts {
   static const uploadLogo = 'Upload Logo';
   static const changeLogo = 'Change Logo';
   static const selectOption = 'Select an option';
+
+  // Common UI labels and sections
+  static const savingLabel = 'Saving...';
+  static const add = 'Add';
+  static const uploadPdf = 'Upload PDF';
+  static const openCv = 'Open CV';
+  static const preferencesSection = 'Preferences';
+
+  // Section titles for company profile
+  static const basicInformationSection = 'Basic Information';
+  static const contactInformationSection = 'Contact Information';
+  static const companyDetailsSection = 'Company Details';
+  static const companyBenefitsSection = 'Company Benefits';
+  static const socialMediaSection = 'Social Media';
 }
