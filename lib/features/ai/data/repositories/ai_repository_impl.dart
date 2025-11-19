@@ -3,15 +3,13 @@ import '../../../../core/network/network_info.dart';
 import '../../domain/entities/ai_generated_job.dart';
 import '../../domain/repositories/ai_repository.dart';
 import '../datasources/ai_remote_datasource.dart';
+import '../../constants/ai_texts.dart';
 
 class AiRepositoryImpl implements AiRepository {
   final AiRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
-  AiRepositoryImpl({
-    required this.remoteDataSource,
-    required this.networkInfo,
-  });
+  AiRepositoryImpl({required this.remoteDataSource, required this.networkInfo});
 
   @override
   Future<Either<Exception, List<AiGeneratedJob>>> generateJobs({
@@ -32,10 +30,10 @@ class AiRepositoryImpl implements AiRepository {
         );
         return Right(jobs);
       } catch (e) {
-        return Left(Exception('Failed to generate jobs: $e'));
+        return Left(Exception('${AiTexts.failedToGenerateJobs}: $e'));
       }
     } else {
-      return Left(Exception('No internet connection'));
+      return Left(Exception(AiTexts.noInternetConnection));
     }
   }
 
@@ -52,24 +50,26 @@ class AiRepositoryImpl implements AiRepository {
         );
         return Right(jobs);
       } catch (e) {
-        return Left(Exception('Failed to get generated jobs: $e'));
+        return Left(Exception('${AiTexts.failedToGetGeneratedJobs}: $e'));
       }
     } else {
-      return Left(Exception('No internet connection'));
+      return Left(Exception(AiTexts.noInternetConnection));
     }
   }
 
   @override
-  Future<Either<Exception, void>> saveGeneratedJobs(List<AiGeneratedJob> jobs) async {
+  Future<Either<Exception, void>> saveGeneratedJobs(
+    List<AiGeneratedJob> jobs,
+  ) async {
     if (await networkInfo.isConnected) {
       try {
         await remoteDataSource.saveGeneratedJobs(jobs);
         return const Right(null);
       } catch (e) {
-        return Left(Exception('Failed to save generated jobs: $e'));
+        return Left(Exception('${AiTexts.failedToSaveGeneratedJobs}: $e'));
       }
     } else {
-      return Left(Exception('No internet connection'));
+      return Left(Exception(AiTexts.noInternetConnection));
     }
   }
 
@@ -80,10 +80,10 @@ class AiRepositoryImpl implements AiRepository {
         await remoteDataSource.deactivateJob(jobId);
         return const Right(null);
       } catch (e) {
-        return Left(Exception('Failed to deactivate job: $e'));
+        return Left(Exception('${AiTexts.failedToDeactivateJob}: $e'));
       }
     } else {
-      return Left(Exception('No internet connection'));
+      return Left(Exception(AiTexts.noInternetConnection));
     }
   }
 
@@ -100,10 +100,10 @@ class AiRepositoryImpl implements AiRepository {
         );
         return Right(jobs);
       } catch (e) {
-        return Left(Exception('Failed to search jobs: $e'));
+        return Left(Exception('${AiTexts.failedToSearchJobs}: $e'));
       }
     } else {
-      return Left(Exception('No internet connection'));
+      return Left(Exception(AiTexts.noInternetConnection));
     }
   }
 }

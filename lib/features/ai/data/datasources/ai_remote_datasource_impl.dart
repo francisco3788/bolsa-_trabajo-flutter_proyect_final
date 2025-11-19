@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../../../../core/config/ai_config.dart';
 import '../../domain/entities/ai_generated_job.dart';
 import 'ai_remote_datasource.dart';
+import '../../constants/ai_texts.dart';
 
 class AiRemoteDataSourceImpl implements AiRemoteDataSource {
   final http.Client client;
@@ -89,7 +90,7 @@ class AiRemoteDataSourceImpl implements AiRemoteDataSource {
     final geminiApiKey = AiConfig.geminiApiKey;
     
     if (geminiApiKey == 'YOUR_GEMINI_API_KEY_HERE') {
-      throw Exception('Google Gemini API key not configured. Please set GEMINI_API_KEY environment variable or update AiConfig.geminiApiKey');
+      throw Exception(AiTexts.geminiNotConfiguredError);
     }
     
     final prompt = _buildJobGenerationPrompt(
@@ -125,7 +126,7 @@ class AiRemoteDataSourceImpl implements AiRemoteDataSource {
     );
 
     if (response.statusCode != 200) {
-      throw Exception('Gemini API error: ${response.statusCode} - ${response.body}');
+      throw Exception('${AiTexts.geminiApiErrorPrefix} ${response.statusCode} - ${response.body}');
     }
 
     final data = json.decode(response.body);
@@ -160,7 +161,7 @@ class AiRemoteDataSourceImpl implements AiRemoteDataSource {
     final openAiApiKey = AiConfig.openAiApiKey;
     
     if (openAiApiKey == 'YOUR_OPENAI_API_KEY_HERE') {
-      throw Exception('OpenAI API key not configured. Please set OPENAI_API_KEY environment variable or update AiConfig.openAiApiKey');
+      throw Exception(AiTexts.openAiNotConfiguredError);
     }
     
     final prompt = _buildJobGenerationPrompt(
@@ -196,13 +197,13 @@ class AiRemoteDataSourceImpl implements AiRemoteDataSource {
 
     if (response.statusCode != 200) {
       if (response.statusCode == 429) {
-        throw Exception('OpenAI rate limit exceeded. Please wait a moment and try again. This usually resets within a few minutes.');
+        throw Exception(AiTexts.openAiRateLimitError);
       } else if (response.statusCode == 401) {
-        throw Exception('OpenAI API key is invalid or missing. Please check your API key configuration.');
+        throw Exception(AiTexts.openAiInvalidKeyError);
       } else if (response.statusCode == 500) {
-        throw Exception('OpenAI server error. Please try again later.');
+        throw Exception(AiTexts.openAiServerError);
       } else {
-        throw Exception('OpenAI API error: ${response.statusCode}');
+        throw Exception('${AiTexts.openAiApiErrorPrefix} ${response.statusCode}');
       }
     }
 
@@ -234,7 +235,7 @@ class AiRemoteDataSourceImpl implements AiRemoteDataSource {
     return '''
 Generate $limit realistic job postings for "$searchQuery" in JSON format.
 
-Requirements:
+${AiTexts.promptRequirementsHeader}:
 - Each job should have: title, description, company_name, location, work_mode (remote/hybrid/onsite), 
   job_type (full_time/part_time/contract/internship), salary_range (min/max), currency (USD), 
   skills (array), requirements, benefits
@@ -273,7 +274,7 @@ Example format:
       final uuid = Uuid();
       
       if (jsonData is! List) {
-        throw Exception('Expected JSON array, got ${jsonData.runtimeType}');
+        throw Exception('${AiTexts.expectedJsonArrayError}, got ${jsonData.runtimeType}');
       }
       
       return jsonData.map<AiGeneratedJob>((jobData) {
@@ -286,18 +287,18 @@ Example format:
         
         return AiGeneratedJob(
           id: uuid.v4(),
-          title: jobData['title'] ?? 'Software Developer',
-          description: jobData['description'] ?? 'No description available',
-          companyName: jobData['company_name'] ?? 'Tech Company',
-          location: jobData['location'] ?? 'Remote',
+          title: jobData['title'] ?? AiTexts.defaultTitle,
+          description: jobData['description'] ?? AiTexts.defaultDescription,
+          companyName: jobData['company_name'] ?? AiTexts.defaultCompanyName,
+          location: jobData['location'] ?? AiTexts.defaultLocationRemote,
           workMode: jobData['work_mode'] ?? 'remote',
           jobType: jobData['job_type'] ?? 'full_time',
           salaryMin: salaryMin,
           salaryMax: salaryMax,
-          currency: jobData['currency'] ?? 'USD',
-          skills: List<String>.from(jobData['skills'] ?? ['Software Development']),
-          requirements: jobData['requirements'] ?? 'Requirements not specified',
-          benefits: jobData['benefits'] ?? 'Benefits not specified',
+          currency: jobData['currency'] ?? AiTexts.defaultCurrencyUSD,
+          skills: List<String>.from(jobData['skills'] ?? [AiTexts.defaultSkillGeneric]),
+          requirements: jobData['requirements'] ?? AiTexts.requirementsNotSpecified,
+          benefits: jobData['benefits'] ?? AiTexts.benefitsNotSpecified,
           aiConfidenceScore: (Random().nextDouble() * 0.3) + 0.7, // 0.7 to 1.0
           aiSearchQuery: searchQuery,
           generatedAt: DateTime.now(),
@@ -326,13 +327,13 @@ Example format:
       );
 
       if (response.statusCode != 200) {
-        throw Exception('Supabase error: ${response.statusCode}');
+        throw Exception('${AiTexts.supabaseErrorPrefix} ${response.statusCode}');
       }
 
       final data = json.decode(response.body);
       return (data as List).map((job) => AiGeneratedJob.fromMap(job)).toList();
     } catch (e) {
-      throw Exception('Failed to get generated jobs: $e');
+      throw Exception('${AiTexts.failedToGetGeneratedJobs}: $e');
     }
   }
 
@@ -353,10 +354,10 @@ Example format:
       );
 
       if (response.statusCode != 201 && response.statusCode != 200) {
-        throw Exception('Supabase error: ${response.statusCode} - ${response.body}');
+        throw Exception('${AiTexts.supabaseErrorPrefix} ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
-      throw Exception('Failed to save generated jobs: $e');
+      throw Exception('${AiTexts.failedToSaveGeneratedJobs}: $e');
     }
   }
 
@@ -374,10 +375,10 @@ Example format:
       );
 
       if (response.statusCode != 204) {
-        throw Exception('Supabase error: ${response.statusCode}');
+        throw Exception('${AiTexts.supabaseErrorPrefix} ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Failed to deactivate job: $e');
+      throw Exception('${AiTexts.failedToDeactivateJob}: $e');
     }
   }
 
@@ -397,13 +398,13 @@ Example format:
       );
 
       if (response.statusCode != 200) {
-        throw Exception('Supabase error: ${response.statusCode}');
+        throw Exception('${AiTexts.supabaseErrorPrefix} ${response.statusCode}');
       }
 
       final data = json.decode(response.body);
       return (data as List).map((job) => AiGeneratedJob.fromMap(job)).toList();
     } catch (e) {
-      throw Exception('Failed to search jobs: $e');
+      throw Exception('${AiTexts.failedToSearchJobs}: $e');
     }
   }
 }

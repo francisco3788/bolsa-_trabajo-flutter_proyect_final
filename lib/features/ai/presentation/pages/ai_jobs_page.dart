@@ -35,7 +35,7 @@ class AiJobsPage extends GetView<AiJobsController> {
         // If still not found, show error message
         return Scaffold(
           appBar: AppBar(
-            title: const Text('AI-Powered Job Search'),
+            title: const Text(AiTexts.appTitle),
             backgroundColor: Colors.blue[800],
           ),
           body: Center(
@@ -45,12 +45,12 @@ class AiJobsPage extends GetView<AiJobsController> {
                 const Icon(Icons.error_outline, size: 64, color: Colors.red),
                 const SizedBox(height: 16),
                 const Text(
-                  'AI Module Error',
+                  AiTexts.aiModuleErrorTitle,
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Failed to initialize: $e',
+                  '${AiTexts.failedToInitialize} $e',
                   style: const TextStyle(fontSize: 16),
                   textAlign: TextAlign.center,
                 ),
@@ -60,7 +60,7 @@ class AiJobsPage extends GetView<AiJobsController> {
                     print('AiJobsPage: Retrying initialization...');
                     AiModule.ensureInitialized();
                   },
-                  child: const Text('Retry'),
+                  child: const Text(AiTexts.retry),
                 ),
               ],
             ),
@@ -71,13 +71,13 @@ class AiJobsPage extends GetView<AiJobsController> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AI-Powered Job Search'),
+        title: const Text(AiTexts.appTitle),
         backgroundColor: Colors.blue[800],
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: controller.refreshJobs,
-            tooltip: 'Refresh AI Jobs',
+            tooltip: AiTexts.refreshAiJobs,
           ),
         ],
       ),
@@ -128,7 +128,7 @@ class AiJobsPage extends GetView<AiJobsController> {
                         height: 20,
                         child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                       )
-                    : const Text('Generate', style: TextStyle(color: Colors.white)),
+                    : const Text(AiTexts.generate, style: TextStyle(color: Colors.white)),
               )),
             ],
           ),
@@ -160,15 +160,17 @@ class AiJobsPage extends GetView<AiJobsController> {
           Expanded(
             child: DropdownButtonFormField<String>(
               decoration: const InputDecoration(
-                labelText: 'Location',
+                labelText: AiTexts.labelLocation,
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               ),
               value: controller.selectedLocation.value.isEmpty ? null : controller.selectedLocation.value,
-              items: ['', 'Remote', 'New York', 'San Francisco', 'London', 'Berlin'].map((location) {
+              items: ['']
+                  .followedBy(AiTexts.locationsPool)
+                  .map((location) {
                 return DropdownMenuItem(
                   value: location,
-                  child: Text(location.isEmpty ? 'All Locations' : location),
+                  child: Text(location.isEmpty ? AiTexts.allLocations : location),
                 );
               }).toList(),
               onChanged: (value) => controller.updateLocation(value ?? ''),
@@ -178,15 +180,17 @@ class AiJobsPage extends GetView<AiJobsController> {
           Expanded(
             child: DropdownButtonFormField<String>(
               decoration: const InputDecoration(
-                labelText: 'Work Mode',
+                labelText: AiTexts.labelWorkMode,
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               ),
               value: controller.selectedWorkMode.value.isEmpty ? null : controller.selectedWorkMode.value,
-              items: ['', 'remote', 'hybrid', 'onsite'].map((mode) {
+              items: ['']
+                  .followedBy(AiTexts.workModes)
+                  .map((mode) {
                 return DropdownMenuItem(
                   value: mode,
-                  child: Text(mode.isEmpty ? 'All Modes' : _getWorkModeDisplay(mode)),
+                  child: Text(mode.isEmpty ? AiTexts.allModes : _getWorkModeDisplay(mode)),
                 );
               }).toList(),
               onChanged: (value) => controller.updateWorkMode(value ?? ''),
@@ -196,15 +200,17 @@ class AiJobsPage extends GetView<AiJobsController> {
           Expanded(
             child: DropdownButtonFormField<String>(
               decoration: const InputDecoration(
-                labelText: 'Job Type',
+                labelText: AiTexts.labelJobType,
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               ),
               value: controller.selectedJobType.value.isEmpty ? null : controller.selectedJobType.value,
-              items: ['', 'full_time', 'part_time', 'contract', 'internship'].map((type) {
+              items: ['']
+                  .followedBy(AiTexts.jobTypes)
+                  .map((type) {
                 return DropdownMenuItem(
                   value: type,
-                  child: Text(type.isEmpty ? 'All Types' : _getJobTypeDisplay(type)),
+                  child: Text(type.isEmpty ? AiTexts.allTypes : _getJobTypeDisplay(type)),
                 );
               }).toList(),
               onChanged: (value) => controller.updateJobType(value ?? ''),
@@ -316,7 +322,7 @@ class AiJobsPage extends GetView<AiJobsController> {
               ),
               const SizedBox(height: 8),
               Text(
-                'Try searching for "Flutter Developer" or "Data Scientist"',
+                AiTexts.aiSearchExamples,
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey[500],
@@ -358,34 +364,34 @@ class AiJobsPage extends GetView<AiJobsController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Company: ${job.companyName}', style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text('${AiTexts.companyLabel} ${job.companyName}', style: const TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
-              Text('Location: ${job.location}'),
-              Text('Work Mode: ${_getWorkModeDisplay(job.workMode)}'),
-              Text('Job Type: ${_getJobTypeDisplay(job.jobType)}'),
+              Text('${AiTexts.locationLabel} ${job.location}'),
+              Text('${AiTexts.workModeLabel} ${_getWorkModeDisplay(job.workMode)}'),
+              Text('${AiTexts.jobTypeLabel} ${_getJobTypeDisplay(job.jobType)}'),
               if (job.salaryMin != null || job.salaryMax != null) ...[
                 const SizedBox(height: 8),
-                Text('Salary: ${_getSalaryRange(job)}'),
+                Text('${AiTexts.salaryLabel} ${_getSalaryRange(job)}'),
               ],
               const SizedBox(height: 16),
-              const Text('Description:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(AiTexts.descriptionLabel, style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 4),
               Text(job.description),
               if (job.requirements != null) ...[
                 const SizedBox(height: 16),
-                const Text('Requirements:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(AiTexts.requirementsLabel, style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
                 Text(job.requirements!),
               ],
               if (job.benefits != null) ...[
                 const SizedBox(height: 16),
-                const Text('Benefits:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(AiTexts.benefitsLabel, style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
                 Text(job.benefits!),
               ],
               if (job.skills.isNotEmpty) ...[
                 const SizedBox(height: 16),
-                const Text('Skills:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(AiTexts.skillsLabel, style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
                 Wrap(
                   spacing: 6,
@@ -401,7 +407,7 @@ class AiJobsPage extends GetView<AiJobsController> {
                   Icon(Icons.auto_awesome, color: Colors.blue[800]),
                   const SizedBox(width: 8),
                   Text(
-                    '${AiTexts.generatedByAi} - Confidence: ${(job.aiConfidenceScore * 100).toStringAsFixed(0)}%',
+                    '${AiTexts.generatedByAi} - ${AiTexts.confidenceLabel}: ${(job.aiConfidenceScore * 100).toStringAsFixed(0)}%',
                     style: TextStyle(color: Colors.blue[800], fontSize: 12),
                   ),
                 ],
@@ -412,7 +418,7 @@ class AiJobsPage extends GetView<AiJobsController> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: const Text(AiTexts.close),
           ),
         ],
       ),
@@ -420,37 +426,14 @@ class AiJobsPage extends GetView<AiJobsController> {
   }
 
   String _getWorkModeDisplay(String workMode) {
-    switch (workMode) {
-      case 'remote':
-        return 'Remote';
-      case 'hybrid':
-        return 'Hybrid';
-      case 'onsite':
-        return 'On-site';
-      default:
-        return workMode;
-    }
+    return AiTexts.workModeDisplay(workMode);
   }
 
   String _getJobTypeDisplay(String jobType) {
-    switch (jobType) {
-      case 'full_time':
-        return 'Full-time';
-      case 'part_time':
-        return 'Part-time';
-      case 'contract':
-        return 'Contract';
-      case 'internship':
-        return 'Internship';
-      default:
-        return jobType;
-    }
+    return AiTexts.jobTypeDisplay(jobType);
   }
 
   String _getSalaryRange(AiGeneratedJob job) {
-    if (job.salaryMin == null && job.salaryMax == null) return 'Salary not specified';
-    if (job.salaryMin == null) return 'Up to \$${job.salaryMax}';
-    if (job.salaryMax == null) return 'From \$${job.salaryMin}';
-    return '\$${job.salaryMin} - \$${job.salaryMax}';
+    return AiTexts.formatSalaryRange(job.salaryMin, job.salaryMax, job.currency);
   }
 }

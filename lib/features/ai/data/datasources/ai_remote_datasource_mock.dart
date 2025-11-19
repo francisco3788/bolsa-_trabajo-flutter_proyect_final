@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:uuid/uuid.dart';
 import '../../domain/entities/ai_generated_job.dart';
 import 'ai_remote_datasource.dart';
+import '../../constants/ai_texts.dart';
 
 /// Mock implementation of AI data source that generates realistic job data
 /// without requiring external API calls. This ensures the app works immediately
@@ -81,37 +82,13 @@ class AiRemoteDataSourceMock implements AiRemoteDataSource {
   }) {
     final jobs = <AiGeneratedJob>[];
     
-    // Company names pool
-    final companies = [
-      'TechCorp Solutions', 'InnovateLabs', 'FutureSystems', 'DigitalDynamics',
-      'CodeMasters Inc', 'WebWizards', 'DataDriven Co', 'CloudNine Technologies',
-      'SmartDev Studio', 'NextGen Apps', 'AI Innovations', 'Global Tech Hub',
-      'StartupXYZ', 'Enterprise Solutions', 'Creative Coders', 'Agile Dynamics'
-    ];
-    
-    // Locations pool
-    final locations = [
-      'San Francisco, CA', 'New York, NY', 'Austin, TX', 'Seattle, WA',
-      'Los Angeles, CA', 'Chicago, IL', 'Miami, FL', 'Denver, CO',
-      'Remote', 'Hybrid - Multiple Locations', 'Boston, MA', 'Atlanta, GA'
-    ];
-    
-    // Work modes
-    final workModes = ['remote', 'hybrid', 'onsite'];
-    
-    // Job types
-    final jobTypes = ['full_time', 'part_time', 'contract', 'internship'];
+    final companies = AiTexts.companiesPool;
+    final locations = AiTexts.locationsPool;
+    final workModes = AiTexts.workModes;
+    final jobTypes = AiTexts.jobTypes;
     
     // Skills pool based on search query
-    Map<String, List<String>> skillPools = {
-      'developer': ['JavaScript', 'Python', 'React', 'Node.js', 'Git', 'SQL', 'HTML/CSS'],
-      'flutter': ['Flutter', 'Dart', 'Firebase', 'REST APIs', 'Git', 'State Management'],
-      'designer': ['Figma', 'Adobe Creative Suite', 'UI/UX', 'Prototyping', 'User Research'],
-      'manager': ['Team Leadership', 'Agile/Scrum', 'Project Management', 'Communication'],
-      'analyst': ['Excel', 'SQL', 'Data Visualization', 'Statistics', 'Python'],
-      'marketing': ['Digital Marketing', 'SEO/SEM', 'Social Media', 'Content Strategy'],
-      'sales': ['CRM', 'Lead Generation', 'Negotiation', 'Relationship Building'],
-    };
+    final skillPools = AiTexts.skillPools;
     
     // Determine relevant skills based on search query
     List<String> relevantSkills = ['Software Development', 'Problem Solving', 'Communication'];
@@ -157,24 +134,17 @@ class AiRemoteDataSourceMock implements AiRemoteDataSource {
       final job = AiGeneratedJob(
         id: _uuid.v4(),
         title: title,
-        description: 'We are seeking a talented $searchQuery to join our growing team at $company. '
-            'This is an excellent opportunity to work on cutting-edge projects and advance your career '
-            'in a collaborative and innovative environment. '
-            'You will be responsible for developing high-quality solutions, collaborating with cross-functional teams, '
-            'and contributing to the technical excellence of our products.',
+        description: AiTexts.mockJobDescription(searchQuery, company),
         companyName: company,
         location: jobLocation,
         workMode: jobWorkMode,
         jobType: jobJobType,
         salaryMin: salaryMin,
         salaryMax: salaryMax,
-        currency: 'USD',
+        currency: AiTexts.defaultCurrencyUSD,
         skills: relevantSkills.take(3 + _random.nextInt(3)).toList(),
-        requirements: '${2 + _random.nextInt(8)}+ years of relevant experience. '
-            'Strong problem-solving skills and ability to work in a team environment. '
-            'Excellent communication skills and attention to detail.',
-        benefits: 'Health insurance, 401k matching, paid time off, remote work options, '
-            'professional development opportunities, flexible schedule, competitive salary',
+        requirements: AiTexts.mockRequirementsText(2 + _random.nextInt(8)),
+        benefits: AiTexts.mockBenefitsText(),
         aiConfidenceScore: 0.85 + (_random.nextDouble() * 0.15), // 0.85 to 1.0
         aiSearchQuery: searchQuery,
         generatedAt: DateTime.now().subtract(Duration(minutes: _random.nextInt(60))),

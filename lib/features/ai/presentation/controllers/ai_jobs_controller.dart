@@ -4,6 +4,7 @@ import '../../domain/repositories/ai_repository.dart';
 import '../../domain/usecases/generate_ai_jobs.dart';
 import '../../domain/usecases/get_ai_generated_jobs.dart';
 import '../../domain/usecases/save_ai_generated_jobs.dart';
+import '../../constants/ai_texts.dart';
 
 class AiJobsController extends GetxController {
   final GenerateAiJobs generateAiJobsUseCase;
@@ -49,7 +50,7 @@ class AiJobsController extends GetxController {
   // Generate jobs with AI
   Future<void> generateAiJobs() async {
     if (searchQuery.value.isEmpty) {
-      errorMessage.value = 'Please enter a search query';
+      errorMessage.value = AiTexts.pleaseEnterSearchQuery;
       return;
     }
 
@@ -62,8 +63,12 @@ class AiJobsController extends GetxController {
         GenerateAiJobsParams(
           searchQuery: searchQuery.value,
           limit: 10,
-          location: selectedLocation.value.isEmpty ? null : selectedLocation.value,
-          workMode: selectedWorkMode.value.isEmpty ? null : selectedWorkMode.value,
+          location: selectedLocation.value.isEmpty
+              ? null
+              : selectedLocation.value,
+          workMode: selectedWorkMode.value.isEmpty
+              ? null
+              : selectedWorkMode.value,
           jobType: selectedJobType.value.isEmpty ? null : selectedJobType.value,
         ),
       );
@@ -72,11 +77,11 @@ class AiJobsController extends GetxController {
         (failure) {
           final errorMsg = failure.toString();
           if (errorMsg.contains('rate limit')) {
-            errorMessage.value = 'AI service is busy. Showing demo jobs while we retry...';
+            errorMessage.value = AiTexts.aiServiceBusyDemoFallback;
           } else if (errorMsg.contains('API key')) {
-            errorMessage.value = 'AI service configuration error. Please contact support.';
+            errorMessage.value = AiTexts.aiServiceConfigErrorContactSupport;
           } else {
-            errorMessage.value = 'Failed to generate jobs. Please try again.';
+            errorMessage.value = AiTexts.failedToGenerateJobsTryAgain;
           }
           print('AI Error: $errorMsg');
         },
@@ -85,14 +90,16 @@ class AiJobsController extends GetxController {
           // Check if these are demo jobs
           final hasDemoJobs = jobs.any((job) => job.id.startsWith('demo_'));
           if (hasDemoJobs) {
-            successMessage.value = 'Showing ${jobs.length} demo jobs while AI service is busy';
+            successMessage.value =
+                '${AiTexts.showingDemoJobsWhileBusyPrefix} ${jobs.length} ${AiTexts.showingDemoJobsWhileBusySuffix}';
           } else {
-            successMessage.value = 'Generated ${jobs.length} jobs with AI';
+            successMessage.value =
+                '${AiTexts.generatedJobsWithAiPrefix} ${jobs.length} ${AiTexts.generatedJobsWithAiSuffix}';
           }
         },
       );
     } catch (e) {
-      errorMessage.value = 'Error generating jobs: $e';
+      errorMessage.value = '${AiTexts.errorGeneratingJobsPrefix} $e';
     } finally {
       isGenerating.value = false;
     }
@@ -105,10 +112,7 @@ class AiJobsController extends GetxController {
 
     try {
       final result = await getAiGeneratedJobsUseCase(
-        const GetAiGeneratedJobsParams(
-          limit: 20,
-          isActive: true,
-        ),
+        const GetAiGeneratedJobsParams(limit: 20, isActive: true),
       );
 
       result.fold(
@@ -120,7 +124,7 @@ class AiJobsController extends GetxController {
         },
       );
     } catch (e) {
-      errorMessage.value = 'Error loading AI jobs: $e';
+      errorMessage.value = '${AiTexts.errorLoadingAiJobsPrefix} $e';
     } finally {
       isLoading.value = false;
     }
@@ -145,10 +149,18 @@ class AiJobsController extends GetxController {
   void onInit() {
     super.onInit();
     print('AiJobsController: onInit called');
-    print('AiJobsController: GenerateAiJobs available: ${Get.isRegistered<GenerateAiJobs>()}');
-    print('AiJobsController: GetAiGeneratedJobs available: ${Get.isRegistered<GetAiGeneratedJobs>()}');
-    print('AiJobsController: SaveAiGeneratedJobs available: ${Get.isRegistered<SaveAiGeneratedJobs>()}');
-    print('AiJobsController: AiRepository available: ${Get.isRegistered<AiRepository>()}');
+    print(
+      'AiJobsController: GenerateAiJobs available: ${Get.isRegistered<GenerateAiJobs>()}',
+    );
+    print(
+      'AiJobsController: GetAiGeneratedJobs available: ${Get.isRegistered<GetAiGeneratedJobs>()}',
+    );
+    print(
+      'AiJobsController: SaveAiGeneratedJobs available: ${Get.isRegistered<SaveAiGeneratedJobs>()}',
+    );
+    print(
+      'AiJobsController: AiRepository available: ${Get.isRegistered<AiRepository>()}',
+    );
     loadAiGeneratedJobs();
   }
 }

@@ -12,6 +12,8 @@ class AiTexts {
   static const String refreshAiJobs = 'Refresh AI Jobs';
   static const String generate = 'Generate';
   static const String aiSearchExamples ='Try searching for "Flutter Developer" or "Data Scientist"';
+  static const String aiModuleErrorTitle = 'AI Module Error';
+  static const String failedToInitialize = 'Failed to initialize:';
   static const String labelLocation = 'Location';
   static const String allLocations = 'All Locations';
   static const String labelWorkMode = 'Work Mode';
@@ -41,6 +43,87 @@ class AiTexts {
   static const String benefitsNotSpecified = 'Benefits not specified';
 
   static const String promptRequirementsHeader = 'Requirements';
+  static const String defaultTitle = 'Software Developer';
+  static const String defaultDescription = 'No description available';
+  static const String defaultCompanyName = 'Tech Company';
+  static const String defaultLocationRemote = 'Remote';
+  static const String defaultCurrencyUSD = 'USD';
+  static const String defaultSkillGeneric = 'Software Development';
+  static const List<String> companiesPool = [
+    'TechCorp Solutions', 'InnovateLabs', 'FutureSystems', 'DigitalDynamics',
+    'CodeMasters Inc', 'WebWizards', 'DataDriven Co', 'CloudNine Technologies',
+    'SmartDev Studio', 'NextGen Apps', 'AI Innovations', 'Global Tech Hub',
+    'StartupXYZ', 'Enterprise Solutions', 'Creative Coders', 'Agile Dynamics'
+  ];
+  static const List<String> locationsPool = [
+    'San Francisco, CA', 'New York, NY', 'Austin, TX', 'Seattle, WA',
+    'Los Angeles, CA', 'Chicago, IL', 'Miami, FL', 'Denver, CO',
+    'Remote', 'Hybrid - Multiple Locations', 'Boston, MA', 'Atlanta, GA'
+  ];
+  static const List<String> workModes = ['remote', 'hybrid', 'onsite'];
+  static const List<String> jobTypes = ['full_time', 'part_time', 'contract', 'internship'];
+  static const Map<String, List<String>> skillPools = {
+    'developer': ['JavaScript', 'Python', 'React', 'Node.js', 'Git', 'SQL', 'HTML/CSS'],
+    'flutter': ['Flutter', 'Dart', 'Firebase', 'REST APIs', 'Git', 'State Management'],
+    'designer': ['Figma', 'Adobe Creative Suite', 'UI/UX', 'Prototyping', 'User Research'],
+    'manager': ['Team Leadership', 'Agile/Scrum', 'Project Management', 'Communication'],
+    'analyst': ['Excel', 'SQL', 'Data Visualization', 'Statistics', 'Python'],
+    'marketing': ['Digital Marketing', 'SEO/SEM', 'Social Media', 'Content Strategy'],
+    'sales': ['CRM', 'Lead Generation', 'Negotiation', 'Relationship Building'],
+  };
+
+  static String mockJobDescription(String role, String company) {
+    return 'We are seeking a talented $role to join our growing team at $company. '
+        'This is an excellent opportunity to work on cutting-edge projects and advance your career '
+        'in a collaborative and innovative environment. '
+        'You will be responsible for developing high-quality solutions, collaborating with cross-functional teams, '
+        'and contributing to the technical excellence of our products.';
+  }
+
+  static String mockRequirementsText(int years) {
+    return '$years+ years of relevant experience. '
+        'Strong problem-solving skills and ability to work in a team environment. '
+        'Excellent communication skills and attention to detail.';
+  }
+
+  static String mockBenefitsText() {
+    return 'Health insurance, 401k matching, paid time off, remote work options, '
+        'professional development opportunities, flexible schedule, competitive salary';
+  }
+
+  // Errors (API keys and services)
+  static const String openAiInvalidKeyError = 'OpenAI API key is invalid or missing. Please check your API key configuration.';
+  static const String openAiNotConfiguredError = 'OpenAI API key not configured. Please set OPENAI_API_KEY environment variable or update AiConfig.openAiApiKey';
+  static const String openAiRateLimitError = 'OpenAI rate limit exceeded. Please wait a moment and try again. This usually resets within a few minutes.';
+  static const String openAiServerError = 'OpenAI server error. Please try again later.';
+  static const String openAiApiErrorPrefix = 'OpenAI API error:';
+
+  static const String geminiNotConfiguredError = 'Google Gemini API key not configured. Please set GEMINI_API_KEY environment variable or update AiConfig.geminiApiKey';
+  static const String geminiApiErrorPrefix = 'Gemini API error:';
+
+  // Errors (Supabase and network)
+  static const String supabaseErrorPrefix = 'Supabase error:';
+  static const String noInternetConnection = 'No internet connection';
+
+  // Errors (generic operation failures)
+  static const String failedToGenerateJobs = 'Failed to generate jobs';
+  static const String failedToGetGeneratedJobs = 'Failed to get generated jobs';
+  static const String failedToSaveGeneratedJobs = 'Failed to save generated jobs';
+  static const String failedToDeactivateJob = 'Failed to deactivate job';
+  static const String failedToSearchJobs = 'Failed to search jobs';
+  static const String expectedJsonArrayError = 'Expected JSON array';
+
+  // Controller user messages
+  static const String pleaseEnterSearchQuery = 'Please enter a search query';
+  static const String aiServiceBusyDemoFallback = 'AI service is busy. Showing demo jobs while we retry...';
+  static const String aiServiceConfigErrorContactSupport = 'AI service configuration error. Please contact support.';
+  static const String failedToGenerateJobsTryAgain = 'Failed to generate jobs. Please try again.';
+  static const String showingDemoJobsWhileBusyPrefix = 'Showing';
+  static const String showingDemoJobsWhileBusySuffix = 'demo jobs while AI service is busy';
+  static const String generatedJobsWithAiPrefix = 'Generated';
+  static const String generatedJobsWithAiSuffix = 'jobs with AI';
+  static const String errorGeneratingJobsPrefix = 'Error generating jobs:';
+  static const String errorLoadingAiJobsPrefix = 'Error loading AI jobs:';
 
   static String workModeDisplay(String workMode) {
     switch (workMode) {
@@ -71,7 +154,11 @@ class AiTexts {
   }
 
   static String formatSalaryRange(int? min, int? max, String? currency) {
-    final symbol = _symbolFor(currency);
+    final symbol = (currency == 'EUR')
+        ? '€'
+        : (currency == 'GBP')
+            ? '£'
+            : '\$';
     if (min == null && max == null) return salaryNotSpecified;
     if (min == null) return '$salaryUpTo $symbol$max';
     if (max == null) return '$salaryFrom $symbol$min';

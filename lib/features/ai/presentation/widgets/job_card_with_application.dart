@@ -159,14 +159,14 @@ class JobCardWithApplication extends StatelessWidget {
         Expanded(
           child: OutlinedButton(
             onPressed: () => _showJobDetails(Get.context!),
-            child: const Text('View Details'),
+            child: const Text(AiTexts.viewDetails),
           ),
         ),
         const SizedBox(width: 8),
         Expanded(
           child: ElevatedButton.icon(
             icon: const Icon(Icons.send),
-            label: const Text('Apply Now'),
+            label: const Text(AiTexts.applyNow),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue[800],
               foregroundColor: Colors.white,
@@ -188,34 +188,34 @@ class JobCardWithApplication extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Company: ${job.companyName}', style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text('${AiTexts.companyLabel} ${job.companyName}', style: const TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
-              Text('Location: ${job.location}'),
-              Text('Work Mode: ${_getWorkModeDisplay(job.workMode)}'),
-              Text('Job Type: ${_getJobTypeDisplay(job.jobType)}'),
+              Text('${AiTexts.locationLabel} ${job.location}'),
+              Text('${AiTexts.workModeLabel} ${_getWorkModeDisplay(job.workMode)}'),
+              Text('${AiTexts.jobTypeLabel} ${_getJobTypeDisplay(job.jobType)}'),
               if (job.salaryMin != null || job.salaryMax != null) ...[
                 const SizedBox(height: 8),
-                Text('Salary: ${_getSalaryRange()}'),
+                Text('${AiTexts.salaryLabel} ${_getSalaryRange()}'),
               ],
               const SizedBox(height: 16),
-              const Text('Description:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(AiTexts.descriptionLabel, style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 4),
               Text(job.description),
               if (job.requirements != null) ...[
                 const SizedBox(height: 16),
-                const Text('Requirements:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(AiTexts.requirementsLabel, style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
                 Text(job.requirements!),
               ],
               if (job.benefits != null) ...[
                 const SizedBox(height: 16),
-                const Text('Benefits:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(AiTexts.benefitsLabel, style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
                 Text(job.benefits!),
               ],
               if (job.skills.isNotEmpty) ...[
                 const SizedBox(height: 16),
-                const Text('Skills:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(AiTexts.skillsLabel, style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
                 Wrap(
                   spacing: 6,
@@ -231,7 +231,7 @@ class JobCardWithApplication extends StatelessWidget {
                   Icon(Icons.auto_awesome, color: Colors.blue[800]),
                   const SizedBox(width: 8),
                   Text(
-                    '${AiTexts.generatedByAi} - Confidence: ${(job.aiConfidenceScore * 100).toStringAsFixed(0)}%',
+                    '${AiTexts.generatedByAi} - ${AiTexts.confidenceLabel}: ${(job.aiConfidenceScore * 100).toStringAsFixed(0)}%',
                     style: TextStyle(color: Colors.blue[800], fontSize: 12),
                   ),
                 ],
@@ -242,11 +242,11 @@ class JobCardWithApplication extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: const Text(AiTexts.close),
           ),
           ElevatedButton.icon(
             icon: const Icon(Icons.send),
-            label: const Text('Apply Now'),
+            label: const Text(AiTexts.applyNow),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue[800],
               foregroundColor: Colors.white,
@@ -276,37 +276,14 @@ class JobCardWithApplication extends StatelessWidget {
   }
 
   String _getWorkModeDisplay(String workMode) {
-    switch (workMode) {
-      case 'remote':
-        return 'Remote';
-      case 'hybrid':
-        return 'Hybrid';
-      case 'onsite':
-        return 'On-site';
-      default:
-        return workMode;
-    }
+    return AiTexts.workModeDisplay(workMode);
   }
 
   String _getJobTypeDisplay(String jobType) {
-    switch (jobType) {
-      case 'full_time':
-        return 'Full-time';
-      case 'part_time':
-        return 'Part-time';
-      case 'contract':
-        return 'Contract';
-      case 'internship':
-        return 'Internship';
-      default:
-        return jobType;
-    }
+    return AiTexts.jobTypeDisplay(jobType);
   }
 
   String _getSalaryRange() {
-    if (job.salaryMin == null && job.salaryMax == null) return 'Salary not specified';
-    if (job.salaryMin == null) return 'Up to \$${job.salaryMax}';
-    if (job.salaryMax == null) return 'From \$${job.salaryMin}';
-    return '\$${job.salaryMin} - \$${job.salaryMax}';
+    return AiTexts.formatSalaryRange(job.salaryMin, job.salaryMax, job.currency);
   }
 }
