@@ -63,13 +63,123 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
           }),
         ],
       ),
-      body: Column(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Theme.of(context).colorScheme.primary.withOpacity(0.08),
+              Theme.of(context).colorScheme.secondary.withOpacity(0.08),
+              Colors.white,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: _buildHeroHeader(context),
+                ),
+                _buildStatsSection(),
+                _buildAISummary(),
+                const SizedBox(height: 8),
+                _buildSearchSection(),
+                _buildFilterSection(),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  child: _buildApplicationsList(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeroHeader(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final name = Get.find<AuthSessionService>().user?.name ?? 'Company';
+    return Card(
+      elevation: 6,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            colors: [scheme.primary, scheme.secondary],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  height: 40,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(Icons.business, color: Colors.white),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Welcome, $name',
+                        style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 2),
+                      const Text(
+                        'Company Dashboard',
+                        style: TextStyle(color: Colors.white70, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                _pillStat('Jobs', controller.companyApplications.map((e) => e.jobId).toSet().length, scheme),
+                const SizedBox(width: 8),
+                _pillStat('Applications', controller.companyApplications.length, scheme),
+                const SizedBox(width: 8),
+                _pillStat('Accepted', controller.getApplicationsByStatus(ApplicationStatus.accepted).length, scheme),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _pillStat(String label, int count, ColorScheme scheme) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white.withOpacity(0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          _buildStatsSection(),
-          _buildAISummary(),
-          _buildSearchSection(),
-          _buildFilterSection(),
-          _buildApplicationsList(),
+          Text('$count', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          const SizedBox(width: 6),
+          Text(label, style: const TextStyle(color: Colors.white)),
         ],
       ),
     );
