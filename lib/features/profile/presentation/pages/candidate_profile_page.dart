@@ -452,7 +452,7 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).colorScheme.primary.withOpacity(0.08),
@@ -471,10 +471,10 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
                   icon,
@@ -512,7 +512,7 @@ class CandidateProfilePage extends GetView<CandidateProfileController> {
             Theme.of(context).colorScheme.primary.withOpacity(0.02),
           ],
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
           width: 1,

@@ -368,7 +368,7 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).colorScheme.primary.withOpacity(0.08),
@@ -376,7 +376,7 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
             offset: const Offset(0, 4),
           ),
         ],
-          border: Border.all(
+        border: Border.all(
           color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
           width: 1,
         ),
@@ -387,10 +387,10 @@ class EnhancedCompanyProfilePage extends GetView<EnhancedCompanyProfileControlle
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
                   icon,
