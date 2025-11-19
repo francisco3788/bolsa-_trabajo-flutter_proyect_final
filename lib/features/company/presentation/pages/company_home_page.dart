@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/company_home_controller.dart';
+import '../../constants/company_texts.dart';
 
 class CompanyHomePage extends GetView<CompanyHomeController> {
   const CompanyHomePage({super.key});
@@ -10,7 +11,7 @@ class CompanyHomePage extends GetView<CompanyHomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Company Dashboard'),
+        title: const Text(CompanyTexts.companyDashboardTitle),
         actions: [
           Obx(
             () => IconButton(
@@ -22,7 +23,7 @@ class CompanyHomePage extends GetView<CompanyHomeController> {
                     )
                   : const Icon(Icons.logout),
               onPressed: controller.loading.value ? null : controller.doLogout,
-              tooltip: 'Sign out',
+              tooltip: CompanyTexts.signOutTooltip,
             ),
           ),
         ],
@@ -37,7 +38,7 @@ class CompanyHomePage extends GetView<CompanyHomeController> {
           );
         }
         return const Center(
-          child: Text('Job and talent management (coming soon).'),
+          child: Text(CompanyTexts.comingSoonMessage),
         );
       }),
     );
