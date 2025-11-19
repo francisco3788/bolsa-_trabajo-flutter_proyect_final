@@ -173,6 +173,36 @@ class JobsRemoteDataSourceImpl implements JobsRemoteDataSource {
         'cover_letter': coverLetter,
         'status': 'submitted',
       });
+
+      final jobRow = await _supabaseClient
+          .from('jobs_with_stats')
+          .select('company_id')
+          .eq('id', jobId)
+          .maybeSingle();
+      final companyId = jobRow != null ? jobRow['company_id'] as String? : null;
+
+      final profile = await _supabaseClient
+          .from('candidate_profiles')
+          .select('name')
+          .eq('id', _currentUserId)
+          .maybeSingle();
+
+      final email = _supabaseClient.auth.currentUser?.email ?? '';
+      final candidateName = (profile != null ? profile['name'] as String? : null) ?? email;
+
+      await _supabaseClient.from('job_applications').insert({
+        'id': DateTime.now().millisecondsSinceEpoch.toString(),
+        'job_id': jobId,
+        'company_id': companyId,
+        'candidate_id': _currentUserId,
+        'candidate_name': candidateName,
+        'candidate_email': email,
+        'cover_letter': coverLetter,
+        'status': 'pending',
+        'source': 'companyPosted',
+        'applied_at': DateTime.now().toIso8601String(),
+        'metadata': null,
+      });
     } catch (e) {
       if (e.toString().contains('duplicate key')) {
         throw Exception('You have already applied for this job');

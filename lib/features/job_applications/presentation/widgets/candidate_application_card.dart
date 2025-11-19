@@ -33,7 +33,7 @@ class CandidateApplicationCard extends StatelessWidget {
               _buildJobInfo(),
               const SizedBox(height: 12),
               _buildStatus(),
-              if (application.reviewNotes != null) ...[
+              if (application.notes != null) ...[
                 const SizedBox(height: 12),
                 _buildReviewNotes(),
               ],
@@ -54,7 +54,7 @@ class CandidateApplicationCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                application.jobTitle ?? 'Unknown Position',
+                'Application',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -62,7 +62,7 @@ class CandidateApplicationCard extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Text(
-                application.companyName ?? 'Unknown Company',
+                application.candidateEmail,
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontSize: 14,
@@ -118,6 +118,11 @@ class CandidateApplicationCard extends StatelessWidget {
         text = 'Rejected';
         icon = Icons.cancel;
         break;
+      case ApplicationStatus.cancelled:
+        color = Colors.grey;
+        text = 'Cancelled';
+        icon = Icons.remove_circle_outline;
+        break;
     }
 
     return Container(
@@ -166,6 +171,10 @@ class CandidateApplicationCard extends StatelessWidget {
         color = Colors.red;
         text = 'Rejected';
         break;
+      case ApplicationStatus.cancelled:
+        color = Colors.grey;
+        text = 'Cancelled';
+        break;
     }
 
     return Container(
@@ -213,7 +222,7 @@ class CandidateApplicationCard extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            application.reviewNotes!,
+            application.notes!,
             style: TextStyle(
               color: Colors.grey[700],
               fontSize: 12,

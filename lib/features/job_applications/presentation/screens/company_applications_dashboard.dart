@@ -13,6 +13,9 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _refreshApplications();
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text(JobApplicationTexts.companyDashboardTitle),

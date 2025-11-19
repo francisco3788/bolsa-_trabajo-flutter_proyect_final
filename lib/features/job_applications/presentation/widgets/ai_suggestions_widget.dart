@@ -97,7 +97,7 @@ class AISuggestionsWidget extends StatelessWidget {
       elevation: 3,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
+        side: BorderSide(
           color: _getStatusColor(status).withOpacity(0.3),
           width: 2,
         ),
@@ -321,12 +321,13 @@ class AISuggestionsWidget extends StatelessWidget {
   }
 
   Color _getStatusColor(String status) {
-    switch (status.toLowerCase()) {
+    final normalized = status.replaceAll('_', '').toLowerCase();
+    switch (normalized) {
       case 'accepted':
         return Colors.green;
       case 'rejected':
         return Colors.red;
-      case 'under_review':
+      case 'underreview':
         return Colors.blue;
       case 'pending':
         return Colors.orange;
@@ -336,12 +337,13 @@ class AISuggestionsWidget extends StatelessWidget {
   }
 
   IconData _getStatusIcon(String status) {
-    switch (status.toLowerCase()) {
+    final normalized = status.replaceAll('_', '').toLowerCase();
+    switch (normalized) {
       case 'accepted':
         return Icons.check_circle;
       case 'rejected':
         return Icons.cancel;
-      case 'under_review':
+      case 'underreview':
         return Icons.visibility;
       case 'pending':
         return Icons.pending;
@@ -351,8 +353,11 @@ class AISuggestionsWidget extends StatelessWidget {
   }
 
   String _formatStatusText(String status) {
-    return status.split('_').map((word) => 
-      word[0].toUpperCase() + word.substring(1)
-    ).join(' ');
+    if (status.contains('_')) {
+      return status.split('_').map((w) => w[0].toUpperCase() + w.substring(1)).join(' ');
+    }
+    if (status.toLowerCase() == 'underreview') return 'Under Review';
+    final s = status.isEmpty ? '' : status[0].toUpperCase() + status.substring(1);
+    return s;
   }
 }

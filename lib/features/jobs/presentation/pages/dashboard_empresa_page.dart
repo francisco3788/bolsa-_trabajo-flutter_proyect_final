@@ -5,6 +5,8 @@ import '../controllers/company_home_controller.dart';
 import '../widgets/kpi_chip.dart';
 import '../../domain/entities/job_entity.dart';
 import '../../../../core/services/auth_session_service.dart';
+import 'package:bolsa_de_trabajo/features/job_applications/presentation/screens/company_applications_dashboard.dart';
+import 'package:bolsa_de_trabajo/features/job_applications/job_application_binding.dart';
 
 class DashboardCompanyPage extends StatelessWidget {
   const DashboardCompanyPage({super.key});
@@ -81,6 +83,17 @@ class DashboardCompanyPage extends StatelessWidget {
             title: const Text(JobsTexts.myJobs),
             onTap: () {
               Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.assignment),
+            title: const Text(JobsTexts.applications),
+            onTap: () {
+              Navigator.pop(context);
+              Get.to(
+                () => const CompanyApplicationsDashboard(),
+                binding: JobApplicationBinding(),
+              );
             },
           ),
           ListTile(

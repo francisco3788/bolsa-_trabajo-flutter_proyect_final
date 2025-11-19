@@ -103,7 +103,7 @@ class ApplicationAIService {
       final stats = {
         'total': applications.length,
         'pending': applications.where((a) => a.status == ApplicationStatus.pending).length,
-        'under_review': applications.where((a) => a.status == ApplicationStatus.underReview).length,
+        'underReview': applications.where((a) => a.status == ApplicationStatus.underReview).length,
         'accepted': applications.where((a) => a.status == ApplicationStatus.accepted).length,
         'rejected': applications.where((a) => a.status == ApplicationStatus.rejected).length,
       };
@@ -112,7 +112,7 @@ class ApplicationAIService {
         'overall_assessment': 'Moderate application quality',
         'key_insights': [
           'Pending rate: ${stats['pending']}',
-          'Under review: ${stats['under_review']}',
+          'Under review: ${stats['underReview']}',
         ],
         'recommendations': [
           'Prioritize underReview applications for human screening',

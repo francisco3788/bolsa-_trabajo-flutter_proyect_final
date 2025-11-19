@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../constants/job_application_texts.dart';
 import '../../domain/entities/job_application.dart';
+import 'ai_suggestions_widget.dart';
 
 class ApplicationCard extends StatelessWidget {
   final JobApplication application;
@@ -28,6 +29,15 @@ class ApplicationCard extends StatelessWidget {
         children: [
           _buildDetails(),
           _buildActions(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: AISuggestionsWidget(
+              applicationId: application.id,
+              jobTitle: '',
+              jobDescription: '',
+              companyRequirements: '',
+            ),
+          ),
         ],
       ),
     );
@@ -112,6 +122,11 @@ class ApplicationCard extends StatelessWidget {
         color = Colors.red;
         text = JobApplicationTexts.rejectedStatus;
         icon = Icons.cancel;
+        break;
+      case ApplicationStatus.cancelled:
+        color = Colors.grey;
+        text = JobApplicationTexts.cancelledStatus;
+        icon = Icons.remove_circle_outline;
         break;
     }
 
@@ -227,7 +242,8 @@ class ApplicationCard extends StatelessWidget {
 
   Widget _buildActions() {
     if (application.status == ApplicationStatus.accepted || 
-        application.status == ApplicationStatus.rejected) {
+        application.status == ApplicationStatus.rejected ||
+        application.status == ApplicationStatus.cancelled) {
       return Container(); // No actions for final statuses
     }
 

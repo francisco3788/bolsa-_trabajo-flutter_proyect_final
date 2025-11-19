@@ -34,6 +34,13 @@ class JobApplicationRepositoryImpl implements JobApplicationRepository {
         return Left(Exception('Already applied to this job'));
       }
 
+      final jobRow = await supabaseClient
+          .from('jobs_with_stats')
+          .select('company_id')
+          .eq('id', jobId)
+          .maybeSingle();
+      final companyId = jobRow != null ? jobRow['company_id'] as String? : null;
+
       final application = JobApplication(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         jobId: jobId,
@@ -49,9 +56,14 @@ class JobApplicationRepositoryImpl implements JobApplicationRepository {
         metadata: null,
       );
 
+      final insertMap = application.toMap();
+      if (companyId != null) {
+        insertMap['company_id'] = companyId;
+      }
+
       final response = await supabaseClient
           .from('job_applications')
-          .insert(application.toMap())
+          .insert(insertMap)
           .select()
           .single();
 
@@ -67,22 +79,16 @@ class JobApplicationRepositoryImpl implements JobApplicationRepository {
     ApplicationStatus? status,
   }) async {
     try {
-      final response = await supabaseClient
+      var query = supabaseClient
           .from('job_applications')
           .select()
-          .eq('job_id', jobId)
-          .maybeSingle();
-      // If maybeSingle returned a map, wrap into list; else fetch list
-      if (response is Map<String, dynamic>) {
-        final app = JobApplication.fromMap(response);
-        return Right([app]);
+          .eq('job_id', jobId);
+
+      if (status != null) {
+        query = query.eq('status', status.name);
       }
 
-      final listResponse = await supabaseClient
-          .from('job_applications')
-          .select()
-          .eq('job_id', jobId)
-          .order('applied_at', ascending: false);
+      final listResponse = await query.order('applied_at', ascending: false);
 
       final applications = (listResponse as List)
           .map((json) => JobApplication.fromMap(json))
@@ -198,9 +204,10 @@ class JobApplicationRepositoryImpl implements JobApplicationRepository {
       final stats = <String, int>{
         'total': response.length,
         'pending': response.where((app) => app['status'] == 'pending').length,
-        'under_review': response.where((app) => app['status'] == 'underReview').length,
+        'underReview': response.where((app) => app['status'] == 'underReview').length,
         'accepted': response.where((app) => app['status'] == 'accepted').length,
         'rejected': response.where((app) => app['status'] == 'rejected').length,
+        'cancelled': response.where((app) => app['status'] == 'cancelled').length,
       };
 
       return Right(stats);

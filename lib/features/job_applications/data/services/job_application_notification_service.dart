@@ -48,9 +48,16 @@ class JobApplicationNotificationService {
       await _notifyCompanyNewApplication(application: application);
 
       // Create notification record
+      final jobRow = await supabaseClient
+          .from('jobs_with_stats')
+          .select('company_id')
+          .eq('id', application.jobId)
+          .maybeSingle();
+      final companyId = jobRow != null ? jobRow['company_id'] as String? : null;
+
       await supabaseClient.from('notifications').insert({
         'id': DateTime.now().millisecondsSinceEpoch.toString(),
-        'user_id': application.jobId, // Company user ID (assuming job ID links to company)
+        'user_id': companyId ?? application.jobId,
         'type': 'new_application',
         'title': 'New Job Application',
         'message': '${application.candidateName} has applied for your job posting',

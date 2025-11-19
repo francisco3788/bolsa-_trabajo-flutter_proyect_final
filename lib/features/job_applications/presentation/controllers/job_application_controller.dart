@@ -58,6 +58,8 @@ class JobApplicationController extends GetxController {
         candidateId: candidateId,
         candidateName: candidateName,
         candidateEmail: candidateEmail,
+        candidatePhone: additionalData['phone'] as String?,
+        resumeUrl: additionalData['resume_url'] as String?,
         coverLetter: coverLetter.value,
       ));
 

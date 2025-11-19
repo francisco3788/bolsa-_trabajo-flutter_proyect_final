@@ -22,6 +22,7 @@ class JobApplicationTexts {
   static const underReviewStatus = 'Under Review';
   static const acceptedStatus = 'Accepted';
   static const rejectedStatus = 'Rejected';
+  static const cancelledStatus = 'Cancelled';
 
   // Actions
   static const submitApplication = 'Submit Application';
@@ -60,4 +61,5 @@ class JobApplicationTexts {
   static const underReviewApplicationsStat = 'Under Review';
   static const acceptedApplicationsStat = 'Accepted';
   static const rejectedApplicationsStat = 'Rejected';
+  static const cancelledApplicationsStat = 'Cancelled';
 }
