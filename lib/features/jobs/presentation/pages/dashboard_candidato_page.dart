@@ -97,7 +97,7 @@ class DashboardCandidatePage extends GetView<JobsHomeController> {
           ),
           ListTile(
             leading: const Icon(Icons.auto_awesome),
-            title: const Text('AI Job Search'),
+            title: const Text(JobsTexts.aiJobSearch),
             onTap: () {
               Get.back();
               Get.toNamed(AppRoutes.aiJobs);

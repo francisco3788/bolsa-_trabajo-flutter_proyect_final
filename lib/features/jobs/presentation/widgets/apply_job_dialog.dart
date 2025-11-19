@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../constants/jobs_texts.dart';
 
 class ApplyJobDialog extends StatefulWidget {
   final Function(String?) onApply;
@@ -23,7 +24,7 @@ class _ApplyJobDialogState extends State<ApplyJobDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Apply for the job'),
+      title: const Text(JobsTexts.applyForJobTitle),
       content: SizedBox(
         width: double.maxFinite,
         child: Column(
@@ -31,7 +32,7 @@ class _ApplyJobDialogState extends State<ApplyJobDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Cover letter (optional):',
+              JobsTexts.coverLetterOptionalLabel,
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 8),
@@ -39,7 +40,7 @@ class _ApplyJobDialogState extends State<ApplyJobDialog> {
               controller: _coverLetterController,
               maxLines: 4,
               decoration: const InputDecoration(
-                hintText: 'Write a short cover letter...',
+                hintText: JobsTexts.coverLetterHint,
                 border: OutlineInputBorder(),
               ),
             ),
@@ -49,7 +50,7 @@ class _ApplyJobDialogState extends State<ApplyJobDialog> {
       actions: [
         TextButton(
           onPressed: _isApplying ? null : () => Get.back(),
-          child: const Text('Cancel'),
+          child: const Text(JobsTexts.cancelButtonLabel),
         ),
         ElevatedButton(
           onPressed: _isApplying ? null : _handleApply,
@@ -59,7 +60,7 @@ class _ApplyJobDialogState extends State<ApplyJobDialog> {
                   height: 16,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Apply'),
+              : const Text(JobsTexts.applyButtonLabel),
         ),
       ],
     );
@@ -75,15 +76,15 @@ class _ApplyJobDialogState extends State<ApplyJobDialog> {
       await widget.onApply(coverLetter.isEmpty ? null : coverLetter);
       Get.back();
       Get.snackbar(
-        'Success',
-        'You have successfully applied',
+        JobsTexts.success,
+        JobsTexts.appliedSuccessMessage,
         backgroundColor: Colors.green,
         colorText: Colors.white,
       );
     } catch (e) {
       Get.snackbar(
-        'Mistake',
-        'The application could not be completed',
+        JobsTexts.appliedErrorTitle,
+        JobsTexts.appliedErrorMessage,
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );

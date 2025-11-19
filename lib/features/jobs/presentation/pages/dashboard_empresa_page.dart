@@ -492,7 +492,7 @@ class DashboardCompanyPage extends StatelessWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Change the status of "${job.title}"?'),
+            Text('${JobsTexts.changeStatusQuestionPrefix}${job.title}${JobsTexts.changeStatusQuestionSuffix}'),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               initialValue: job.status,

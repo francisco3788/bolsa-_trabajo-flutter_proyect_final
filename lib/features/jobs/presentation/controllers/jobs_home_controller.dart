@@ -5,6 +5,7 @@ import '../../domain/entities/application_entity.dart';
 import '../../domain/entities/job_entity.dart';
 import '../../domain/entities/kpis_entity.dart';
 import '../../domain/repositories/jobs_repository.dart';
+import '../../constants/jobs_texts.dart';
 
 class JobsHomeController extends GetxController {
   final JobsRepository _jobsRepository;
@@ -57,16 +58,13 @@ class JobsHomeController extends GetxController {
   }
 
   Future<void> _initializeData() async {
-    await Future.wait([
-      loadKPIs(),
-      loadRecommended(),
-    ]);
+    await Future.wait([loadKPIs(), loadRecommended()]);
   }
 
   // Change tab
   void changeTab(int index) {
     _currentTabIndex.value = index;
-    
+
     switch (index) {
       case 0:
         if (_recommendedJobs.isEmpty) loadRecommended();
@@ -88,8 +86,8 @@ class JobsHomeController extends GetxController {
       _kpis.value = kpis;
     } catch (e) {
       Get.snackbar(
-        'Error',
-        'Failed to load statistics: ${e.toString()}',
+        JobsTexts.error,
+        '${JobsTexts.failedToLoadStatisticsPrefix}${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -102,13 +100,13 @@ class JobsHomeController extends GetxController {
     try {
       _isLoading.value = true;
       _searchQuery.value = query ?? '';
-      
+
       final jobs = await _jobsRepository.getActiveJobs(query: query);
       _recommendedJobs.assignAll(jobs);
     } catch (e) {
       Get.snackbar(
-        'Error',
-        'Failed to load jobs: ${e.toString()}',
+        JobsTexts.error,
+        '${JobsTexts.failedToLoadJobsPrefix}${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -120,31 +118,27 @@ class JobsHomeController extends GetxController {
   Future<void> applyToJob(String jobId, {String? coverLetter}) async {
     try {
       _isApplying.value = true;
-      
+
       await _jobsRepository.applyToJob(jobId, coverLetter: coverLetter);
-      
+
       Get.snackbar(
-        'Success',
-        'You have successfully applied',
+        JobsTexts.success,
+        JobsTexts.appliedSuccessMessage,
         snackPosition: SnackPosition.BOTTOM,
       );
 
       // Update KPIs and my applications
-      await Future.wait([
-        loadKPIs(),
-        loadMyApplications(),
-      ]);
-      
+      await Future.wait([loadKPIs(), loadMyApplications()]);
     } catch (e) {
       String message = e.toString();
       if (message.contains('Ya te has postulado')) {
-        message = 'You have already applied to this job';
+        message = JobsTexts.youHaveAlreadyAppliedMessage;
       } else {
-        message = 'Error applying: $message';
+        message = '${JobsTexts.errorApplyingPrefix}$message';
       }
-      
+
       Get.snackbar(
-        'Error',
+        JobsTexts.error,
         message,
         snackPosition: SnackPosition.BOTTOM,
       );
@@ -157,25 +151,21 @@ class JobsHomeController extends GetxController {
   Future<void> toggleSaved(String jobId) async {
     try {
       _isTogglingSaved.value = true;
-      
+
       await _jobsRepository.toggleSaved(jobId);
-      
+
       // Update lists
-      await Future.wait([
-        loadKPIs(),
-        loadSaved(),
-      ]);
-      
+      await Future.wait([loadKPIs(), loadSaved()]);
+
       Get.snackbar(
-        'Success',
-        'Saved jobs updated',
+        JobsTexts.success,
+        JobsTexts.savedJobsUpdated,
         snackPosition: SnackPosition.BOTTOM,
       );
-      
     } catch (e) {
       Get.snackbar(
-        'Error',
-        'Failed to save job: ${e.toString()}',
+        JobsTexts.error,
+        '${JobsTexts.failedToSaveJobPrefix}${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -187,13 +177,13 @@ class JobsHomeController extends GetxController {
   Future<void> loadMyApplications() async {
     try {
       _isLoading.value = true;
-      
+
       final applications = await _jobsRepository.getMyApplications();
       _myApplications.assignAll(applications);
     } catch (e) {
       Get.snackbar(
-        'Error',
-        'Failed to load applications: ${e.toString()}',
+        JobsTexts.error,
+        '${JobsTexts.failedToLoadApplicationsPrefix2}${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -205,13 +195,13 @@ class JobsHomeController extends GetxController {
   Future<void> loadSaved() async {
     try {
       _isLoading.value = true;
-      
+
       final jobs = await _jobsRepository.getSavedJobs();
       _savedJobs.assignAll(jobs);
     } catch (e) {
       Get.snackbar(
-        'Error',
-        'Failed to load saved jobs: ${e.toString()}',
+        JobsTexts.error,
+        '${JobsTexts.failedToLoadSavedJobsPrefix}${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
@@ -233,7 +223,9 @@ class JobsHomeController extends GetxController {
   Future<void> refresh() async {
     switch (_currentTabIndex.value) {
       case 0:
-        await loadRecommended(query: _searchQuery.value.isEmpty ? null : _searchQuery.value);
+        await loadRecommended(
+          query: _searchQuery.value.isEmpty ? null : _searchQuery.value,
+        );
         break;
       case 1:
         await loadMyApplications();

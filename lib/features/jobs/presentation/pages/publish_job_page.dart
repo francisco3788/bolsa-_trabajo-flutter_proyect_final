@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../data/models/job_create_model.dart';
 import '../../domain/repositories/jobs_repository.dart';
+import '../../constants/jobs_texts.dart';
 
 class PublishJobPage extends StatefulWidget {
   const PublishJobPage({super.key});
@@ -59,7 +60,7 @@ class _PublishJobPageState extends State<PublishJobPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Publish Job'),
+        title: const Text(JobsTexts.publishJobTitle),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         elevation: 0,
@@ -71,15 +72,15 @@ class _PublishJobPageState extends State<PublishJobPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildSectionTitle('Basic Information'),
+              _buildSectionTitle(JobsTexts.basicInformationSection),
               const SizedBox(height: 16),
               _buildTextField(
                 controller: _titleController,
-                label: 'Job Title',
+                label: JobsTexts.jobTitleLabel,
                 hint: 'e.g., Senior Flutter Developer',
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Title is required';
+                    return JobsTexts.jobTitleRequired;
                   }
                   return null;
                 },
@@ -87,86 +88,86 @@ class _PublishJobPageState extends State<PublishJobPage> {
               const SizedBox(height: 16),
               _buildTextField(
                 controller: _descriptionController,
-                label: 'Description',
-                hint: 'Describe responsibilities and role requirements...',
+                label: JobsTexts.descriptionLabel,
+                hint: JobsTexts.descriptionHint,
                 maxLines: 5,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Description is required';
+                    return JobsTexts.descriptionRequired;
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 24),
-              _buildSectionTitle('Location and Work Mode'),
+              _buildSectionTitle(JobsTexts.locationWorkModeSection),
               const SizedBox(height: 16),
               _buildTextField(
                 controller: _locationController,
-                label: 'Location',
-                hint: 'e.g., Madrid, Spain',
+                label: JobsTexts.locationLabel2,
+                hint: JobsTexts.locationHint2,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Location is required';
+                    return JobsTexts.locationRequired;
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 16),
               _buildDropdown(
-                label: 'Work Mode',
+                label: JobsTexts.workModeLabel,
                 value: _selectedWorkMode,
                 items: _workModes,
                 onChanged: (value) => setState(() => _selectedWorkMode = value!),
                 displayNames: {
-                  'remote': 'Remote',
-                  'hybrid': 'Hybrid',
-                  'on_site': 'On-site',
+                  'remote': JobsTexts.workModeRemote,
+                  'hybrid': JobsTexts.workModeHybrid,
+                  'on_site': JobsTexts.workModeOnSite,
                 },
               ),
               const SizedBox(height: 24),
-              _buildSectionTitle('Job Details'),
+              _buildSectionTitle(JobsTexts.jobDetailsSection),
               const SizedBox(height: 16),
               _buildDropdown(
-                label: 'Employment Type',
+                label: JobsTexts.employmentTypeLabel,
                 value: _selectedJobType,
                 items: _jobTypes,
                 onChanged: (value) => setState(() => _selectedJobType = value!),
                 displayNames: {
-                  'full_time': 'Full-time',
-                  'part_time': 'Part-time',
-                  'contract': 'Contract',
-                  'internship': 'Internship',
+                  'full_time': JobsTexts.fullTime,
+                  'part_time': JobsTexts.partTime,
+                  'contract': JobsTexts.contract,
+                  'internship': JobsTexts.internship,
                 },
               ),
               const SizedBox(height: 16),
               _buildDropdown(
-                label: 'Experience Level',
+                label: JobsTexts.experienceLevelLabel,
                 value: _selectedExperienceLevel,
                 items: _experienceLevels,
                 onChanged: (value) => setState(() => _selectedExperienceLevel = value!),
                 displayNames: {
-                  'junior': 'Junior',
-                  'mid': 'Mid-level',
-                  'senior': 'Senior',
-                  'lead': 'Lead/Principal',
+                  'junior': JobsTexts.junior,
+                  'mid': JobsTexts.midLevel,
+                  'senior': JobsTexts.senior,
+                  'lead': JobsTexts.leadPrincipal,
                 },
               ),
               const SizedBox(height: 24),
-              _buildSectionTitle('Salary'),
+              _buildSectionTitle(JobsTexts.salarySection),
               const SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(
                     child: _buildTextField(
                       controller: _salaryMinController,
-                      label: 'Minimum Salary',
+                      label: JobsTexts.minimumSalaryLabel,
                       hint: '30000',
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value != null && value.isNotEmpty) {
                           final salary = int.tryParse(value);
                           if (salary == null || salary < 0) {
-                            return 'Enter a valid number';
+                            return JobsTexts.enterValidNumber;
                           }
                         }
                         return null;
@@ -177,18 +178,18 @@ class _PublishJobPageState extends State<PublishJobPage> {
                   Expanded(
                     child: _buildTextField(
                       controller: _salaryMaxController,
-                      label: 'Maximum Salary',
+                      label: JobsTexts.maximumSalaryLabel,
                       hint: '50000',
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value != null && value.isNotEmpty) {
                           final salary = int.tryParse(value);
                           if (salary == null || salary < 0) {
-                            return 'Enter a valid number';
+                            return JobsTexts.enterValidNumber;
                           }
                           final minSalary = int.tryParse(_salaryMinController.text);
                           if (minSalary != null && salary < minSalary) {
-                            return 'Must be greater than minimum';
+                            return JobsTexts.mustBeGreaterThanMinimum;
                           }
                         }
                         return null;
@@ -198,12 +199,12 @@ class _PublishJobPageState extends State<PublishJobPage> {
                 ],
               ),
               const SizedBox(height: 24),
-              _buildSectionTitle('Required Skills'),
+              _buildSectionTitle(JobsTexts.requiredSkillsSection),
               const SizedBox(height: 16),
               _buildTextField(
                 controller: _skillsController,
-                label: 'Skills',
-                hint: 'Flutter, Dart, Firebase, Git (comma-separated)',
+                label: JobsTexts.skillsLabel,
+                hint: JobsTexts.skillsHint,
                 maxLines: 2,
               ),
               const SizedBox(height: 32),
@@ -222,13 +223,13 @@ class _PublishJobPageState extends State<PublishJobPage> {
                   child: _isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
                       : const Text(
-                          'Publish Job',
+                          JobsTexts.publishJobButton,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                ),
+              ),
               ),
               const SizedBox(height: 16),
             ],
@@ -340,8 +341,8 @@ class _PublishJobPageState extends State<PublishJobPage> {
       await Get.find<JobsRepository>().createJob(jobData);
 
       Get.snackbar(
-        'Success',
-        'Job posted successfully',
+        JobsTexts.success,
+        JobsTexts.jobPostedSuccessfully,
         backgroundColor: Colors.green,
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,
@@ -351,8 +352,8 @@ class _PublishJobPageState extends State<PublishJobPage> {
       Get.offNamed('/dashboard/empresa');
     } catch (e) {
       Get.snackbar(
-        'Error',
-        'Failed to publish the job: ${e.toString()}',
+        JobsTexts.error,
+        '${JobsTexts.failedToPublishJobPrefix}${e.toString()}',
         backgroundColor: Colors.red,
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/job_entity.dart';
+import '../../constants/jobs_texts.dart';
 
 class JobCard extends StatelessWidget {
   final JobEntity job;
@@ -25,9 +26,7 @@ class JobCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -52,10 +51,7 @@ class JobCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         job.companyName,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -86,19 +82,21 @@ class JobCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     job.location,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[600],
-                    ),
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 const SizedBox(width: 16),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
-                    color: _getWorkModeColor(job.workMode).withValues(alpha: 0.1),
+                    color: _getWorkModeColor(
+                      job.workMode,
+                    ).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -116,7 +114,10 @@ class JobCard extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.blue.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
@@ -151,10 +152,7 @@ class JobCard extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 job.description,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[700],
-                ),
+                style: TextStyle(fontSize: 12, color: Colors.grey[700]),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -164,20 +162,28 @@ class JobCard extends StatelessWidget {
               Wrap(
                 spacing: 6,
                 runSpacing: 6,
-                children: job.skills.take(4).map((skill) => Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    skill,
-                    style: const TextStyle(
-                      fontSize: 10,
-                      color: Colors.black87,
-                    ),
-                  ),
-                )).toList(),
+                children: job.skills
+                    .take(4)
+                    .map(
+                      (skill) => Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          skill,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
               ),
               if (job.skills.length > 4)
                 Padding(
@@ -215,7 +221,9 @@ class JobCard extends StatelessWidget {
                           ),
                         )
                       : Text(
-                          hasApplied ? 'Ya postulado' : 'Postularme',
+                          hasApplied
+                              ? JobsTexts.alreadyAppliedBadge
+                              : JobsTexts.applyNowButtonLabel,
                           style: const TextStyle(fontSize: 14),
                         ),
                 ),

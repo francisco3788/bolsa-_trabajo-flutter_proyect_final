@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/jobs_home_controller.dart';
+import '../../constants/jobs_texts.dart';
 
 class JobsHomePage extends GetView<JobsHomeController> {
   const JobsHomePage({super.key});
@@ -10,7 +11,7 @@ class JobsHomePage extends GetView<JobsHomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Jobs Home'),
+        title: const Text(JobsTexts.jobsHomeTitle),
         actions: [
           Obx(
             () => IconButton(
@@ -24,7 +25,7 @@ class JobsHomePage extends GetView<JobsHomeController> {
               onPressed: controller.isLoading.value
                   ? null
                   : controller.doLogout,
-              tooltip: 'Sign out',
+              tooltip: JobsTexts.signOutTooltip,
             ),
           ),
         ],
@@ -38,7 +39,7 @@ class JobsHomePage extends GetView<JobsHomeController> {
             ),
           );
         }
-        return const Center(child: Text('List of offers (coming soon)'));
+        return const Center(child: Text(JobsTexts.listOfOffersComingSoon));
       }),
     );
   }
