@@ -98,48 +98,103 @@ class AiJobsPage extends GetView<AiJobsController> {
       color: Colors.grey[100],
       child: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: AiTexts.aiSearchPlaceholder,
-                    prefixIcon: const Icon(Icons.search),
-                    filled: true,
-                    fillColor: Colors.grey.shade50,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final narrow = constraints.maxWidth < 480;
+              if (narrow) {
+                return Column(
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(
+                        hintText: AiTexts.aiSearchPlaceholder,
+                        prefixIcon: const Icon(Icons.search),
+                        filled: true,
+                        fillColor: Colors.grey.shade50,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary),
+                        ),
+                      ),
+                      onChanged: controller.updateSearchQuery,
+                      onSubmitted: (_) => controller.generateAiJobs(),
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary),
+                    const SizedBox(height: 8),
+                    Obx(() => SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: controller.generateAiJobs,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(Get.context!).colorScheme.primary,
+                              minimumSize: const Size(0, 48),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                            ),
+                            child: controller.isGenerating.value
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                                  )
+                                : const Text(AiTexts.generate, style: TextStyle(color: Colors.white)),
+                          ),
+                        )),
+                  ],
+                );
+              }
+              return Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: AiTexts.aiSearchPlaceholder,
+                        prefixIcon: const Icon(Icons.search),
+                        filled: true,
+                        fillColor: Colors.grey.shade50,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary),
+                        ),
+                      ),
+                      onChanged: controller.updateSearchQuery,
+                      onSubmitted: (_) => controller.generateAiJobs(),
                     ),
                   ),
-                  onChanged: controller.updateSearchQuery,
-                  onSubmitted: (_) => controller.generateAiJobs(),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Obx(() => ElevatedButton(
-                onPressed: controller.generateAiJobs,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(Get.context!).colorScheme.primary,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                ),
-                child: controller.isGenerating.value
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                      )
-                    : const Text(AiTexts.generate, style: TextStyle(color: Colors.white)),
-              )),
-            ],
+                  const SizedBox(width: 8),
+                  Obx(() => Flexible(
+                        child: SizedBox(
+                          height: 48,
+                          child: ElevatedButton(
+                            onPressed: controller.generateAiJobs,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(Get.context!).colorScheme.primary,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                            ),
+                            child: controller.isGenerating.value
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                                  )
+                                : const Text(AiTexts.generate, style: TextStyle(color: Colors.white)),
+                          ),
+                        ),
+                      )),
+                ],
+              );
+            },
           ),
           const SizedBox(height: 8),
           Row(
@@ -168,81 +223,155 @@ class AiJobsPage extends GetView<AiJobsController> {
   Widget _buildFilterSection() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        children: [
-          Expanded(
-            child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: AiTexts.labelLocation,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary, width: 2),
+      child: LayoutBuilder(builder: (context, constraints) {
+        final narrow = constraints.maxWidth < 640;
+        if (narrow) {
+          return Column(
+            children: [
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: AiTexts.labelLocation,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary, width: 2),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                value: controller.selectedLocation.value.isEmpty ? null : controller.selectedLocation.value,
+                items: ['']
+                    .followedBy(AiTexts.locationsPool)
+                    .map((location) {
+                  return DropdownMenuItem(
+                    value: location,
+                    child: Text(location.isEmpty ? AiTexts.allLocations : location),
+                  );
+                }).toList(),
+                onChanged: (value) => controller.updateLocation(value ?? ''),
               ),
-              value: controller.selectedLocation.value.isEmpty ? null : controller.selectedLocation.value,
-              items: ['']
-                  .followedBy(AiTexts.locationsPool)
-                  .map((location) {
-                return DropdownMenuItem(
-                  value: location,
-                  child: Text(location.isEmpty ? AiTexts.allLocations : location),
-                );
-              }).toList(),
-              onChanged: (value) => controller.updateLocation(value ?? ''),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: AiTexts.labelWorkMode,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary, width: 2),
+              const SizedBox(height: 8),
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: AiTexts.labelWorkMode,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary, width: 2),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                value: controller.selectedWorkMode.value.isEmpty ? null : controller.selectedWorkMode.value,
+                items: ['']
+                    .followedBy(AiTexts.workModes)
+                    .map((mode) {
+                  return DropdownMenuItem(
+                    value: mode,
+                    child: Text(mode.isEmpty ? AiTexts.allModes : _getWorkModeDisplay(mode)),
+                  );
+                }).toList(),
+                onChanged: (value) => controller.updateWorkMode(value ?? ''),
               ),
-              value: controller.selectedWorkMode.value.isEmpty ? null : controller.selectedWorkMode.value,
-              items: ['']
-                  .followedBy(AiTexts.workModes)
-                  .map((mode) {
-                return DropdownMenuItem(
-                  value: mode,
-                  child: Text(mode.isEmpty ? AiTexts.allModes : _getWorkModeDisplay(mode)),
-                );
-              }).toList(),
-              onChanged: (value) => controller.updateWorkMode(value ?? ''),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: AiTexts.labelJobType,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary, width: 2),
+              const SizedBox(height: 8),
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: AiTexts.labelJobType,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary, width: 2),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                value: controller.selectedJobType.value.isEmpty ? null : controller.selectedJobType.value,
+                items: ['']
+                    .followedBy(AiTexts.jobTypes)
+                    .map((type) {
+                  return DropdownMenuItem(
+                    value: type,
+                    child: Text(type.isEmpty ? AiTexts.allTypes : _getJobTypeDisplay(type)),
+                  );
+                }).toList(),
+                onChanged: (value) => controller.updateJobType(value ?? ''),
               ),
-              value: controller.selectedJobType.value.isEmpty ? null : controller.selectedJobType.value,
-              items: ['']
-                  .followedBy(AiTexts.jobTypes)
-                  .map((type) {
-                return DropdownMenuItem(
-                  value: type,
-                  child: Text(type.isEmpty ? AiTexts.allTypes : _getJobTypeDisplay(type)),
-                );
-              }).toList(),
-              onChanged: (value) => controller.updateJobType(value ?? ''),
+            ],
+          );
+        }
+        return Row(
+          children: [
+            Expanded(
+              child: DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: AiTexts.labelLocation,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary, width: 2),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                ),
+                value: controller.selectedLocation.value.isEmpty ? null : controller.selectedLocation.value,
+                items: ['']
+                    .followedBy(AiTexts.locationsPool)
+                    .map((location) {
+                  return DropdownMenuItem(
+                    value: location,
+                    child: Text(location.isEmpty ? AiTexts.allLocations : location),
+                  );
+                }).toList(),
+                onChanged: (value) => controller.updateLocation(value ?? ''),
+              ),
             ),
-          ),
-        ],
-      ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: AiTexts.labelWorkMode,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary, width: 2),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                ),
+                value: controller.selectedWorkMode.value.isEmpty ? null : controller.selectedWorkMode.value,
+                items: ['']
+                    .followedBy(AiTexts.workModes)
+                    .map((mode) {
+                  return DropdownMenuItem(
+                    value: mode,
+                    child: Text(mode.isEmpty ? AiTexts.allModes : _getWorkModeDisplay(mode)),
+                  );
+                }).toList(),
+                onChanged: (value) => controller.updateWorkMode(value ?? ''),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: AiTexts.labelJobType,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Theme.of(Get.context!).colorScheme.primary, width: 2),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                ),
+                value: controller.selectedJobType.value.isEmpty ? null : controller.selectedJobType.value,
+                items: ['']
+                    .followedBy(AiTexts.jobTypes)
+                    .map((type) {
+                  return DropdownMenuItem(
+                    value: type,
+                    child: Text(type.isEmpty ? AiTexts.allTypes : _getJobTypeDisplay(type)),
+                  );
+                }).toList(),
+                onChanged: (value) => controller.updateJobType(value ?? ''),
+              ),
+            ),
+          ],
+        );
+      }),
     );
   }
 
