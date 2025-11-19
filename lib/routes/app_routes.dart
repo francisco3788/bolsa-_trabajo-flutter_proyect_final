@@ -13,4 +13,7 @@ abstract class AppRoutes {
   static const jobNew = '/job/new';
   static const jobApplications = '/job/:jobId/applications';
   static const profile = '/profile';
+  
+  // AI-related routes
+  static const aiJobs = '/ai-jobs';
 }

@@ -1,0 +1,207 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../../../core/services/auth_session_service.dart';
+import '../../constants/job_application_texts.dart';
+import '../../domain/entities/job_application.dart';
+import '../controllers/job_application_controller.dart';
+import '../widgets/application_card.dart';
+import '../widgets/application_stats_card.dart';
+
+class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
+  const CompanyApplicationsDashboard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(JobApplicationTexts.companyDashboardTitle),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () => _refreshApplications(),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          _buildStatsSection(),
+          _buildSearchSection(),
+          _buildFilterSection(),
+          _buildApplicationsList(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatsSection() {
+    return Obx(() => Container(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Expanded(
+            child: ApplicationStatsCard(
+              title: JobApplicationTexts.totalApplications,
+              count: controller.companyApplications.length,
+              color: Colors.blue,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: ApplicationStatsCard(
+              title: JobApplicationTexts.pendingApplications,
+              count: controller.pendingApplicationsCount,
+              color: Colors.orange,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: ApplicationStatsCard(
+              title: JobApplicationTexts.acceptedApplications,
+              count: controller.getApplicationsByStatus(ApplicationStatus.accepted).length,
+              color: Colors.green,
+            ),
+          ),
+        ],
+      ),
+    ));
+  }
+
+  Widget _buildSearchSection() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: TextField(
+        decoration: InputDecoration(
+          hintText: JobApplicationTexts.searchApplications,
+          prefixIcon: const Icon(Icons.search),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        onChanged: (query) {
+          // Implement search functionality
+          _searchApplications(query);
+        },
+      ),
+    );
+  }
+
+  Widget _buildFilterSection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            _buildFilterChip(JobApplicationTexts.allStatus, null),
+            const SizedBox(width: 8),
+            _buildFilterChip(JobApplicationTexts.pendingStatus, ApplicationStatus.pending),
+            const SizedBox(width: 8),
+            _buildFilterChip(JobApplicationTexts.underReviewStatus, ApplicationStatus.underReview),
+            const SizedBox(width: 8),
+            _buildFilterChip(JobApplicationTexts.acceptedStatus, ApplicationStatus.accepted),
+            const SizedBox(width: 8),
+            _buildFilterChip(JobApplicationTexts.rejectedStatus, ApplicationStatus.rejected),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilterChip(String label, ApplicationStatus? status) {
+    return Obx(() {
+      final isSelected = controller.getApplicationsByStatus(status ?? ApplicationStatus.pending).isNotEmpty;
+      return ChoiceChip(
+        label: Text(label),
+        selected: isSelected,
+        onSelected: (selected) {
+          if (selected) {
+            _filterByStatus(status);
+          }
+        },
+      );
+    });
+  }
+
+  Widget _buildApplicationsList() {
+    return Expanded(
+      child: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (controller.companyApplications.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.inbox,
+                  size: 64,
+                  color: Colors.grey[400],
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  JobApplicationTexts.noApplications,
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: controller.companyApplications.length,
+          itemBuilder: (context, index) {
+            final application = controller.companyApplications[index];
+            return ApplicationCard(
+              application: application,
+              onStatusUpdate: (newStatus, notes) {
+                _updateApplicationStatus(application.id, newStatus, notes);
+              },
+            );
+          },
+        );
+      }),
+    );
+  }
+
+  Future<void> _refreshApplications() async {
+    // Get company ID from auth or job
+    final companyId = Get.find<AuthSessionService>().user?.id ?? '';
+    await controller.getCompanyApplications(companyId: companyId);
+    await controller.getApplicationStats(companyId);
+  }
+
+  Future<void> _searchApplications(String query) async {
+    final companyId = Get.find<AuthSessionService>().user?.id ?? '';
+    await controller.getCompanyApplications(
+      companyId: companyId,
+      searchQuery: query.isNotEmpty ? query : null,
+    );
+  }
+
+  Future<void> _filterByStatus(ApplicationStatus? status) async {
+    final companyId = Get.find<AuthSessionService>().user?.id ?? '';
+    await controller.getCompanyApplications(
+      companyId: companyId,
+      statusFilter: status,
+    );
+  }
+
+  Future<void> _updateApplicationStatus(
+    String applicationId,
+    ApplicationStatus newStatus,
+    String? notes,
+  ) async {
+    await controller.updateApplicationStatus(
+      applicationId: applicationId,
+      newStatus: newStatus,
+      reviewNotes: notes,
+    );
+  }
+}

@@ -20,6 +20,8 @@ import 'package:bolsa_de_trabajo/features/profile/presentation/bindings/choose_r
 import 'package:bolsa_de_trabajo/features/profile/presentation/pages/choose_role_page.dart';
 import 'package:bolsa_de_trabajo/features/profile/presentation/pages/profile_page.dart';
 import 'package:bolsa_de_trabajo/features/profile/presentation/bindings/profile_binding.dart';
+import 'package:bolsa_de_trabajo/features/ai/presentation/pages/ai_jobs_page.dart';
+import 'package:bolsa_de_trabajo/features/ai/presentation/bindings/ai_jobs_binding.dart';
 import 'package:bolsa_de_trabajo/routes/app_routes.dart';
 import 'package:bolsa_de_trabajo/routes/middlewares/auth_guard.dart';
 import 'package:bolsa_de_trabajo/routes/middlewares/guest_guard.dart';
@@ -117,6 +119,15 @@ class AppPages {
       name: AppRoutes.profile,
       page: () => const ProfilePage(),
       binding: ProfileBinding(),
+      middlewares: [
+        AuthGuard(),
+      ],
+    ),
+    // AI Jobs Route - for AI-generated job search
+    GetPage(
+      name: AppRoutes.aiJobs,
+      page: () => const AiJobsPage(),
+      binding: AiJobsBinding(),
       middlewares: [
         AuthGuard(),
       ],

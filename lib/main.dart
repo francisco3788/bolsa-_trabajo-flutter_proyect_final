@@ -8,6 +8,7 @@ import 'core/config/app_theme.dart';
 import 'injection/injector.dart';
 import 'routes/app_pages.dart';
 import 'routes/app_routes.dart';
+import 'features/ai/ai_module.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +24,11 @@ Future<void> main() async {
   );
 
   Injector.init();
+  
+  // Initialize AI module early to ensure dependencies are available
+  print('Main: Initializing AI module...');
+  AiModule.init();
+  print('Main: AI module initialized');
 
   runApp(const JobBoardApp());
 }
