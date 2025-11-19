@@ -150,7 +150,7 @@ class AISuggestionsWidget extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton.icon(
                     icon: const Icon(Icons.refresh),
-                    label: const Text('Regenerate'),
+                    label: const Text(JobApplicationTexts.regenerate),
                     onPressed: () => _generateSuggestion(controller),
                   ),
                 ),
@@ -158,7 +158,7 @@ class AISuggestionsWidget extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton.icon(
                     icon: const Icon(Icons.clear),
-                    label: const Text('Clear'),
+                    label: const Text(JobApplicationTexts.clear),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey,
                       foregroundColor: Colors.white,

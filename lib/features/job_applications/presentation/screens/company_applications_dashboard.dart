@@ -24,11 +24,49 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
             icon: const Icon(Icons.refresh),
             onPressed: () => _refreshApplications(),
           ),
+          IconButton(
+            icon: const Icon(Icons.psychology),
+            onPressed: () => _generateAIInsights(),
+            tooltip: JobApplicationTexts.aiGenerateInsights,
+          ),
+          Obx(() {
+            final count = controller.unreadNotificationCount.value;
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.notifications),
+                  onPressed: () async {
+                    final companyId = Get.find<AuthSessionService>().user?.id ?? '';
+                    await controller.loadUnreadNotificationCount(companyId);
+                  },
+                  tooltip: 'Notifications',
+                ),
+                if (count > 0)
+                  Positioned(
+                    right: 12,
+                    top: 12,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        '$count',
+                        style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          }),
         ],
       ),
       body: Column(
         children: [
           _buildStatsSection(),
+          _buildAISummary(),
           _buildSearchSection(),
           _buildFilterSection(),
           _buildApplicationsList(),
@@ -105,6 +143,12 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
             _buildFilterChip(JobApplicationTexts.acceptedStatus, ApplicationStatus.accepted),
             const SizedBox(width: 8),
             _buildFilterChip(JobApplicationTexts.rejectedStatus, ApplicationStatus.rejected),
+            const SizedBox(width: 8),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.auto_awesome),
+              label: const Text(JobApplicationTexts.aiBatchSuggest),
+              onPressed: () => _generateBatchSuggestions(),
+            ),
           ],
         ),
       ),
@@ -173,11 +217,97 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
     );
   }
 
+  Widget _buildAISummary() {
+    return Obx(() {
+      final insights = controller.aiSuggestions['insights'];
+      if (insights == null) return const SizedBox.shrink();
+
+      final overall = insights['overall_assessment'] ?? '';
+      final quality = insights['quality_score'] ?? 0.0;
+      final keyInsights = List<String>.from(insights['key_insights'] ?? []);
+      final recommendations = List<String>.from(insights['recommendations'] ?? []);
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Card(
+          elevation: 2,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.psychology, color: Colors.blue),
+                    const SizedBox(width: 8),
+                    const Text(
+                      JobApplicationTexts.aiInsightsTitle,
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    const Spacer(),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.blue.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text('Quality: ${(quality * 100).round()}%'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  '${JobApplicationTexts.aiInsightsOverall}: $overall',
+                  style: TextStyle(color: Colors.grey[700]),
+                ),
+                if (keyInsights.isNotEmpty) ...[
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: keyInsights.map((k) => Chip(label: Text(k))).toList(),
+                  ),
+                ],
+                if (recommendations.isNotEmpty) ...[
+                  const SizedBox(height: 12),
+                  Text(
+                    JobApplicationTexts.aiInsightsRecommendations,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 6),
+                  ...recommendations.map((r) => Padding(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        child: Row(children: [const Icon(Icons.circle, size: 6), const SizedBox(width: 6), Expanded(child: Text(r))]),
+                      )),
+                ],
+              ],
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
+  Future<void> _generateAIInsights() async {
+    await controller.getApplicationInsights(jobTitle: '');
+  }
+
+  Future<void> _generateBatchSuggestions() async {
+    await controller.getBatchAISuggestions(
+      applications: controller.companyApplications,
+      jobTitle: '',
+      jobDescription: '',
+      companyRequirements: '',
+    );
+  }
+
   Future<void> _refreshApplications() async {
     // Get company ID from auth or job
     final companyId = Get.find<AuthSessionService>().user?.id ?? '';
     await controller.getCompanyApplications(companyId: companyId);
     await controller.getApplicationStats(companyId);
+    await controller.loadUnreadNotificationCount(companyId);
   }
 
   Future<void> _searchApplications(String query) async {

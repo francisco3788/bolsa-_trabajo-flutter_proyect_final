@@ -61,5 +61,21 @@ class JobApplicationTexts {
   static const underReviewApplicationsStat = 'Under Review';
   static const acceptedApplicationsStat = 'Accepted';
   static const rejectedApplicationsStat = 'Rejected';
+  static const aiInsightsTitle = 'AI Insights';
+  static const aiGenerateInsights = 'Generate Insights';
+  static const aiBatchSuggest = 'Batch Suggestions';
+  static const aiInsightsOverall = 'Overall Assessment';
+  static const aiInsightsRecommendations = 'Recommendations';
   static const cancelledApplicationsStat = 'Cancelled';
+  static const errorTitle = 'Error';
+  static const successTitle = 'Success';
+  static const aiSuggestionTitle = 'AI Suggestion';
+  static const aiRecommendationTitle = 'AI Recommendation';
+  static const aiSuggestionGenerated = 'Status recommendation generated';
+  static const aiInsightsGenerated = 'Analytics generated successfully';
+  static const statusUpdated = 'Application status updated!';
+  static const regenerate = 'Regenerate';
+  static const clear = 'Clear';
+  static const recommendedStatus = 'Recommended Status';
+  static const confidence = 'Confidence';
 }

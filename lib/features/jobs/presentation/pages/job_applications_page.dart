@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../controllers/company_applications_controller.dart';
 import '../../constants/job_status.dart';
 import '../../domain/entities/application_entity.dart';
@@ -11,16 +14,18 @@ class JobApplicationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String jobId = Get.parameters['jobId'] ?? '';
-    final controller = Get.put(CompanyApplicationsController(jobsRepository: Get.find()));
-    
+    final controller = Get.put(
+      CompanyApplicationsController(jobsRepository: Get.find()),
+    );
+
     // Initialize controller with job ID
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.initializeWithJobId(jobId);
     });
 
-  return Scaffold(
-    appBar: AppBar(
-      title: const Text(JobsTexts.applications),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(JobsTexts.applications),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         elevation: 0,
@@ -64,9 +69,7 @@ class JobApplicationsPage extends StatelessWidget {
 
       return Card(
         elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -82,18 +85,20 @@ class JobApplicationsPage extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 job.location,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[600],
-                ),
+                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
               ),
               const SizedBox(height: 8),
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
-                      color: _getJobStatusColor(job.status).withValues(alpha: 0.1),
+                      color: _getJobStatusColor(
+                        job.status,
+                      ).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
@@ -108,10 +113,7 @@ class JobApplicationsPage extends StatelessWidget {
                   const Spacer(),
                   Text(
                     '${JobsTexts.postedPrefix}${job.createdAtFormatted}',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[600],
-                    ),
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                   ),
                 ],
               ),
@@ -125,12 +127,10 @@ class JobApplicationsPage extends StatelessWidget {
   Widget _buildApplicationsStats(CompanyApplicationsController controller) {
     return Obx(() {
       final applications = controller.filteredApplications;
-      
+
       return Card(
         elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -138,10 +138,7 @@ class JobApplicationsPage extends StatelessWidget {
             children: [
               const Text(
                 JobsTexts.applicationStatistics,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
               Wrap(
@@ -155,17 +152,26 @@ class JobApplicationsPage extends StatelessWidget {
                   ),
                   _buildStatChip(
                     JobStatus.filterLabel[JobStatus.submitted]!,
-                    applications.where((app) => app.status == JobStatus.submitted).length.toString(),
+                    applications
+                        .where((app) => app.status == JobStatus.submitted)
+                        .length
+                        .toString(),
                     Colors.orange,
                   ),
                   _buildStatChip(
                     JobStatus.filterLabel[JobStatus.interview]!,
-                    applications.where((app) => app.status == JobStatus.interview).length.toString(),
+                    applications
+                        .where((app) => app.status == JobStatus.interview)
+                        .length
+                        .toString(),
                     Colors.purple,
                   ),
                   _buildStatChip(
                     JobStatus.filterLabel[JobStatus.hired]!,
-                    applications.where((app) => app.status == JobStatus.hired).length.toString(),
+                    applications
+                        .where((app) => app.status == JobStatus.hired)
+                        .length
+                        .toString(),
                     Colors.green,
                   ),
                 ],
@@ -183,9 +189,7 @@ class JobApplicationsPage extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: color.withValues(alpha: 0.3),
-        ),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -199,13 +203,7 @@ class JobApplicationsPage extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 4),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              color: color,
-            ),
-          ),
+          Text(label, style: TextStyle(fontSize: 12, color: color)),
         ],
       ),
     );
@@ -217,27 +215,48 @@ class JobApplicationsPage extends StatelessWidget {
       children: [
         const Text(
           JobsTexts.filterByStatus,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 12),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              _buildFilterChip(controller, JobStatus.all, JobStatus.filterLabel[JobStatus.all]!),
+              _buildFilterChip(
+                controller,
+                JobStatus.all,
+                JobStatus.filterLabel[JobStatus.all]!,
+              ),
               const SizedBox(width: 8),
-              _buildFilterChip(controller, JobStatus.submitted, JobStatus.filterLabel[JobStatus.submitted]!),
+              _buildFilterChip(
+                controller,
+                JobStatus.submitted,
+                JobStatus.filterLabel[JobStatus.submitted]!,
+              ),
               const SizedBox(width: 8),
-              _buildFilterChip(controller, JobStatus.seen, JobStatus.filterLabel[JobStatus.seen]!),
+              _buildFilterChip(
+                controller,
+                JobStatus.seen,
+                JobStatus.filterLabel[JobStatus.seen]!,
+              ),
               const SizedBox(width: 8),
-              _buildFilterChip(controller, JobStatus.interview, JobStatus.filterLabel[JobStatus.interview]!),
+              _buildFilterChip(
+                controller,
+                JobStatus.interview,
+                JobStatus.filterLabel[JobStatus.interview]!,
+              ),
               const SizedBox(width: 8),
-              _buildFilterChip(controller, JobStatus.rejected, JobStatus.filterLabel[JobStatus.rejected]!),
+              _buildFilterChip(
+                controller,
+                JobStatus.rejected,
+                JobStatus.filterLabel[JobStatus.rejected]!,
+              ),
               const SizedBox(width: 8),
-              _buildFilterChip(controller, JobStatus.hired, JobStatus.filterLabel[JobStatus.hired]!),
+              _buildFilterChip(
+                controller,
+                JobStatus.hired,
+                JobStatus.filterLabel[JobStatus.hired]!,
+              ),
             ],
           ),
         ),
@@ -245,7 +264,11 @@ class JobApplicationsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildFilterChip(CompanyApplicationsController controller, String status, String label) {
+  Widget _buildFilterChip(
+    CompanyApplicationsController controller,
+    String status,
+    String label,
+  ) {
     return Obx(() {
       final isSelected = controller.selectedStatusFilter == status;
       return GestureDetector(
@@ -288,26 +311,16 @@ class JobApplicationsPage extends StatelessWidget {
             padding: const EdgeInsets.all(32),
             child: Column(
               children: [
-                Icon(
-                  Icons.inbox,
-                  size: 64,
-                  color: Colors.grey[400],
-                ),
+                Icon(Icons.inbox, size: 64, color: Colors.grey[400]),
                 const SizedBox(height: 16),
                 Text(
                   JobsTexts.noApplicationsTitle,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[600],
-                  ),
+                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   JobsTexts.noApplicationsSubtitle,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[500],
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.grey[500]),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -321,10 +334,7 @@ class JobApplicationsPage extends StatelessWidget {
         children: [
           Text(
             '${JobsTexts.applicationsCountPrefix}${applications.length})',
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
           ListView.separated(
@@ -342,12 +352,13 @@ class JobApplicationsPage extends StatelessWidget {
     });
   }
 
-  Widget _buildCompanyApplicationCard(ApplicationEntity application, CompanyApplicationsController controller) {
+  Widget _buildCompanyApplicationCard(
+    ApplicationEntity application,
+    CompanyApplicationsController controller,
+  ) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         onTap: () => _showApplicationDetails(application, controller),
         borderRadius: BorderRadius.circular(12),
@@ -362,7 +373,10 @@ class JobApplicationsPage extends StatelessWidget {
                   CircleAvatar(
                     backgroundColor: Colors.blue.withValues(alpha: 0.1),
                     child: Text(
-                      application.candidateName?.substring(0, 1).toUpperCase() ?? 'C',
+                      application.candidateName
+                              ?.substring(0, 1)
+                              .toUpperCase() ??
+                          'C',
                       style: const TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
@@ -393,9 +407,14 @@ class JobApplicationsPage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
-                      color: _getStatusColor(application.status).withValues(alpha: 0.1),
+                      color: _getStatusColor(
+                        application.status,
+                      ).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
@@ -409,7 +428,8 @@ class JobApplicationsPage extends StatelessWidget {
                   ),
                 ],
               ),
-              if (application.coverLetter != null && application.coverLetter!.isNotEmpty) ...[
+              if (application.coverLetter != null &&
+                  application.coverLetter!.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 Container(
                   width: double.infinity,
@@ -420,49 +440,73 @@ class JobApplicationsPage extends StatelessWidget {
                   ),
                   child: Text(
                     application.coverLetter!,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[700],
-                    ),
+                    style: TextStyle(fontSize: 12, color: Colors.grey[700]),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
               const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () => controller.showStatusChangeDialog(application),
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Colors.blue),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Text(
-                        JobsTexts.changeStatus,
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                      ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => _showApplicationDetails(application, controller),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Text(JobsTexts.viewDetails),
-                      ),
-                  ),
-                ],
+  Row(
+    children: [
+      Expanded(
+        child: SizedBox(
+          height: 44,
+          child: OutlinedButton(
+            onPressed: () =>
+                controller.showStatusChangeDialog(application),
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: Colors.blue),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
+            ),
+            child: const Text(
+              JobsTexts.changeStatus,
+              style: TextStyle(color: Colors.blue),
+            ),
+          ),
+        ),
+      ),
+      const SizedBox(width: 8),
+      Expanded(
+        child: SizedBox(
+          height: 44,
+          child: OutlinedButton(
+            onPressed: () => _showCandidateProfile(application),
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: Colors.blue),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: const Text(
+              JobsTexts.viewProfile,
+              style: TextStyle(color: Colors.blue),
+            ),
+          ),
+        ),
+      ),
+      const SizedBox(width: 8),
+      Expanded(
+        child: SizedBox(
+          height: 44,
+          child: ElevatedButton(
+            onPressed: () =>
+                _showApplicationDetails(application, controller),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: const Text(JobsTexts.viewDetails),
+          ),
+        ),
+      ),
+    ],
+  ),
             ],
           ),
         ),
@@ -470,7 +514,10 @@ class JobApplicationsPage extends StatelessWidget {
     );
   }
 
-  void _showApplicationDetails(ApplicationEntity application, CompanyApplicationsController controller) {
+  void _showApplicationDetails(
+    ApplicationEntity application,
+    CompanyApplicationsController controller,
+  ) {
     Get.bottomSheet(
       Container(
         padding: const EdgeInsets.all(20),
@@ -488,7 +535,8 @@ class JobApplicationsPage extends StatelessWidget {
                   radius: 30,
                   backgroundColor: Colors.blue.withValues(alpha: 0.1),
                   child: Text(
-                    application.candidateName?.substring(0, 1).toUpperCase() ?? 'C',
+                    application.candidateName?.substring(0, 1).toUpperCase() ??
+                        'C',
                     style: const TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,
@@ -510,18 +558,20 @@ class JobApplicationsPage extends StatelessWidget {
                       ),
                       Text(
                         '${JobsTexts.appliedPrefix}${application.appliedAtFormatted}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
-                    color: _getStatusColor(application.status).withValues(alpha: 0.1),
+                    color: _getStatusColor(
+                      application.status,
+                    ).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -535,14 +585,12 @@ class JobApplicationsPage extends StatelessWidget {
                 ),
               ],
             ),
-            if (application.coverLetter != null && application.coverLetter!.isNotEmpty) ...[
+            if (application.coverLetter != null &&
+                application.coverLetter!.isNotEmpty) ...[
               const SizedBox(height: 20),
               const Text(
                 JobsTexts.coverLetter,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Container(
@@ -554,10 +602,7 @@ class JobApplicationsPage extends StatelessWidget {
                 ),
                 child: Text(
                   application.coverLetter!,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[700],
-                  ),
+                  style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                 ),
               ),
             ],
@@ -602,6 +647,249 @@ class JobApplicationsPage extends StatelessWidget {
         ),
       ),
       isScrollControlled: true,
+    );
+  }
+
+  Future<void> _showCandidateProfile(ApplicationEntity application) async {
+    Map<String, dynamic>? profile;
+    try {
+      final data = await Supabase.instance.client
+          .from('candidate_profiles')
+          .select(
+            'name, location, photo_url, bio, years_experience, skills, languages, cv_url, portfolio_url, linkedin_url, github_url',
+          )
+          .eq('id', application.candidateId)
+          .maybeSingle();
+      profile = data != null ? Map<String, dynamic>.from(data) : null;
+    } catch (_) {
+      profile = null;
+    }
+
+    Get.bottomSheet(
+      Container(
+        padding: const EdgeInsets.all(20),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 36,
+                    backgroundColor: Colors.blue.withValues(alpha: 0.1),
+                    backgroundImage:
+                        (profile?['photo_url'] != null &&
+                            (profile?['photo_url'] as String).isNotEmpty)
+                        ? NetworkImage(profile!['photo_url'])
+                        : null,
+                    child:
+                        (profile?['photo_url'] == null ||
+                            (profile?['photo_url'] as String).isEmpty)
+                        ? Text(
+                            (application.candidateName ?? 'C')
+                                .substring(0, 1)
+                                .toUpperCase(),
+                            style: const TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22,
+                            ),
+                          )
+                        : null,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          application.candidateName ?? 'Candidate',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        if (application.candidateEmail != null)
+                          Text(
+                            application.candidateEmail!,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      if (profile != null && (profile['cv_url'] ?? '') != '') ...[
+                        SizedBox(
+                          height: 36,
+                          child: OutlinedButton.icon(
+                            onPressed: () async {
+                              await Clipboard.setData(
+                                ClipboardData(text: profile!['cv_url'] as String),
+                              );
+                              Get.snackbar(JobsTexts.success, JobsTexts.copyLink);
+                            },
+                            icon: const Icon(Icons.copy),
+                            label: const Text(JobsTexts.cv),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        SizedBox(
+                          height: 36,
+                          child: OutlinedButton.icon(
+                            onPressed: () async {
+                              final url = profile!['cv_url'] as String;
+                              if (url.isEmpty) {
+                                Get.snackbar(JobsTexts.error, JobsTexts.cvNotAvailable);
+                                return;
+                              }
+                              final uri = Uri.tryParse(url);
+                              if (uri == null) {
+                                Get.snackbar(JobsTexts.error, JobsTexts.invalidUrl);
+                                return;
+                              }
+                              await launchUrl(uri, mode: LaunchMode.platformDefault);
+                            },
+                            icon: const Icon(Icons.open_in_new),
+                            label: const Text(JobsTexts.viewCv),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Card(
+                      elevation: 1,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              JobsTexts.personalInformation,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            _infoRow(
+                              JobsTexts.name,
+                              profile?['name'] ??
+                                  application.candidateName ??
+                                  '',
+                            ),
+                            _infoRow(
+                              JobsTexts.location,
+                              profile?['location'] ?? '',
+                            ),
+                            _infoRow(
+                              JobsTexts.linkedin,
+                              profile?['linkedin_url'] ?? '',
+                            ),
+                            _infoRow(
+                              JobsTexts.github,
+                              profile?['github_url'] ?? '',
+                            ),
+                            _infoRow(
+                              JobsTexts.portfolio,
+                              profile?['portfolio_url'] ?? '',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Card(
+                      elevation: 1,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              JobsTexts.workInformation,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            _infoRow(
+                              JobsTexts.experienceYears,
+                              (profile?['years_experience'] ?? '').toString(),
+                            ),
+                            if (profile?['skills'] is List &&
+                                (profile?['skills'] as List).isNotEmpty)
+                              Wrap(
+                                spacing: 6,
+                                runSpacing: 6,
+                                children: (profile!['skills'] as List)
+                                    .map((s) => Chip(label: Text(s.toString())))
+                                    .toList(),
+                              ),
+                            if (profile?['bio'] != null &&
+                                (profile?['bio'] as String).isNotEmpty) ...[
+                              const SizedBox(height: 8),
+                              Text(
+                                profile!['bio'] as String,
+                                style: TextStyle(color: Colors.grey[700]),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Align(
+                alignment: Alignment.centerRight,
+                child: SizedBox(
+                  height: 44,
+                  child: ElevatedButton(
+                    onPressed: () => Get.back(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: const Text(JobsTexts.close),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      isScrollControlled: true,
+    );
+  }
+
+  Widget _infoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(
+        children: [
+          Text('$label: ', style: const TextStyle(fontWeight: FontWeight.bold)),
+          Expanded(child: Text(value, overflow: TextOverflow.ellipsis)),
+        ],
+      ),
     );
   }
 

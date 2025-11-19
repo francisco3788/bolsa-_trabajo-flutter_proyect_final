@@ -161,12 +161,12 @@ class JobApplicationScreen extends GetView<JobApplicationController> {
   Future<void> _submitApplication() async {
     final user = Get.find<AuthSessionService>().user;
     if (user == null) {
-      Get.snackbar('Error', JobApplicationTexts.mustBeLoggedIn);
+      Get.snackbar(JobApplicationTexts.errorTitle, JobApplicationTexts.mustBeLoggedIn);
       return;
     }
 
     if (controller.coverLetter.value.isEmpty || controller.coverLetter.value.length < 50) {
-      Get.snackbar('Error', JobApplicationTexts.pleaseCompleteForm);
+      Get.snackbar(JobApplicationTexts.errorTitle, JobApplicationTexts.pleaseCompleteForm);
       return;
     }
 
@@ -179,7 +179,7 @@ class JobApplicationScreen extends GetView<JobApplicationController> {
 
     if (controller.errorMessage.value.isEmpty) {
       Get.back();
-      Get.snackbar('Success', JobApplicationTexts.applicationSubmitted);
+      Get.snackbar(JobApplicationTexts.successTitle, JobApplicationTexts.applicationSubmitted);
     }
   }
 }

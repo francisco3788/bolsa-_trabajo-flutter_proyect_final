@@ -6,17 +6,19 @@ class JobsTexts {
   static const postedPrefix = 'Posted: ';
 
   static const noApplicationsTitle = 'No applications';
-  static const noApplicationsSubtitle = 'No applications received for this job yet';
+  static const noApplicationsSubtitle ='No applications received for this job yet';
   static const applicationsCountPrefix = 'Applications (';
 
   static const changeStatus = 'Change Status';
   static const viewDetails = 'View Details';
+  static const viewProfile = 'View Profile';
+  static const viewCv = 'View CV';
   static const close = 'Close';
   static const coverLetter = 'Cover Letter:';
   static const appliedPrefix = 'Applied: ';
 
   static const confirmChangeTitle = 'Confirm Change';
-  static const confirmChangeBodyPrefix = 'Are you sure to change the status to "';
+  static const confirmChangeBodyPrefix ='Are you sure to change the status to "';
   static const confirm = 'Confirm';
   static const cancel = 'Cancel';
   static const success = 'Success';
@@ -43,7 +45,8 @@ class JobsTexts {
   static const pending = 'Pending';
   static const closed = 'Closed';
   static const noJobListings = 'No job listings';
-  static const publishFirstJobHint = 'Publish your first job using the + button';
+  static const publishFirstJobHint =
+      'Publish your first job using the + button';
   static const newStatus = 'New Status';
   static const changeStatusTitle = 'Change Status';
   static const viewApplications = 'View Applications';
@@ -66,4 +69,16 @@ class JobsTexts {
   static const searchJobs = 'Search jobs';
   static const searchHint = 'Title, company, location...';
   static const clear = 'Clear';
+  static const personalInformation = 'Personal Information';
+  static const workInformation = 'Work Information';
+  static const cv = 'CV';
+  static const portfolio = 'Portfolio';
+  static const linkedin = 'LinkedIn';
+  static const github = 'GitHub';
+  static const copyLink = 'Copy link';
+  static const name = 'Name';
+  static const location = 'Location';
+  static const experienceYears = 'Experience (years)';
+  static const cvNotAvailable = 'CV not available';
+  static const invalidUrl = 'Invalid URL';
 }

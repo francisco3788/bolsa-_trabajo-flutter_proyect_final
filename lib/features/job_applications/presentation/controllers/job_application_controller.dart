@@ -10,6 +10,7 @@ import '../../domain/usecases/get_candidate_applications.dart';
 import '../../domain/usecases/get_company_applications.dart';
 import '../../domain/usecases/update_application_status.dart';
 import '../../domain/usecases/get_application_stats.dart';
+import '../../constants/job_application_texts.dart';
 
 class JobApplicationController extends GetxController {
   final ApplyToJob applyToJobUseCase;
@@ -38,6 +39,7 @@ class JobApplicationController extends GetxController {
   final RxString errorMessage = ''.obs;
   final RxMap<String, dynamic> aiSuggestions = <String, dynamic>{}.obs;
   final RxBool isAISuggesting = false.obs;
+  final RxInt unreadNotificationCount = 0.obs;
 
   // Application form state
   final RxString coverLetter = ''.obs;
@@ -66,7 +68,7 @@ class JobApplicationController extends GetxController {
       result.fold(
         (error) {
           errorMessage.value = _mapErrorToMessage(error);
-          Get.snackbar('Error', errorMessage.value);
+          Get.snackbar(JobApplicationTexts.errorTitle, errorMessage.value);
         },
         (application) {
           candidateApplications.add(application);
@@ -78,7 +80,7 @@ class JobApplicationController extends GetxController {
             notificationService!.notifyNewApplication(application: application);
           }
           
-          Get.snackbar('Success', 'Application submitted successfully!');
+          Get.snackbar(JobApplicationTexts.successTitle, JobApplicationTexts.applicationSubmitted);
         },
       );
     } catch (e) {
@@ -101,7 +103,7 @@ class JobApplicationController extends GetxController {
       result.fold(
         (error) {
           errorMessage.value = _mapErrorToMessage(error);
-          Get.snackbar('Error', errorMessage.value);
+          Get.snackbar(JobApplicationTexts.errorTitle, errorMessage.value);
         },
         (applications) {
           candidateApplications.assignAll(applications);
@@ -135,7 +137,7 @@ class JobApplicationController extends GetxController {
       result.fold(
         (error) {
           errorMessage.value = _mapErrorToMessage(error);
-          Get.snackbar('Error', errorMessage.value);
+          Get.snackbar(JobApplicationTexts.errorTitle, errorMessage.value);
         },
         (applications) {
           companyApplications.assignAll(applications);
@@ -196,12 +198,12 @@ class JobApplicationController extends GetxController {
             );
           }
 
-          Get.snackbar('Success', 'Application status updated!');
+          Get.snackbar(JobApplicationTexts.successTitle, JobApplicationTexts.statusUpdated);
         },
       );
     } catch (e) {
       errorMessage.value = 'Failed to update status: $e';
-      Get.snackbar('Error', errorMessage.value);
+      Get.snackbar(JobApplicationTexts.errorTitle, errorMessage.value);
     } finally {
       isLoading.value = false;
     }
@@ -290,7 +292,7 @@ class JobApplicationController extends GetxController {
 
       if (result['success'] == true) {
         aiSuggestions[application.id] = result['suggestion'];
-        Get.snackbar('AI Suggestion', 'Status recommendation generated');
+        Get.snackbar(JobApplicationTexts.aiSuggestionTitle, JobApplicationTexts.aiSuggestionGenerated);
       } else {
         errorMessage.value = result['error'] ?? 'Failed to generate AI suggestion';
       }
@@ -331,7 +333,7 @@ class JobApplicationController extends GetxController {
         }
       }
 
-      Get.snackbar('AI Suggestions', 'Generated $successCount recommendations');
+      Get.snackbar(JobApplicationTexts.aiSuggestionTitle, 'Generated $successCount recommendations');
     } catch (e) {
       errorMessage.value = 'Batch AI suggestion error: $e';
     } finally {
@@ -358,7 +360,7 @@ class JobApplicationController extends GetxController {
 
       if (result['success'] == true) {
         aiSuggestions['insights'] = result['insights'];
-        Get.snackbar('AI Insights', 'Analytics generated successfully');
+        Get.snackbar(JobApplicationTexts.aiInsightsTitle, JobApplicationTexts.aiInsightsGenerated);
       } else {
         errorMessage.value = result['error'] ?? 'Failed to generate insights';
       }
@@ -375,5 +377,13 @@ class JobApplicationController extends GetxController {
 
   void clearAISuggestions() {
     aiSuggestions.clear();
+  }
+
+  Future<void> loadUnreadNotificationCount(String userId) async {
+    if (notificationService == null) return;
+    try {
+      final count = await notificationService!.getUnreadNotificationCount(userId);
+      unreadNotificationCount.value = count;
+    } catch (_) {}
   }
 }
