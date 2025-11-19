@@ -146,12 +146,16 @@ class AiJobsPage extends GetView<AiJobsController> {
             children: [
               Icon(Icons.auto_awesome, color: Theme.of(Get.context!).colorScheme.primary, size: 16),
               const SizedBox(width: 4),
-              Text(
-                AiTexts.aiPoweredBy,
-                style: TextStyle(
-                  color: Theme.of(Get.context!).colorScheme.primary,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
+              Flexible(
+                child: Text(
+                  AiTexts.aiPoweredBy,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Theme.of(Get.context!).colorScheme.primary,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ],
