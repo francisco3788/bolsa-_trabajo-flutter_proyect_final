@@ -16,8 +16,12 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshApplications();
     });
+    const brandBlue = Color(0xFF3A5A92);
+    const brandBlueLight = Color(0xFF5676B3);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: brandBlue,
+        foregroundColor: Colors.white,
         title: const Text(JobApplicationTexts.companyDashboardTitle),
         actions: [
           IconButton(
@@ -69,8 +73,8 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Theme.of(context).colorScheme.primary.withOpacity(0.08),
-              Theme.of(context).colorScheme.secondary.withOpacity(0.08),
+              brandBlue.withOpacity(0.08),
+              brandBlueLight.withOpacity(0.08),
               Colors.white,
             ],
           ),
@@ -102,7 +106,8 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
   }
 
   Widget _buildHeroHeader(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
+    const brandBlue = Color(0xFF3A5A92);
+    const brandBlueLight = Color(0xFF5676B3);
     final name = Get.find<AuthSessionService>().user?.name ?? 'Company';
     return Card(
       elevation: 6,
@@ -112,7 +117,7 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           gradient: LinearGradient(
-            colors: [scheme.primary, scheme.secondary],
+            colors: [brandBlue, brandBlueLight],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -153,11 +158,11 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
             const SizedBox(height: 12),
             Row(
               children: [
-                _pillStat('Jobs', controller.companyApplications.map((e) => e.jobId).toSet().length, scheme),
+                _pillStat('Jobs', controller.companyApplications.map((e) => e.jobId).toSet().length),
                 const SizedBox(width: 8),
-                _pillStat('Applications', controller.companyApplications.length, scheme),
+                _pillStat('Applications', controller.companyApplications.length),
                 const SizedBox(width: 8),
-                _pillStat('Accepted', controller.getApplicationsByStatus(ApplicationStatus.accepted).length, scheme),
+                _pillStat('Accepted', controller.getApplicationsByStatus(ApplicationStatus.accepted).length),
               ],
             ),
           ],
@@ -166,7 +171,7 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
     );
   }
 
-  Widget _pillStat(String label, int count, ColorScheme scheme) {
+  Widget _pillStat(String label, int count) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
@@ -194,7 +199,7 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
             child: ApplicationStatsCard(
               title: JobApplicationTexts.totalApplications,
               count: controller.companyApplications.length,
-              color: Colors.blue,
+              color: const Color(0xFF3A5A92),
             ),
           ),
           const SizedBox(width: 8),
@@ -258,6 +263,10 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
               icon: const Icon(Icons.auto_awesome),
               label: const Text(JobApplicationTexts.aiBatchSuggest),
               onPressed: () => _generateBatchSuggestions(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF3A5A92),
+                foregroundColor: Colors.white,
+              ),
             ),
           ],
         ),
@@ -271,6 +280,8 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
       return ChoiceChip(
         label: Text(label),
         selected: isSelected,
+        selectedColor: const Color(0xFF3A5A92).withOpacity(0.15),
+        labelStyle: TextStyle(color: isSelected ? const Color(0xFF3A5A92) : Colors.black87),
         onSelected: (selected) {
           if (selected) {
             _filterByStatus(status);
@@ -349,7 +360,7 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.psychology, color: Colors.blue),
+                    const Icon(Icons.psychology, color: Color(0xFF3A5A92)),
                     const SizedBox(width: 8),
                     const Text(
                       JobApplicationTexts.aiInsightsTitle,
@@ -359,7 +370,7 @@ class CompanyApplicationsDashboard extends GetView<JobApplicationController> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.blue.withValues(alpha: 0.1),
+                        color: const Color(0xFF3A5A92).withOpacity(0.10),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text('${JobApplicationTexts.qualityLabel} ${(quality * 100).round()}%'),

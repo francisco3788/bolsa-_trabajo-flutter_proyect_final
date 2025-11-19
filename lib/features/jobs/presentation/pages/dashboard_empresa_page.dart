@@ -438,14 +438,14 @@ class DashboardCompanyPage extends StatelessWidget {
                     return Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.blue.withValues(alpha: 0.1),
+                        color: const Color(0xFF3A5A92).withOpacity(0.10),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         skill,
                         style: const TextStyle(
                           fontSize: 10,
-                          color: Colors.blue,
+                          color: Color(0xFF3A5A92),
                         ),
                       ),
                     );
